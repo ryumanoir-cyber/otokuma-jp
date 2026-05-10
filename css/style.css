@@ -571,7 +571,8 @@ footer .footer-nav a:hover {
 /* ===== レスポンシブ ===== */
 @media (max-width: 768px) {
   .hero {
-    padding: 36px 24px;
+    padding: 0;
+    margin-bottom: 48px;
   }
 
   .hero h1 {
