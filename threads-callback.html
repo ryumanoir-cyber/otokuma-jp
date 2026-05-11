@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/otokuma-jp/images/icon.png">
+  <link rel="shortcut icon" href="/otokuma-jp/favicon.ico">
+  <link rel="apple-touch-icon" href="/otokuma-jp/images/icon.png">
+  <title>Threads 認証 | おトクマ</title>
+  <meta name="description" content="Threads API の認証コールバックページ。認証コードやエラー内容を確認するためのページです。">
+  <meta property="og:title" content="Threads 認証 | おトクマ">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="css/style.css?v=20260511-fixed-pages">
+  <style>
+    .callback-code {
+      word-break: break-all;
+      padding: 16px;
+      border-radius: 8px;
+      background: #f6f7f9;
+      border: 1px solid #d7dbe2;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div class="page-shell">
+    <article class="page-panel">
+      <h1 class="page-title">Threads 認証</h1>
+      <p class="page-lead">認証結果を受け取りました。必要なコードやエラーがここに表示されます。</p>
+      <section class="page-section">
+        <h2>受信内容</h2>
+        <div id="result" class="callback-code">読み込み中...</div>
+      </section>
+    </article>
+  </div>
+</main>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const entries = [];
+  for (const [key, value] of params.entries()) {
+    entries.push(`${key}: ${value}`);
+  }
+  document.getElementById('result').textContent = entries.length ? entries.join('\n') : 'パラメータはありません。';
+</script>
+</body>
+</html>
