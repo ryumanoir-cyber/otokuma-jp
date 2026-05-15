@@ -289,6 +289,13 @@ main {
   line-height: 1.45;
 }
 
+.card-excerpt {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
 .card-rating {
   font-size: 0.82rem;
   color: var(--clay);
