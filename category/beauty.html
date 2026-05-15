@@ -10,7 +10,7 @@
   <meta name="description" content="ヘアケア・スキンケア・オーラルケアなど、身だしなみやコンディションを整えるアイテムを紹介。">
   <meta property="og:title" content="美容 紹介 | Asa room">
   <meta property="og:type" content="website">
-  <link rel="stylesheet" href="../css/style.css?v=20260514-interior">
+  <link rel="stylesheet" href="../css/style.css?v=20260515-carousel">
 </head>
 <body>
 
@@ -100,7 +100,20 @@
     <div class="product-card">
       <a href="/products/downy-paradise-scent-booster.html">
         <div class="card-img-wrap">
-          <video src="/videos/un-nakamachi-aya.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Downy ダウニー アンストッパブル インウォッシュ セントブースター"></video>
+          <div class="carousel" data-carousel>
+            <button class="carousel-btn prev" type="button" data-carousel-prev aria-label="前の画像">‹</button>
+            <div class="carousel-viewport" data-carousel-viewport>
+              <div class="carousel-track">
+                <div class="carousel-slide">
+                  <img src="https://shop.r10s.jp/tida-market/cabinet/paradisebreeze1.jpg" alt="Downy ダウニー アンストッパブル インウォッシュ セントブースター パラダイス" loading="lazy">
+                </div>
+                <div class="carousel-slide">
+                  <video src="/videos/un-nakamachi-aya.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Downy ダウニー アンストッパブル インウォッシュ セントブースター"></video>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-btn next" type="button" data-carousel-next aria-label="次の画像">›</button>
+          </div>
         </div>
         <div class="card-body">
           <span class="cat-tag">美容</span>
@@ -172,6 +185,8 @@
     </div>
   </div>
 </main>
+
+<script src="/js/carousel.js"></script>
 
 <footer>
   <div class="footer-nav">
