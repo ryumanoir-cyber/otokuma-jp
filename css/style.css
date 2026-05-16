@@ -689,6 +689,82 @@ main {
   text-decoration: underline;
 }
 
+/* ===== まとめページ ===== */
+.collection-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 44px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.collection-hero-media {
+  background: #111;
+}
+
+.collection-hero-media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.collection-hero-copy {
+  padding: 28px 28px 28px 0;
+}
+
+.collection-hero-copy h1 {
+  color: var(--secondary);
+  font-size: 1.6rem;
+  line-height: 1.45;
+  margin: 10px 0 12px;
+}
+
+.collection-hero-copy p {
+  color: var(--text-light);
+  font-size: 0.92rem;
+  line-height: 1.85;
+}
+
+.cola-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.cola-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.cola-card-image {
+  background: #120b08;
+}
+
+.cola-card-image img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.cola-card-body {
+  padding: 16px;
+}
+
+.cola-card-body h3 {
+  color: var(--secondary);
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-top: 6px;
+}
+
 /* ===== 固定ページ ===== */
 .page-shell {
   max-width: 920px;
@@ -859,6 +935,32 @@ footer .footer-nav a:hover {
   .product-header {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+
+  .collection-hero {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .collection-hero-copy {
+    padding: 20px;
+  }
+
+  .collection-hero-copy h1 {
+    font-size: 1.2rem;
+  }
+
+  .cola-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .cola-card-body {
+    padding: 12px;
+  }
+
+  .cola-card-body h3 {
+    font-size: 0.86rem;
   }
 
   .eval-grid {
