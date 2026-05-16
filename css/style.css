@@ -829,49 +829,30 @@ footer .footer-nav a:hover {
     display: none;
   }
 
-  .product-grid {
+  .category-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     margin-bottom: 44px;
   }
 
-  .product-card {
-    min-width: 0;
+  .category-card {
+    padding: 18px 10px;
   }
 
-  .card-img-wrap {
-    aspect-ratio: 1 / 1;
-    padding: 10px;
-  }
-
-  .card-body {
-    padding: 10px;
-  }
-
-  .cat-tag {
-    font-size: 0.62rem;
-    padding: 1px 6px;
-    margin-bottom: 6px;
-  }
-
-  .card-title {
-    font-size: 0.78rem;
-    line-height: 1.35;
-    margin-bottom: 6px;
-  }
-
-  .card-rating {
+  .category-card .icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 10px;
     font-size: 0.72rem;
-    line-height: 1.35;
-    margin-bottom: 0;
   }
 
-  .card-rating span {
-    font-size: 0.68rem;
+  .category-card h3 {
+    font-size: 0.86rem;
   }
 
-  .product-grid .card-excerpt {
-    display: none;
+  .category-card p {
+    font-size: 0.7rem;
+    line-height: 1.45;
   }
 
   .product-header {
