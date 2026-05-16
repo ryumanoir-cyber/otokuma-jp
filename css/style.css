@@ -765,6 +765,29 @@ main {
   margin-top: 6px;
 }
 
+.cola-card-notes {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+  color: var(--text);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.cola-card-notes li {
+  position: relative;
+  padding-left: 1.35em;
+}
+
+.cola-card-notes li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--primary);
+  font-weight: 700;
+}
+
 /* ===== 固定ページ ===== */
 .page-shell {
   max-width: 920px;
