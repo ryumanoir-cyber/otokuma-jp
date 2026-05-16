@@ -829,9 +829,49 @@ footer .footer-nav a:hover {
     display: none;
   }
 
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 44px;
+  }
+
+  .product-card {
+    min-width: 0;
+  }
+
   .card-img-wrap {
     aspect-ratio: 1 / 1;
-    padding: 16px;
+    padding: 10px;
+  }
+
+  .card-body {
+    padding: 10px;
+  }
+
+  .cat-tag {
+    font-size: 0.62rem;
+    padding: 1px 6px;
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+
+  .card-rating {
+    font-size: 0.72rem;
+    line-height: 1.35;
+    margin-bottom: 0;
+  }
+
+  .card-rating span {
+    font-size: 0.68rem;
+  }
+
+  .product-grid .card-excerpt {
+    display: none;
   }
 
   .product-header {
