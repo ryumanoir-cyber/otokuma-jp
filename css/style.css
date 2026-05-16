@@ -214,6 +214,7 @@ main {
 .category-card p {
   font-size: 0.78rem;
   color: var(--text-light);
+  line-height: 1.55;
 }
 
 /* ===== 商品カードグリッド ===== */
