@@ -769,6 +769,8 @@ main {
   display: grid;
   gap: 7px;
   margin-top: 12px;
+  padding: 0;
+  list-style: none;
   color: var(--text);
   font-size: 0.78rem;
   line-height: 1.5;
@@ -984,6 +986,25 @@ footer .footer-nav a:hover {
 
   .cola-card-body h3 {
     font-size: 0.86rem;
+  }
+
+  .cola-selection-page .cola-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cola-selection-page .cola-card-body {
+    padding: 16px;
+  }
+
+  .cola-selection-page .cola-card-body h3 {
+    font-size: 1rem;
+  }
+
+  .cola-selection-page .cola-card-notes {
+    gap: 8px;
+    font-size: 0.88rem;
+    line-height: 1.65;
   }
 
   .eval-grid {
