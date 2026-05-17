@@ -752,32 +752,6 @@ main {
   box-shadow: 0 14px 30px rgba(80, 56, 42, 0.14);
 }
 
-.cola-card::after {
-  content: "";
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 8px 18px rgba(40, 28, 20, 0.2);
-  z-index: 2;
-}
-
-.cola-card::before {
-  content: "";
-  position: absolute;
-  top: 23px;
-  right: 24px;
-  width: 9px;
-  height: 9px;
-  border-top: 2px solid var(--primary);
-  border-right: 2px solid var(--primary);
-  transform: rotate(45deg);
-  z-index: 3;
-}
-
 .cola-card-image {
   background: #120b08;
 }
@@ -822,6 +796,22 @@ main {
   top: 0;
   color: var(--primary);
   font-weight: 700;
+}
+
+.cola-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--white);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  box-shadow: 0 8px 18px rgba(208, 166, 130, 0.25);
 }
 
 /* ===== 固定ページ ===== */
