@@ -17,10 +17,10 @@
     .product-img-wrap img { max-width: 280px; width: 100%; border-radius: 12px; }
     .product-name { font-size: 1.25rem; font-weight: 800; margin-bottom: 12px; line-height: 1.4; }
     .product-desc { font-size: 0.92rem; line-height: 1.8; color: var(--text-light); margin-bottom: 24px; }
-    .btn-buy { display: block; text-align: center; padding: 14px 20px; border-radius: 8px; font-size: 1rem; font-weight: 700; text-decoration: none; opacity: 1; pointer-events: auto; cursor: pointer; margin-bottom: 12px; }
-    .btn-amz { background: #FF9900; color: #fff; }
-    .btn-rkt { background: #BF0000; color: #fff; }
-    .affiliate-note { font-size: 0.75rem; color: var(--text-light); margin-top: 32px; text-align: center; }
+    .btn-buy { display: block; background: #FF9900; color: #fff; text-align: center; padding: 16px; border-radius: 8px; font-size: 1rem; font-weight: 700; text-decoration: none; letter-spacing: 0.03em; opacity: 1; pointer-events: auto; cursor: pointer; }
+    .btn-buy:hover { opacity: 0.85; }
+    .btn-buy span { font-size: 0.8rem; font-weight: 400; display: block; margin-top: 4px; opacity: 0.85; }
+    .affiliate-note { font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 12px; }
   </style>
 </head>
 <body>
@@ -43,8 +43,14 @@
       <img src="https://image.rakuten.co.jp/at-life/cabinet/rich01/deonatulle_rich_1.jpg" alt="デオナチュレ 薬用足指さらさらクリーム" loading="lazy">
     </div>
     <p class="product-desc">医薬部外品の制汗・消臭クリーム。足指の間に直接塗れる設計で、靴下を履く前に塗るだけで1日中さらさら感が続く。汗が多い夏でも蒸れにくく、雑菌の繁殖を抑えてニオイを根本からブロック。足指の間専用に設計された使いやすさが他と違う。</p>
-    <a href="https://amzn.to/3Ri2f5j" target="_blank" rel="noopener" class="btn-buy btn-amz">Amazonで見る</a>
-    <a href="https://a.r10.to/hN70W2" target="_blank" rel="noopener" class="btn-buy btn-rkt">楽天で見る</a>
+    <a href="https://amzn.to/3Ri2f5j" target="_blank" rel="noopener" class="btn-buy">
+      Amazonで見る →
+      <span>デオナチュレ 薬用足指さらさらクリーム 30g</span>
+    </a>
+    <a href="https://a.r10.to/hN70W2" target="_blank" rel="noopener" class="btn-buy" style="background:#BF0000; margin-top:12px;">
+      楽天で見る →
+      <span>デオナチュレ 薬用足指さらさらクリーム 30g</span>
+    </a>
     <p class="affiliate-note">※Amazon・楽天アフィリエイトリンクを使用しています</p>
   </div>
 </main>
