@@ -41,6 +41,10 @@ img {
   display: block;
 }
 
+.product-img-wrap img {
+  margin: 0 auto;
+}
+
 /* ===== ヘッダー ===== */
 header {
   background: rgba(255, 252, 247, 0.92);
