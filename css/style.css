@@ -41,6 +41,9 @@ img {
   display: block;
 }
 
+.sp-br { display: none; }
+.pc-slash { display: inline; }
+
 .product-img-wrap img {
   margin: 0 auto;
 }
@@ -935,6 +938,9 @@ footer .footer-nav a:hover {
 
 /* ===== レスポンシブ ===== */
 @media (max-width: 768px) {
+  .sp-br { display: block; }
+  .pc-slash { display: none; }
+
   .hero {
     padding: 0;
     margin-bottom: 30px;
