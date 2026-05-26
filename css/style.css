@@ -941,6 +941,10 @@ footer .footer-nav a:hover {
   .sp-br { display: block; }
   .pc-slash { display: none; }
 
+  .logo {
+    font-size: 0.65rem;
+  }
+
   .hero {
     padding: 0;
     margin-bottom: 30px;
