@@ -1,124 +1,135 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="/images/icon.png">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/images/icon.png">
-  <title>あさ｜美容オタクのおすすめまとめ</title>
-  <meta name="description" content="ヘアケア・スキンケア・オーラルケアなど、美容アイテムをSNSで見つけては試しまくっています。本当に良かったものだけをまとめています。">
-  <meta property="og:title" content="あさ｜美容オタクのおすすめまとめ">
-  <meta property="og:description" content="ヘアケア・スキンケア・オーラルケアなど、美容アイテムをSNSで見つけては試しまくっています。本当に良かったものだけをまとめています。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://otokuma-jp.com">
-  <link rel="stylesheet" href="/css/style.css?v=20260515-carousel">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黒の占い師｜甘いことは言わない無料鑑定</title>
+<meta name="description" content="甘いことは言いません。視えたものをそのままお伝えします。恋愛・仕事・金運・人間関係。無料で鑑定します。">
+<meta property="og:title" content="黒の占い師｜甘いことは言わない無料鑑定">
+<meta property="og:description" content="甘いことは言いません。視えたものをそのままお伝えします。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://otokuma-jp.com">
+<link rel="stylesheet" href="/css/style.css?v=1">
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <a href="/" class="logo">
-      <img src="/images/icon.png" alt="" class="logo-icon">
-      あさ｜美容オタクのおすすめまとめ
-    </a>
-    <nav>
-      <a href="/category/beauty/">美容</a>
-    </nav>
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">黒の占い師</p>
+    <h1>甘いことは<br>言いません。</h1>
+    <p class="lead">
+      「大丈夫、きっとうまくいきますよ」<br>
+      そう言われて、安心したふりをして帰ったことはありませんか。
+    </p>
+    <p class="lead">
+      私はそれをしません。<br>
+      脈がなければ、ないと言います。<br>
+      今のやり方では無理なら、無理だと言います。
+    </p>
+    <p class="lead strong">
+      本当のことが知りたい方だけ、お進みください。
+    </p>
+    <a href="#start" class="btn-primary">無料で視てもらう</a>
+    <p class="note">所要 30秒／登録不要／無料</p>
   </div>
 </header>
 
 <main>
 
-  <section class="hero">
-    <img src="/images/banner-interior.png" alt="Asa room - 帰りたくなる部屋をつくる暮らし" class="hero-banner">
-  </section>
+<section id="start" class="section">
+  <div class="wrap">
 
-  <section class="profile-intro">
-    <h1>SNSで見つけた神アイテムをメモ代わりに載せてます</h1>
-    <p>ヘアケア・スキンケア・オーラルケアなど<br>美容アイテムを試しまくって本当に良かったものをまとめてます。<br>※楽天＆Amazonアフィリエイトリンク使用</p>
-  </section>
+    <!-- ステップ1 -->
+    <div class="step" id="step1">
+      <p class="step-label">1 / 3</p>
+      <h2>生年月日を教えてください</h2>
+      <div class="date-row">
+        <select id="year" aria-label="年"></select><span class="unit">年</span>
+        <select id="month" aria-label="月"></select><span class="unit">月</span>
+        <select id="day" aria-label="日"></select><span class="unit">日</span>
+      </div>
+      <button class="btn-primary" id="to2">次へ</button>
+    </div>
 
-  <!-- カテゴリ一覧 -->
-  <h2 class="section-title">カテゴリから探す</h2>
-  <div class="category-grid">
-    <a href="/category/beauty/" class="category-card">
-      <div class="icon">01</div>
-      <h3>美容</h3>
-      <p>ヘアケア・スキンケア<br>バス・ボディ</p>
-    </a>
+    <!-- ステップ2 -->
+    <div class="step hidden" id="step2">
+      <p class="step-label">2 / 3</p>
+      <h2>何について視ますか</h2>
+      <div class="choices" id="categoryChoices"></div>
+    </div>
+
+    <!-- ステップ3 -->
+    <div class="step hidden" id="step3">
+      <p class="step-label">3 / 3</p>
+      <h2>今、いちばん近いものは</h2>
+      <div class="choices" id="stateChoices"></div>
+    </div>
+
+    <!-- 読込 -->
+    <div class="step hidden" id="loading">
+      <div class="loader"></div>
+      <p class="loading-text" id="loadingText">視ています</p>
+    </div>
+
+    <!-- 結果 -->
+    <div class="step hidden" id="result">
+      <div class="reading" id="reading"></div>
+
+      <div class="cta">
+        <h3>ここから先は、本鑑定でお伝えしています</h3>
+        <p>
+          今お伝えしたのは、表面に視えている部分だけです。<br>
+          なぜそうなっているのか、いつ動くのか、<br>
+          そして何をしてはいけないのかは、本鑑定でお伝えします。
+        </p>
+        <ul class="menu">
+          <li>今のあなたの現在地</li>
+          <li>あなたが目を背けていること</li>
+          <li>状況が動く時期</li>
+          <li>今すべきこと</li>
+          <li>この先に視えている流れ</li>
+        </ul>
+        <p class="price">本鑑定　5,980円</p>
+        <a href="https://www.threads.com/@kurono_uranai" class="btn-primary" id="ctaLink" target="_blank" rel="noopener">本鑑定を申し込む</a>
+        <p class="note">
+          甘いことは書きません。読んで落ち込む方もいます。<br>
+          それでも構わない方だけ、お進みください。
+        </p>
+      </div>
+
+      <button class="btn-ghost" id="again">もう一度、別のことで視る</button>
+    </div>
+
   </div>
+</section>
 
-  <!-- おすすめ商品一覧 -->
-  <h2 class="section-title">おすすめ</h2>
-  <div class="product-grid" id="featured-products">
-    <div class="product-card">
-      <a href="/products/nioi-kuchi/">
-        <div class="card-img-wrap">
-          <img src="/images/nioi-kuchi-top.png" alt="口臭ケア おすすめまとめ" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="cat-tag">美容</span>
-          <h3 class="card-title">口臭ケア おすすめまとめ</h3>
-          <p class="card-excerpt">歯ブラシだけじゃ汚れの6割しか落ちない。口内環境を整える厳選アイテム。</p>
-          <div class="card-rating">新着</div>
-        </div>
-      </a>
-    </div>
-    <div class="product-card">
-      <a href="/products/nioi-asoko/">
-        <div class="card-img-wrap">
-          <img src="/images/nioi-asoko-top.png" alt="デリケートゾーンケアまとめ" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="cat-tag">美容</span>
-          <h3 class="card-title">デリケートゾーンケア おすすめまとめ</h3>
-          <p class="card-excerpt">洗剤の洗浄力が強すぎると逆に菌が繁殖。正しいケアアイテムを厳選紹介。</p>
-          <div class="card-rating">新着</div>
-        </div>
-      </a>
-    </div>
-    <div class="product-card">
-      <a href="/products/nioi-atama/">
-        <div class="card-img-wrap">
-          <img src="/images/nioi-atama-top.png" alt="頭皮・体臭ケアまとめ" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="cat-tag">美容</span>
-          <h3 class="card-title">頭皮・体臭ケア おすすめまとめ</h3>
-          <p class="card-excerpt">皮脂の放置が酸化して「おじさん臭」に。頭皮ケアで体臭から変わる。</p>
-          <div class="card-rating">新着</div>
-        </div>
-      </a>
-    </div>
-    <div class="product-card">
-      <a href="/products/nioi-ashi/">
-        <div class="card-img-wrap">
-          <img src="/images/nioi-ashi-top.png" alt="足臭ケアまとめ" loading="lazy">
-        </div>
-        <div class="card-body">
-          <span class="cat-tag">美容</span>
-          <h3 class="card-title">足臭ケア おすすめまとめ</h3>
-          <p class="card-excerpt">角質をゴシゴシ削ると逆に雑菌が繁殖。DHCカテキン・デオナチュレなど厳選4商品。</p>
-          <div class="card-rating">新着</div>
-        </div>
-      </a>
-    </div>
+<section class="section alt">
+  <div class="wrap narrow">
+    <h2 class="center">この鑑定について</h2>
+    <ul class="plain">
+      <li>鑑定結果は未来を保証するものではなく、判断の参考としてお受け取りください</li>
+      <li>最終的に選ぶのはご本人です。視えたものをお伝えするだけです</li>
+      <li>病気の診断、健康、生死、試験の合否、法律・医療上の判断はお受けできません</li>
+      <li>投資、ギャンブル等、財産上の判断に関する助言は行いません</li>
+      <li>特定の人物への働きかけ（別れさせる・縁を切る等）は一切行いません</li>
+      <li>入力された情報は、この端末の中だけで処理されます。送信も保存もされません</li>
+    </ul>
   </div>
+</section>
 
 </main>
 
-<script src="/js/carousel.js"></script>
-
 <footer>
-  <div class="footer-nav">
-    <a href="/policy/">プライバシーポリシー</a>
-    <a href="/disclosure/">アフィリエイト開示</a>
-    <a href="/about/">このサイトについて</a>
+  <div class="wrap">
+    <p class="fname">黒の占い師</p>
+    <nav>
+      <a href="https://www.threads.com/@kurono_uranai" target="_blank" rel="noopener">Threads</a>
+      <a href="/policy/">プライバシーポリシー・免責事項</a>
+    </nav>
+    <p class="copy">&copy; 黒の占い師</p>
   </div>
-  <p>本サイトはAmazonアソシエイト・楽天アフィリエイトプログラムに参加しています。</p>
-  <p style="margin-top:8px;">© 2025 Asa room All Rights Reserved.</p>
 </footer>
 
+<script src="/js/uranai.js?v=1"></script>
 </body>
 </html>
