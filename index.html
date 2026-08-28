@@ -39,30 +39,33 @@
 <section id="start" class="section hidden">
   <div class="wrap">
 
-    <!-- ステップ1 -->
+    <!-- ステップ1 名前 -->
     <div class="step" id="step1">
       <p class="step-label">1 / 3</p>
+      <h2>お名前を教えてください</h2>
+      <p class="hint">本名でなくても構いません。呼び名として使います。</p>
+      <input type="text" id="name" class="text-input" placeholder="例：たかまさ" maxlength="12" autocomplete="off">
+      <button class="btn-primary" id="to2">次へ</button>
+    </div>
+
+    <!-- ステップ2 生年月日 -->
+    <div class="step hidden" id="step2">
+      <p class="step-label">2 / 3</p>
       <h2>生年月日を教えてください</h2>
+      <p class="hint">この日付から命式を立てます。</p>
       <div class="date-row">
         <select id="year" aria-label="年"></select><span class="unit">年</span>
         <select id="month" aria-label="月"></select><span class="unit">月</span>
         <select id="day" aria-label="日"></select><span class="unit">日</span>
       </div>
-      <button class="btn-primary" id="to2">次へ</button>
+      <button class="btn-primary" id="to3">次へ</button>
     </div>
 
-    <!-- ステップ2 -->
-    <div class="step hidden" id="step2">
-      <p class="step-label">2 / 3</p>
-      <h2>何について視ますか</h2>
-      <div class="choices" id="categoryChoices"></div>
-    </div>
-
-    <!-- ステップ3 -->
+    <!-- ステップ3 性別 -->
     <div class="step hidden" id="step3">
       <p class="step-label">3 / 3</p>
-      <h2>今、いちばん近いものは</h2>
-      <div class="choices" id="stateChoices"></div>
+      <h2>性別を教えてください</h2>
+      <div class="choices" id="genderChoices"></div>
     </div>
 
     <!-- 読込 -->
@@ -73,20 +76,21 @@
 
     <!-- 結果 -->
     <div class="step hidden" id="result">
+      <div class="meishiki" id="meishiki"></div>
       <div class="reading" id="reading"></div>
 
       <div class="cta">
         <h3>ここから先は、本鑑定でお伝えしています</h3>
         <p>
-          今お伝えしたのは、表面に視えている部分だけです。<br>
-          なぜそうなっているのか、いつ動くのか、<br>
-          そして何をしてはいけないのかは、本鑑定でお伝えします。
+          今お伝えしたのは、生まれ持った性質までです。<br>
+          いつ何が動くのか、そのとき何をすべきかは、<br>
+          あなたの命式を一つずつ読んで、私が直接お伝えします。
         </p>
         <ul class="menu">
-          <li>今のあなたの現在地</li>
           <li>あなたが目を背けていること</li>
-          <li>状況が動く時期</li>
+          <li>状況が動く具体的な時期</li>
           <li>今すべきこと</li>
+          <li>絶対にしてはいけないこと</li>
           <li>この先に視えている流れ</li>
         </ul>
         <p class="price">本鑑定　5,980円</p>
@@ -97,7 +101,7 @@
         </p>
       </div>
 
-      <button class="btn-ghost" id="again">もう一度、別のことで視る</button>
+      <button class="btn-ghost" id="again">最初からやり直す</button>
     </div>
 
   </div>
@@ -112,6 +116,8 @@
       <li>病気の診断、健康、生死、試験の合否、法律・医療上の判断はお受けできません</li>
       <li>投資、ギャンブル等、財産上の判断に関する助言は行いません</li>
       <li>特定の人物への働きかけ（別れさせる・縁を切る等）は一切行いません</li>
+      <li>鑑定は四柱推命の命式（年柱・月柱・日柱）にもとづいて行っています</li>
+      <li>節入り日は年により最大1日前後するため、境目の日付では結果が変わることがあります</li>
       <li>入力された情報は、この端末の中だけで処理されます。送信も保存もされません</li>
     </ul>
   </div>
@@ -130,6 +136,8 @@
   </div>
 </footer>
 
-<script src="/js/uranai.js?v=2"></script>
+<script src="/js/meishiki.js?v=3"></script>
+<script src="/js/reading.js?v=3"></script>
+<script src="/js/uranai.js?v=3"></script>
 </body>
 </html>

@@ -236,3 +236,54 @@ footer nav a:hover{color:var(--fg)}
   .hero h1{font-size:42px}
   body{font-size:16.5px}
 }
+
+/* 入力 */
+.hint{color:var(--mute);font-size:13px;margin:-14px 0 20px;line-height:1.8}
+.text-input{
+  width:100%;
+  background:var(--bg2);
+  color:var(--fg);
+  border:1px solid var(--line);
+  border-radius:2px;
+  padding:15px 16px;
+  font-size:16px;
+  font-family:inherit;
+  margin-bottom:28px;
+}
+.text-input::placeholder{color:#5d5a66}
+.text-input:focus{outline:none;border-color:var(--accent-dim)}
+.text-input.err{border-color:#8b4747}
+
+/* 命式 */
+.meishiki{
+  margin-bottom:46px;
+  padding:26px 22px;
+  background:var(--bg2);
+  border:1px solid var(--line);
+  border-radius:2px;
+  text-align:center;
+}
+.meishiki-label{
+  color:var(--accent);font-size:11px;letter-spacing:.34em;
+  margin:0 0 20px;text-indent:.34em;
+}
+.pillars{display:flex;justify-content:center;gap:12px;margin-bottom:20px}
+.pillar{flex:1 1 0;max-width:110px}
+.pillar .pl{display:block;color:var(--mute);font-size:11px;margin-bottom:7px;letter-spacing:.1em}
+.pillar .pv{display:block;font-size:22px;letter-spacing:.06em}
+.meishiki-note{color:var(--mute);font-size:13.5px;margin:0;line-height:1.9}
+.meishiki-note strong{color:var(--accent);font-weight:500}
+
+/* 年運 */
+.years{list-style:none;padding:0;margin:0 0 20px}
+.years li{
+  padding:0 0 15px 0;margin-bottom:15px;
+  border-bottom:1px solid var(--line);
+  font-size:14.5px;line-height:1.9;
+}
+.years li:last-child{border-bottom:none}
+.years .yr{
+  display:block;color:var(--accent);
+  font-size:13px;letter-spacing:.1em;margin-bottom:5px;
+}
+.years .yr em{font-style:normal;margin-left:9px;color:var(--mute)}
