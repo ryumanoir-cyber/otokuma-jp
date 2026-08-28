@@ -389,6 +389,16 @@
     initDate();
     initCategories();
 
+    el("begin").addEventListener("click", function () {
+      show("start");
+      hide("step2"); hide("step3"); hide("loading"); hide("result");
+      show("step1");
+      // セクションを出してから位置を測る
+      requestAnimationFrame(function () {
+        window.scrollTo({ top: el("start").offsetTop - 20, behavior: "smooth" });
+      });
+    });
+
     el("to2").addEventListener("click", function () {
       hide("step1"); show("step2");
       window.scrollTo({ top: el("start").offsetTop - 20, behavior: "smooth" });
