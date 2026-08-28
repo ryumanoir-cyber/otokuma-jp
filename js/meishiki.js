@@ -87,6 +87,60 @@ window.Meishiki = (function () {
     return "kan";                                            // 官殺：剋される（圧がかかる）
   }
 
+  /* 地支の五行 */
+  var SHI_GYO = [4,2,0,0,2,1,1,2,3,3,2,4]; // 子丑寅卯辰巳午未申酉戌亥
+
+  /* 通変星：日干から見た相手の干が何にあたるか
+     五行の関係 × 陰陽が同じか異なるか で10種に分かれる */
+  var TSUHEN = {
+    hiwa:  ["比肩", "劫財"],  // [同じ陰陽, 異なる陰陽]
+    shoku: ["食神", "傷官"],
+    zai:   ["偏財", "正財"],
+    kan:   ["偏官", "正官"],
+    in:    ["偏印", "印綬"]
+  };
+
+  function tsuhen(dayKanIdx, otherKanIdx) {
+    var rel = relation(KAN_GYO[dayKanIdx], KAN_GYO[otherKanIdx]);
+    var samePolarity = (dayKanIdx % 2) === (otherKanIdx % 2);
+    return TSUHEN[rel][samePolarity ? 0 : 1];
+  }
+
+  /* 十二運：日干ごとの長生の位置から、陽干は順行・陰干は逆行で数える */
+  var UNSEI = ["長生","沐浴","冠帯","建禄","帝旺","衰","病","死","墓","絶","胎","養"];
+  var CHOSEI = [11, 6, 2, 9, 2, 9, 5, 0, 8, 3]; // 甲乙丙丁戊己庚辛壬癸 の長生の地支
+
+  function junisei(dayKanIdx, shiIdx) {
+    var start = CHOSEI[dayKanIdx];
+    var step = (dayKanIdx % 2 === 0)
+      ? ((shiIdx - start) % 12 + 12) % 12   // 陽干：順行
+      : ((start - shiIdx) % 12 + 12) % 12;  // 陰干：逆行
+    return UNSEI[step];
+  }
+
+  /* 五行バランス：命式6文字（三柱の干支）の五行を数える */
+  function balance(yp, mp, dp) {
+    var count = [0,0,0,0,0];
+    count[KAN_GYO[yp.kan]]++; count[SHI_GYO[yp.shi]]++;
+    count[KAN_GYO[mp.kan]]++; count[SHI_GYO[mp.shi]]++;
+    count[KAN_GYO[dp.kan]]++; count[SHI_GYO[dp.shi]]++;
+
+    var max = Math.max.apply(null, count);
+    var most = count.indexOf(max);          // 最も多い五行
+    var lacks = [];
+    for (var i = 0; i < 5; i++) if (count[i] === 0) lacks.push(i);
+
+    return {
+      count: count,
+      most: most,
+      mostName: GYO_NAME[most],
+      mostCount: max,
+      lack: lacks.length ? lacks[0] : null,   // 欠けている五行（複数あれば先頭）
+      lackName: lacks.length ? GYO_NAME[lacks[0]] : null,
+      lackAll: lacks.map(function (i) { return GYO_NAME[i]; })
+    };
+  }
+
   /* 公開API */
   function build(y, m, d) {
     var sm = solarMonth(y, m, d);
@@ -104,7 +158,11 @@ window.Meishiki = (function () {
       dayKanYomi: KAN_YOMI[KAN[dp.kan]],
       dayGyo: dayGyo,
       dayGyoName: GYO_NAME[dayGyo],
-      solarYear: sm.year
+      solarYear: sm.year,
+      /* 追加の軸 */
+      tsuhen: tsuhen(dp.kan, mp.kan),        // 月干との関係＝社会での出方
+      junisei: junisei(dp.kan, dp.shi),      // 日支との関係＝今の段階
+      balance: balance(yp, mp, dp)           // 五行の偏り
     };
   }
 

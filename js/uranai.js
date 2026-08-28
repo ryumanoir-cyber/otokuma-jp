@@ -83,6 +83,14 @@
     mh += "</div>";
     mh += '<p class="meishiki-note">あなたの本質を表すのは日柱の天干、<strong>' + k
         + "（" + ms.dayKanYomi + "）</strong>。五行では<strong>" + ms.dayGyoName + "</strong>にあたります。</p>";
+    mh += '<div class="attrs">';
+    mh += '<div class="attr"><span class="al">社会での出方</span><span class="av">' + ms.tsuhen + "</span></div>";
+    mh += '<div class="attr"><span class="al">今の段階</span><span class="av">' + ms.junisei + "</span></div>";
+    mh += '<div class="attr"><span class="al">五行の偏り</span><span class="av">'
+        + ms.balance.mostName + "が最多"
+        + (ms.balance.lackName ? " / " + ms.balance.lackAll.join("・") + "が欠" : "")
+        + "</span></div>";
+    mh += "</div>";
     el("meishiki").innerHTML = mh;
 
     /* 本文 */
@@ -91,18 +99,30 @@
     h += "<h3>一　宿命・本質</h3>";
     h += "<p>" + nm + "さん。前置きはしません。</p>";
     h += paras(R.destiny[k]);
+    h += "<p>" + esc(R.gyoMost[ms.balance.mostName]) + "</p>";
+    h += "<p>" + esc(ms.balance.lackName ? R.gyoLack[ms.balance.lackName] : R.gyoNone) + "</p>";
 
     h += "<h3>二　性格</h3>";
     h += paras(R.character[k]);
 
-    h += "<h3>三　恋愛・結婚</h3>";
+    h += "<h3>三　社会での出方</h3>";
+    h += "<p class=\"axis\">月柱の天干は" + ms.month.kan + "。日干" + k + "から見ると<strong>"
+       + ms.tsuhen + "</strong>にあたります。</p>";
+    h += paras(R.tsuhen[ms.tsuhen]);
+
+    h += "<h3>四　恋愛・結婚</h3>";
     h += paras(R.love[k]);
     h += "<p>" + esc(R.loveByGender[k][state.gender]) + "</p>";
 
-    h += "<h3>四　仕事・お金</h3>";
+    h += "<h3>五　仕事・お金</h3>";
     h += paras(R.work[k]);
 
-    h += "<h3>五　今後の運気</h3>";
+    h += "<h3>六　今の段階</h3>";
+    h += "<p class=\"axis\">日支は" + ms.day.shi + "。十二運では<strong>"
+       + ms.junisei + "</strong>の位置にあります。</p>";
+    h += paras(R.junisei[ms.junisei]);
+
+    h += "<h3>七　今後の運気</h3>";
     var thisYear = new Date().getFullYear();
     var ys = window.Meishiki.years(ms.dayGyo, thisYear, 4);
     h += '<ul class="years">';
@@ -113,10 +133,10 @@
     h += "</ul>";
     h += "<p>これは決まった未来ではありません。今のままなら、そうなるというだけです。</p>";
 
-    h += "<h3>六　気をつけること</h3>";
+    h += "<h3>八　気をつけること</h3>";
     h += paras(R.caution[k]);
 
-    h += "<h3>七　最後に</h3>";
+    h += "<h3>九　最後に</h3>";
     h += paras(R.summary[k]);
     h += "<p>" + nm + "さん。決めるのはあなたです。私は視えたものをお伝えしただけです。</p>";
 
