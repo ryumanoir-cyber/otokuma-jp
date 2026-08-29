@@ -118,12 +118,22 @@ window.Meishiki = (function () {
     return UNSEI[step];
   }
 
-  /* 五行バランス：命式6文字（三柱の干支）の五行を数える */
-  function balance(yp, mp, dp) {
+  /* 時柱：出生時刻が分かる場合のみ
+     時支は23時から子の刻で始まり、2時間ごとに進む。
+     時干は五鼠遁（日干から子の刻の干を決め、そこから順に進める）。 */
+  function hourPillar(dayKanIdx, hour) {
+    var shi = Math.floor(((hour + 1) % 24) / 2);
+    var base = [0, 2, 4, 6, 8][dayKanIdx % 5]; // 甲己→甲子, 乙庚→丙子, 丙辛→戊子, 丁壬→庚子, 戊癸→壬子
+    return { kan: (base + shi) % 10, shi: shi };
+  }
+
+  /* 五行バランス：三柱6文字、時柱が分かる場合は四柱8文字で数える */
+  function balance(yp, mp, dp, hp) {
     var count = [0,0,0,0,0];
     count[KAN_GYO[yp.kan]]++; count[SHI_GYO[yp.shi]]++;
     count[KAN_GYO[mp.kan]]++; count[SHI_GYO[mp.shi]]++;
     count[KAN_GYO[dp.kan]]++; count[SHI_GYO[dp.shi]]++;
+    if (hp) { count[KAN_GYO[hp.kan]]++; count[SHI_GYO[hp.shi]]++; }
 
     var max = Math.max.apply(null, count);
     var most = count.indexOf(max);          // 最も多い五行
@@ -137,17 +147,20 @@ window.Meishiki = (function () {
       mostCount: max,
       lack: lacks.length ? lacks[0] : null,   // 欠けている五行（複数あれば先頭）
       lackName: lacks.length ? GYO_NAME[lacks[0]] : null,
-      lackAll: lacks.map(function (i) { return GYO_NAME[i]; })
+      lackAll: lacks.map(function (i) { return GYO_NAME[i]; }),
+      chars: hp ? 8 : 6
     };
   }
 
   /* 公開API */
-  function build(y, m, d) {
+  function build(y, m, d, hour) {
     var sm = solarMonth(y, m, d);
     var yp = yearPillar(sm.year);
     var mp = monthPillar(yp.kan, sm.shi);
     var dp = dayPillar(y, m, d);
     var dayGyo = KAN_GYO[dp.kan];
+    var hasHour = (typeof hour === "number" && hour >= 0 && hour <= 23);
+    var hp = hasHour ? hourPillar(dp.kan, hour) : null;
 
     return {
       year:  { kan: KAN[yp.kan], shi: SHI[yp.shi], kanIdx: yp.kan },
@@ -162,7 +175,11 @@ window.Meishiki = (function () {
       /* 追加の軸 */
       tsuhen: tsuhen(dp.kan, mp.kan),        // 月干との関係＝社会での出方
       junisei: junisei(dp.kan, dp.shi),      // 日支との関係＝今の段階
-      balance: balance(yp, mp, dp)           // 五行の偏り
+      balance: balance(yp, mp, dp, hp),      // 五行の偏り（時柱があれば8文字で判定）
+      hasHour: hasHour,
+      hour: hasHour ? { kan: KAN[hp.kan], shi: SHI[hp.shi], kanIdx: hp.kan } : null,
+      hourTsuhen: hasHour ? tsuhen(dp.kan, hp.kan) : null,   // 時干との関係＝隠れているもの
+      hourJunisei: hasHour ? junisei(dp.kan, hp.shi) : null
     };
   }
 

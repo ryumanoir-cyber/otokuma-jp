@@ -315,3 +315,4 @@ footer nav a:hover{color:var(--fg)}
   margin-bottom:18px !important;
 }
 .reading .axis strong{color:var(--accent);font-weight:500}
+.attr .av .src{display:block;color:var(--mute);font-size:10px;font-style:normal;margin-top:3px}

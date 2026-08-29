@@ -20,7 +20,7 @@
     window.scrollTo({ top: el("start").offsetTop - 20, behavior: "smooth" });
   }
 
-  var state = { name: "", gender: "male" };
+  var state = { name: "", gender: "male", hour: null };
 
   function initDate() {
     var y = el("year"), m = el("month"), d = el("day");
@@ -29,6 +29,13 @@
     for (i = 1; i <= 12; i++) m.add(new Option(i, i));
     for (i = 1; i <= 31; i++) d.add(new Option(i, i));
     y.value = 1995; m.value = 1; d.value = 1;
+  }
+
+  function initHour() {
+    var h = el("hour");
+    h.add(new Option("わからない", ""));
+    for (var i = 0; i <= 23; i++) h.add(new Option(i + "時台", i));
+    h.value = "";
   }
 
   function initGender() {
@@ -50,7 +57,7 @@
   var LOADING = ["命式を立てています", "命式を立てています．", "命式を立てています．．", "命式を立てています．．．"];
 
   function run() {
-    hide("step3"); show("loading"); scrollTop();
+    hide("step4"); show("loading"); scrollTop();
     var i = 0;
     var timer = setInterval(function () {
       el("loadingText").textContent = LOADING[i % LOADING.length];
@@ -68,7 +75,7 @@
         m = Number(el("month").value),
         d = Number(el("day").value);
 
-    var ms = window.Meishiki.build(y, m, d);
+    var ms = window.Meishiki.build(y, m, d, state.hour);
     var R  = window.Reading;
     var k  = ms.dayKan;
     var nm = esc(state.name);
@@ -80,6 +87,9 @@
     mh += '<div class="pillar"><span class="pl">年柱</span><span class="pv">' + ms.year.kan + ms.year.shi + "</span></div>";
     mh += '<div class="pillar"><span class="pl">月柱</span><span class="pv">' + ms.month.kan + ms.month.shi + "</span></div>";
     mh += '<div class="pillar"><span class="pl">日柱</span><span class="pv">' + ms.day.kan + ms.day.shi + "</span></div>";
+    if (ms.hasHour) {
+      mh += '<div class="pillar"><span class="pl">時柱</span><span class="pv">' + ms.hour.kan + ms.hour.shi + "</span></div>";
+    }
     mh += "</div>";
     mh += '<p class="meishiki-note">あなたの本質を表すのは日柱の天干、<strong>' + k
         + "（" + ms.dayKanYomi + "）</strong>。五行では<strong>" + ms.dayGyoName + "</strong>にあたります。</p>";
@@ -89,43 +99,54 @@
     mh += '<div class="attr"><span class="al">五行の偏り</span><span class="av">'
         + ms.balance.mostName + "が最多"
         + (ms.balance.lackName ? " / " + ms.balance.lackAll.join("・") + "が欠" : "")
-        + "</span></div>";
+        + '<em class="src">' + ms.balance.chars + "文字で判定</em></span></div>";
     mh += "</div>";
     el("meishiki").innerHTML = mh;
 
-    /* 本文 */
+    /* 本文（時柱の有無でセクション数が変わるので番号は動的に振る） */
+    var NUM = ["一","二","三","四","五","六","七","八","九","十"];
+    var n = 0;
+    function sec(title) { n++; return "<h3>" + NUM[n - 1] + "　" + title + "</h3>"; }
+
     var h = "";
 
-    h += "<h3>一　宿命・本質</h3>";
+    h += sec("宿命・本質");
     h += "<p>" + nm + "さん。前置きはしません。</p>";
     h += paras(R.destiny[k]);
     h += "<p>" + esc(R.gyoMost[ms.balance.mostName]) + "</p>";
     h += "<p>" + esc(ms.balance.lackName ? R.gyoLack[ms.balance.lackName] : R.gyoNone) + "</p>";
 
-    h += "<h3>二　性格</h3>";
+    h += sec("性格");
     h += paras(R.character[k]);
 
-    h += "<h3>三　社会での出方</h3>";
+    h += sec("社会での出方");
     h += "<p class=\"axis\">月柱の天干は" + ms.month.kan + "。日干" + k + "から見ると<strong>"
        + ms.tsuhen + "</strong>にあたります。</p>";
     h += paras(R.tsuhen[ms.tsuhen]);
 
-    h += "<h3>四　恋愛・結婚</h3>";
+    h += sec("恋愛・結婚");
     h += paras(R.love[k]);
     h += "<p>" + esc(R.loveByGender[k][state.gender]) + "</p>";
 
-    h += "<h3>五　仕事・お金</h3>";
+    h += sec("仕事・お金");
     h += paras(R.work[k]);
 
-    h += "<h3>六　今の段階</h3>";
+    h += sec("今の段階");
     h += "<p class=\"axis\">日支は" + ms.day.shi + "。十二運では<strong>"
        + ms.junisei + "</strong>の位置にあります。</p>";
     h += paras(R.junisei[ms.junisei]);
 
-    h += "<h3>七　気をつけること</h3>";
+    if (ms.hasHour) {
+      h += sec("隠れているもの");
+      h += "<p class=\"axis\">時柱は" + ms.hour.kan + ms.hour.shi + "。日干" + k
+         + "から見ると<strong>" + ms.hourTsuhen + "</strong>にあたります。</p>";
+      h += paras(R.hourTsuhen[ms.hourTsuhen]);
+    }
+
+    h += sec("気をつけること");
     h += paras(R.caution[k]);
 
-    h += "<h3>八　最後に</h3>";
+    h += sec("最後に");
     h += paras(R.summary[k]);
     h += "<p>" + nm + "さん。決めるのはあなたです。私は視えたものをお伝えしただけです。</p>";
 
@@ -133,17 +154,18 @@
   }
 
   function reset() {
-    hide("result"); hide("loading"); hide("step2"); hide("step3");
+    hide("result"); hide("loading"); hide("step2"); hide("step3"); hide("step4");
     show("step1"); scrollTop();
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     initDate();
+    initHour();
     initGender();
 
     el("begin").addEventListener("click", function () {
       show("start");
-      hide("step2"); hide("step3"); hide("loading"); hide("result");
+      hide("step2"); hide("step3"); hide("step4"); hide("loading"); hide("result");
       show("step1");
       requestAnimationFrame(scrollTop);
     });
@@ -176,6 +198,12 @@
 
     el("to3").addEventListener("click", function () {
       hide("step2"); show("step3"); scrollTop();
+    });
+
+    el("to4").addEventListener("click", function () {
+      var v = el("hour").value;
+      state.hour = (v === "") ? null : Number(v);
+      hide("step3"); show("step4"); scrollTop();
     });
 
     el("again").addEventListener("click", reset);
