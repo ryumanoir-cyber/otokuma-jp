@@ -122,21 +122,10 @@
        + ms.junisei + "</strong>の位置にあります。</p>";
     h += paras(R.junisei[ms.junisei]);
 
-    h += "<h3>七　今後の運気</h3>";
-    var thisYear = new Date().getFullYear();
-    var ys = window.Meishiki.years(ms.dayGyo, thisYear, 4);
-    h += '<ul class="years">';
-    ys.forEach(function (v) {
-      h += "<li><span class=\"yr\">" + v.year + "年<em>" + v.kan + v.shi + "</em></span>"
-         + esc(R.yearRel[v.rel][v.yang ? "yang" : "yin"]) + "</li>";
-    });
-    h += "</ul>";
-    h += "<p>これは決まった未来ではありません。今のままなら、そうなるというだけです。</p>";
-
-    h += "<h3>八　気をつけること</h3>";
+    h += "<h3>七　気をつけること</h3>";
     h += paras(R.caution[k]);
 
-    h += "<h3>九　最後に</h3>";
+    h += "<h3>八　最後に</h3>";
     h += paras(R.summary[k]);
     h += "<p>" + nm + "さん。決めるのはあなたです。私は視えたものをお伝えしただけです。</p>";
 
