@@ -156,8 +156,22 @@
       hide("step1"); show("step2"); scrollTop();
     });
 
+    /* 日本語入力の変換確定Enterで次へ進まないようにする。
+       IME変換中のEnterは e.isComposing が true（古い環境では keyCode 229）。
+       compositionend の直後に keydown が来る環境もあるので、フラグでも保険をかける。 */
+    var composing = false;
+    var composeEndedAt = 0;
+    el("name").addEventListener("compositionstart", function () { composing = true; });
+    el("name").addEventListener("compositionend", function () {
+      composing = false;
+      composeEndedAt = Date.now();
+    });
     el("name").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") { e.preventDefault(); el("to2").click(); }
+      if (e.key !== "Enter") return;
+      if (e.isComposing || e.keyCode === 229 || composing) return;   // 変換中
+      if (Date.now() - composeEndedAt < 120) return;                  // 確定直後
+      e.preventDefault();
+      el("to2").click();
     });
 
     el("to3").addEventListener("click", function () {
