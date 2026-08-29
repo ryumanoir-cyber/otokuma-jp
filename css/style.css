@@ -368,3 +368,24 @@ footer nav a:hover{color:var(--fg)}
 }
 .checklist li::before{content:"□";position:absolute;left:0;color:var(--accent-dim)}
 .checklist .warn{color:#c98b8b;font-size:13px;line-height:1.9;margin:0}
+
+/* 作業ページ：申し送りと既読パネル */
+.guide{margin-top:8px}
+.guide-p{color:var(--mute);font-size:13.5px;line-height:1.9;margin:0 0 14px}
+.guide-p strong{color:#c98b8b;font-weight:500}
+.chart-tbl tr.ng th,.chart-tbl tr.ng td{background:#231a1a}
+.chart-tbl td.ng,.chart-tbl tr.ng td:last-child{color:#c98b8b}
+.sec-head{font-size:15px;font-weight:500;color:var(--accent);margin:40px 0 14px;letter-spacing:.08em}
+.already-wrap{border:1px solid var(--line);border-radius:2px;overflow:hidden}
+details.already{border-bottom:1px solid var(--line)}
+details.already:last-child{border-bottom:none}
+details.already summary{
+  padding:12px 16px;cursor:pointer;font-size:13.5px;color:var(--mute);
+  background:var(--bg2);list-style:none;
+}
+details.already summary::-webkit-details-marker{display:none}
+details.already summary::before{content:"＋　";color:var(--accent-dim)}
+details.already[open] summary::before{content:"−　"}
+details.already p{
+  margin:0;padding:16px 20px;font-size:14px;line-height:1.95;color:var(--mute);
+}

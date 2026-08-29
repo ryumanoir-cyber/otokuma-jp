@@ -152,6 +152,36 @@ window.Meishiki = (function () {
     };
   }
 
+  /* 命式にどの星があるか（日干以外の天干＝年干・月干・時干を見る）
+     無い星は、その人に欠けている働き。相談の核心になりやすい。 */
+  var STAR_GROUP = {
+    "比肩":"hikyo", "劫財":"hikyo",
+    "食神":"shokusho", "傷官":"shokusho",
+    "偏財":"zaisei", "正財":"zaisei",
+    "偏官":"kansei", "正官":"kansei",
+    "偏印":"insei",  "印綬":"insei"
+  };
+
+  function stars(dayKanIdx, kanIdxList) {
+    var found = {}, list = [];
+    kanIdxList.forEach(function (ki) {
+      if (ki === null || ki === undefined) return;
+      var t = tsuhen(dayKanIdx, ki);
+      list.push(t);
+      found[STAR_GROUP[t]] = true;
+    });
+    return {
+      list: list,
+      has: {
+        hikyo:    !!found.hikyo,     // 比劫：独立・競争
+        shokusho: !!found.shokusho,  // 食傷：表現・発信
+        zaisei:   !!found.zaisei,    // 財星：お金・現実・（男性から見た）異性
+        kansei:   !!found.kansei,    // 官星：責任・立場・（女性から見た）異性
+        insei:    !!found.insei      // 印星：学び・支え
+      }
+    };
+  }
+
   /* 干支の組み合わせから六十干支の番号を求める */
   function kanshiIndex(kan, shi) {
     for (var n = 0; n < 60; n++) if (n % 10 === kan && n % 12 === shi) return n;
@@ -230,7 +260,8 @@ window.Meishiki = (function () {
       hasHour: hasHour,
       hour: hasHour ? { kan: KAN[hp.kan], shi: SHI[hp.shi], kanIdx: hp.kan } : null,
       hourTsuhen: hasHour ? tsuhen(dp.kan, hp.kan) : null,   // 時干との関係＝隠れているもの
-      hourJunisei: hasHour ? junisei(dp.kan, hp.shi) : null
+      hourJunisei: hasHour ? junisei(dp.kan, hp.shi) : null,
+      stars: stars(dp.kan, [yp.kan, mp.kan, hasHour ? hp.kan : null])
     };
   }
 
