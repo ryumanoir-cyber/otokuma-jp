@@ -152,6 +152,57 @@ window.Meishiki = (function () {
     };
   }
 
+  /* 干支の組み合わせから六十干支の番号を求める */
+  function kanshiIndex(kan, shi) {
+    for (var n = 0; n < 60; n++) if (n % 10 === kan && n % 12 === shi) return n;
+    return 0;
+  }
+
+  /* その年の節入り日をユリウス通日の配列で返す */
+  function setsuJdnList(y) {
+    return SETSU.map(function (t) { return { jdn: jdn(y, t.m, t.d), m: t.m, d: t.d }; });
+  }
+
+  /* 生日を挟む前後の節入りまでの日数 */
+  function setsuGap(y, m, d) {
+    var me = jdn(y, m, d);
+    var all = setsuJdnList(y - 1).concat(setsuJdnList(y), setsuJdnList(y + 1))
+      .sort(function (a, b) { return a.jdn - b.jdn; });
+    var prev = null, next = null, i;
+    for (i = 0; i < all.length; i++) {
+      if (all[i].jdn <= me) prev = all[i];
+      if (all[i].jdn > me && next === null) next = all[i];
+    }
+    return { toNext: next.jdn - me, fromPrev: me - prev.jdn };
+  }
+
+  /* 大運：10年ごとの運の柱
+     順行か逆行かは、年干の陰陽と性別の組み合わせで決まる。
+     起運の年齢（立運数）は、節入りまでの日数を3で割る（3日で1年）。 */
+  function daiun(y, m, d, gender, yp, mp) {
+    var yangYear = (yp.kan % 2 === 0);
+    var male = (gender === "male");
+    var forward = (yangYear && male) || (!yangYear && !male);
+
+    var gap = setsuGap(y, m, d);
+    var days = forward ? gap.toNext : gap.fromPrev;
+    var startAge = Math.max(1, Math.round(days / 3));
+
+    var base = kanshiIndex(mp.kan, mp.shi);
+    var out = [], i, idx;
+    for (i = 0; i < 8; i++) {
+      idx = ((base + (forward ? (i + 1) : -(i + 1))) % 60 + 60) % 60;
+      out.push({
+        from: startAge + i * 10,
+        to: startAge + i * 10 + 9,
+        kan: KAN[idx % 10],
+        shi: SHI[idx % 12],
+        kanIdx: idx % 10
+      });
+    }
+    return { forward: forward, startAge: startAge, pillars: out };
+  }
+
   /* 公開API */
   function build(y, m, d, hour) {
     var sm = solarMonth(y, m, d);
@@ -196,9 +247,25 @@ window.Meishiki = (function () {
     return out;
   }
 
+  /* 大運は性別が要るので別APIにする */
+  function daiunFor(y, m, d, gender) {
+    var sm = solarMonth(y, m, d);
+    var yp = yearPillar(sm.year);
+    var mp = monthPillar(yp.kan, sm.shi);
+    var dp = dayPillar(y, m, d);
+    var du = daiun(y, m, d, gender, yp, mp);
+    du.pillars.forEach(function (pl) {
+      pl.rel = relation(KAN_GYO[dp.kan], KAN_GYO[pl.kanIdx]);
+      pl.yang = (pl.kanIdx % 2 === 0);
+      pl.tsuhen = tsuhen(dp.kan, pl.kanIdx);
+    });
+    return du;
+  }
+
   return {
     build: build,
     years: years,
+    daiun: daiunFor,
     KAN: KAN,
     SHI: SHI,
     GYO_NAME: GYO_NAME

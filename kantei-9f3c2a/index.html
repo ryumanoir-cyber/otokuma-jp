@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>本鑑定 下書き作成｜黒の占い師</title>
+<link rel="stylesheet" href="/css/style.css?v=8">
+</head>
+<body>
+
+<div class="tool">
+  <header class="tool-head">
+    <p class="eyebrow">黒の占い師</p>
+    <h1>本鑑定 下書き作成</h1>
+    <p class="tool-note">
+      作業用のページです。公開ページからは繋がっていません。<br>
+      出力はあくまで下書きです。<strong>そのまま納品しないでください。</strong>
+    </p>
+  </header>
+
+  <section class="tool-form">
+    <div class="fld">
+      <label for="k-name">お名前</label>
+      <input type="text" id="k-name" class="text-input" placeholder="例：隆真" autocomplete="off">
+    </div>
+
+    <div class="fld">
+      <label>生年月日</label>
+      <div class="date-row">
+        <select id="k-year"></select><span class="unit">年</span>
+        <select id="k-month"></select><span class="unit">月</span>
+        <select id="k-day"></select><span class="unit">日</span>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label for="k-hour">生まれた時刻</label>
+      <div class="date-row"><select id="k-hour"></select></div>
+    </div>
+
+    <div class="fld">
+      <label>性別</label>
+      <div class="date-row">
+        <select id="k-gender">
+          <option value="female">女性</option>
+          <option value="male">男性</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label for="k-topic">ご相談内容（そのまま貼る）</label>
+      <textarea id="k-topic" class="text-input" rows="4" placeholder="フォームで受け取った「今の状況」「一番知りたいこと」を貼ってください。下書きの冒頭に引用として差し込みます。"></textarea>
+    </div>
+
+    <button class="btn-primary" id="k-run">下書きを作る</button>
+  </section>
+
+  <section class="tool-out hidden" id="k-out">
+    <div class="chart" id="k-chart"></div>
+
+    <div class="draft-head">
+      <h2>下書き本文</h2>
+      <button class="btn-copy" id="k-copy">全文をコピー</button>
+    </div>
+    <textarea class="draft" id="k-draft" spellcheck="false"></textarea>
+
+    <div class="checklist">
+      <h2>納品前に必ずやること</h2>
+      <ul>
+        <li>相談者の言葉を最低1つ、本文中にそのまま引用する（「〜と書かれていました」）</li>
+        <li>一般論で終わっている段落を1つ探し、相談内容に沿って具体に書き換える</li>
+        <li>「状況が動く時期」を、相談内容に合わせて言い切る</li>
+        <li>禁止語が残っていないか検索（必ず／絶対／確実／保証／病気／治る）</li>
+        <li>未来を断定していないか確認（「今のままなら」の条件付きになっているか）</li>
+        <li>「〜しましょう」で終わる文を探して直す（黒の占い師は提案しない）</li>
+      </ul>
+      <p class="warn">
+        AIの出力をそのまま販売すると優良誤認・詐欺のリスクがあります。
+        必ず手を入れてから納品してください。
+      </p>
+    </div>
+  </section>
+</div>
+
+<script src="/js/meishiki.js?v=8"></script>
+<script src="/js/reading.js?v=8"></script>
+<script src="/js/kantei.js?v=8"></script>
+</body>
+</html>

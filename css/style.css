@@ -316,3 +316,55 @@ footer nav a:hover{color:var(--fg)}
 }
 .reading .axis strong{color:var(--accent);font-weight:500}
 .attr .av .src{display:block;color:var(--mute);font-size:10px;font-style:normal;margin-top:3px}
+
+/* ===== 作業用：本鑑定 下書き作成 ===== */
+.tool{max-width:860px;margin:0 auto;padding:44px 22px 80px}
+.tool-head{margin-bottom:40px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.tool-head h1{font-size:26px;font-weight:500;margin:6px 0 16px}
+.tool-note{color:var(--mute);font-size:13.5px;line-height:1.9;margin:0}
+.tool-note strong{color:#c98b8b;font-weight:500}
+
+.tool-form{margin-bottom:20px}
+.fld{margin-bottom:24px}
+.fld label{display:block;color:var(--mute);font-size:12.5px;letter-spacing:.08em;margin-bottom:9px}
+.fld .text-input{margin-bottom:0}
+.fld textarea.text-input{line-height:1.8;resize:vertical}
+.fld .date-row{margin-bottom:0}
+
+.tool-out{margin-top:52px}
+.chart h2,.draft-head h2,.checklist h2{
+  font-size:15px;font-weight:500;color:var(--accent);
+  margin:36px 0 14px;letter-spacing:.08em;
+}
+.chart h2:first-child{margin-top:0}
+.chart-tbl{width:100%;border-collapse:collapse;font-size:14px}
+.chart-tbl th,.chart-tbl td{
+  border:1px solid var(--line);padding:9px 11px;text-align:left;
+}
+.chart-tbl th{background:var(--bg2);color:var(--mute);font-weight:400;white-space:nowrap;width:1%}
+.chart-tbl.daiun td:first-of-type{color:var(--fg)}
+.chart-tbl tr.cur td,.chart-tbl tr.cur th{background:#1c1a24;color:var(--accent)}
+
+.draft-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.btn-copy{
+  background:transparent;border:1px solid var(--accent-dim);color:var(--accent);
+  padding:9px 20px;border-radius:2px;font-family:inherit;font-size:13px;cursor:pointer;
+}
+.btn-copy:hover{background:var(--accent);color:#0b0b0f}
+.draft{
+  width:100%;min-height:520px;
+  background:var(--bg2);color:var(--fg);
+  border:1px solid var(--line);border-radius:2px;
+  padding:20px;font-size:14px;line-height:2;
+  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+  resize:vertical;
+}
+.checklist{margin-top:44px;padding:24px;background:var(--bg2);border:1px solid var(--line);border-radius:2px}
+.checklist h2{margin-top:0}
+.checklist ul{margin:0 0 18px;padding:0;list-style:none}
+.checklist li{
+  color:var(--mute);font-size:13.5px;line-height:1.9;
+  padding-left:20px;position:relative;margin-bottom:9px;
+}
+.checklist li::before{content:"□";position:absolute;left:0;color:var(--accent-dim)}
+.checklist .warn{color:#c98b8b;font-size:13px;line-height:1.9;margin:0}
