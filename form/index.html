@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>事前相談フォーム｜黒の占い師</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<link rel="stylesheet" href="/css/style.css?v=14">
+</head>
+<body>
+
+<header class="hero hero-sub">
+  <div class="hero-inner">
+    <p class="eyebrow">黒の占い師</p>
+    <h1>事前相談フォーム</h1>
+    <p class="lead">
+      本鑑定をお申し込みいただき、ありがとうございます。<br>
+      鑑定書を作成するために、以下をご記入ください。
+    </p>
+    <p class="lead strong">
+      書いていただいた分だけ、鑑定は具体的になります。
+    </p>
+  </div>
+</header>
+
+<main>
+<section class="section" id="form">
+  <div class="wrap">
+    <p class="warn-block small">
+      病気・健康・生死、法律や医療の判断、投資やギャンブルに関するご相談はお受けできません。<br>
+      特定の人物への働きかけ（別れさせる・縁を切る等）も行いません。
+    </p>
+
+    <form id="kanteiForm" method="POST" action="" novalidate>
+
+      <p class="fs-head">ご購入の確認</p>
+
+      <div class="fld">
+        <label for="f-order">STORESの注文番号 <span class="req">必須</span></label>
+        <input type="text" id="f-order" name="注文番号" class="text-input" required autocomplete="off">
+        <p class="fld-note">ご購入完了の画面、またはSTORESからのメールに記載されています。</p>
+      </div>
+
+      <div class="fld">
+        <label for="f-contact">メールアドレス <span class="req">必須</span></label>
+        <input type="email" id="f-contact" name="メールアドレス" class="text-input" required
+               autocomplete="email" inputmode="email" placeholder="example@example.com">
+        <p class="fld-note">
+          鑑定書のお届け先です。ここにお送りします。<br>
+          お間違いがあるとお届けできませんので、ご確認のうえご記入ください。
+        </p>
+      </div>
+
+      <p class="fs-head">あなたのこと</p>
+
+      <div class="fld">
+        <label for="f-name">お名前（ご本名） <span class="req">必須</span></label>
+        <input type="text" id="f-name" name="お名前" class="text-input" required maxlength="30"
+               autocomplete="name" placeholder="例：五月女 隆真">
+        <p class="fld-note">鑑定書はご本名でお作りします。</p>
+      </div>
+
+      <div class="fld">
+        <label for="f-birth">生年月日 <span class="req">必須</span></label>
+        <input type="date" id="f-birth" name="生年月日" class="text-input" required>
+      </div>
+
+      <div class="fld">
+        <label for="f-time">生まれた時刻</label>
+        <input type="time" id="f-time" name="出生時刻" class="text-input">
+        <p class="fld-note">分かる方のみ。◯時◯分まで分かると、鑑定が一段細かくなります。分からなければ空欄で結構です。</p>
+      </div>
+
+      <div class="fld">
+        <label for="f-pref">出生地</label>
+        <select id="f-pref" name="出生地" class="text-input"></select>
+        <p class="fld-note">生まれた場所によって、実際の太陽の位置が最大30分ほどずれます。時刻をご記入いただいた方のみ影響します。</p>
+      </div>
+
+      <div class="fld">
+        <label for="f-gender">性別 <span class="req">必須</span></label>
+        <select id="f-gender" name="性別" class="text-input" required>
+          <option value="">選択してください</option>
+          <option value="女性">女性</option>
+          <option value="男性">男性</option>
+        </select>
+      </div>
+
+      <div class="fld">
+        <label for="f-job">現在の職業・働き方</label>
+        <input type="text" id="f-job" name="職業" class="text-input" autocomplete="off"
+               placeholder="例：会社員／自営／学生／求職中">
+      </div>
+
+      <div class="fld">
+        <label for="f-love">現在の恋愛・結婚の状況</label>
+        <input type="text" id="f-love" name="恋愛状況" class="text-input" autocomplete="off"
+               placeholder="例：独身／恋人あり／既婚／離婚経験あり">
+      </div>
+
+      <p class="fs-head">ご相談</p>
+
+      <div class="fld">
+        <label for="f-main">今回、いちばん鑑定してほしいこと <span class="req">必須</span></label>
+        <textarea id="f-main" name="一番鑑定してほしいこと" class="text-input" rows="5" required></textarea>
+      </div>
+
+      <div class="fld">
+        <label for="f-now">今の状況 <span class="req">必須</span></label>
+        <textarea id="f-now" name="今の状況" class="text-input" rows="6" required
+                  placeholder="どのような状況にいるのか、できるだけ具体的に書いてください。"></textarea>
+      </div>
+
+      <div class="fld">
+        <label for="f-choice">迷っている選択肢</label>
+        <textarea id="f-choice" name="迷っている選択肢" class="text-input" rows="4"
+                  placeholder="「AとBで迷っている」など、具体的な選択肢があれば書いてください。"></textarea>
+        <p class="fld-note">ここを書いていただくと、どちらかを選んでお答えできます。</p>
+      </div>
+
+      <div class="fld">
+        <label for="f-ideal">本当はどうなりたいですか <span class="req">必須</span></label>
+        <textarea id="f-ideal" name="理想" class="text-input" rows="5" required
+                  placeholder="仕事・お金・恋愛・結婚・家族・住む場所・生き方など、理想の未来を自由に書いてください。"></textarea>
+      </div>
+
+      <div class="fld">
+        <label for="f-fear">特に不安に感じていること <span class="req">必須</span></label>
+        <textarea id="f-fear" name="不安" class="text-input" rows="5" required
+                  placeholder="「こうなったら嫌だ」「これが怖い」ということを書いてください。"></textarea>
+      </div>
+
+      <div class="fld">
+        <label>鑑定してほしいテーマ <span class="req">必須</span></label>
+        <div class="checks" id="f-themes"></div>
+      </div>
+
+      <div class="fld">
+        <label for="f-other">その他、伝えておきたいこと</label>
+        <textarea id="f-other" name="その他" class="text-input" rows="4"></textarea>
+      </div>
+
+      <p class="fs-head">最後に</p>
+
+      <div class="fld">
+        <label>お伝えの仕方 <span class="req">必須</span></label>
+        <div class="checks">
+          <label class="chk"><input type="radio" name="伝え方" value="覚悟して聞きたい" required><span>覚悟して聞きたい</span></label>
+          <label class="chk"><input type="radio" name="伝え方" value="優しく聞きたい"><span>優しく聞きたい</span></label>
+        </div>
+        <p class="fld-note">どちらを選ばれても、お伝えする内容は変えません。言い方だけ変えます。</p>
+      </div>
+
+      <p class="privacy-note">
+        ご記入いただいた内容は、鑑定書の作成のためだけに使用します。<br>
+        第三者に開示することはありません。
+      </p>
+
+      <button type="submit" class="btn-primary btn-submit" id="f-submit">この内容で送信する</button>
+      <p class="form-msg" id="f-msg"></p>
+    </form>
+
+    <div class="thanks hidden" id="f-thanks">
+      <h3>お受けしました</h3>
+      <p>
+        ご記入ありがとうございます。<br>
+        いただいた内容をもとに、鑑定書を作成します。<br>
+        3日以内に、ご記入いただいたご連絡先へお送りします。
+      </p>
+      <p class="note">このページは閉じていただいて構いません。</p>
+    </div>
+
+    <div class="thanks hidden" id="f-thanks">
+      <h3>お受けしました</h3>
+      <p>
+        ご記入ありがとうございます。<br>
+        いただいた内容をもとに、鑑定書を作成します。<br>
+        3日以内に、ご記入いただいたメールアドレスへお送りします。
+      </p>
+      <p class="note">このページは閉じていただいて構いません。</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="fname">黒の占い師</p>
+    <nav>
+      <a href="/policy/">プライバシーポリシー・免責事項</a>
+    </nav>
+    <p class="copy">&copy; 黒の占い師</p>
+  </div>
+</footer>
+
+<script src="/js/meishiki.js?v=14"></script>
+<script src="/js/form.js?v=14"></script>
+</body>
+</html>
