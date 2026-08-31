@@ -6,7 +6,7 @@
 <title>本鑑定｜黒の占い師</title>
 <meta name="description" content="あなたの命式を一つずつ読んで、ご相談に直接お答えする個別鑑定です。">
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="/css/style.css?v=12">
+<link rel="stylesheet" href="/css/style.css?v=13">
 </head>
 <body>
 
@@ -101,17 +101,22 @@
       </div>
 
       <div class="fld">
-        <label for="f-contact">ご連絡先 <span class="req">必須</span></label>
-        <input type="text" id="f-contact" name="連絡先" class="text-input" required autocomplete="off"
-               placeholder="メールアドレス、またはThreadsのユーザーネーム">
-        <p class="fld-note">鑑定書のお届け先です。</p>
+        <label for="f-contact">メールアドレス <span class="req">必須</span></label>
+        <input type="email" id="f-contact" name="メールアドレス" class="text-input" required
+               autocomplete="email" inputmode="email" placeholder="example@example.com">
+        <p class="fld-note">
+          鑑定書のお届け先です。ここにお送りします。<br>
+          お間違いがあるとお届けできませんので、ご確認のうえご記入ください。
+        </p>
       </div>
 
       <p class="fs-head">あなたのこと</p>
 
       <div class="fld">
-        <label for="f-name">お名前（ニックネーム可） <span class="req">必須</span></label>
-        <input type="text" id="f-name" name="お名前" class="text-input" required maxlength="20" autocomplete="off">
+        <label for="f-name">お名前（ご本名） <span class="req">必須</span></label>
+        <input type="text" id="f-name" name="お名前" class="text-input" required maxlength="30"
+               autocomplete="name" placeholder="例：五月女 隆真">
+        <p class="fld-note">鑑定書はご本名でお作りします。</p>
       </div>
 
       <div class="fld">
@@ -240,7 +245,7 @@
   </div>
 </footer>
 
-<script src="/js/meishiki.js?v=12"></script>
-<script src="/js/honkantei.js?v=12"></script>
+<script src="/js/meishiki.js?v=13"></script>
+<script src="/js/honkantei.js?v=13"></script>
 </body>
 </html>

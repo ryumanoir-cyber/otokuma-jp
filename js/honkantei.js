@@ -58,7 +58,7 @@
 
   function validate(form) {
     var missing = [];
-    ["注文番号", "連絡先", "お名前", "生年月日", "性別",
+    ["注文番号", "メールアドレス", "お名前", "生年月日", "性別",
      "一番鑑定してほしいこと", "今の状況", "理想", "不安"].forEach(function (nm) {
       var f = form.querySelector('[name="' + nm + '"]');
       if (f && !f.value.trim()) missing.push(nm);
@@ -66,6 +66,14 @@
     if (!form.querySelector('[name="テーマ"]:checked')) missing.push("テーマ");
     if (!form.querySelector('[name="伝え方"]:checked')) missing.push("お伝えの仕方");
     return missing;
+  }
+
+  /* メールアドレスの形は最低限だけ確かめる。
+     ここが間違っていると鑑定書を届けられない。 */
+  function badEmail(form) {
+    var v = form.querySelector('[name="メールアドレス"]').value.trim();
+    if (!v) return false;                      // 未記入は validate 側で拾う
+    return !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
   }
 
   function submit(e) {
@@ -79,6 +87,13 @@
       msg.className = "form-msg err";
       msg.textContent = "未記入の項目があります：" + missing.join("、");
       msg.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    if (badEmail(form)) {
+      msg.className = "form-msg err";
+      msg.textContent = "メールアドレスの形式をご確認ください。ここにお送りするため、お間違いがあるとお届けできません。";
+      el("f-contact").focus();
       return;
     }
 
