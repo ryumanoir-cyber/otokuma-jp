@@ -6,6 +6,16 @@
 
   function el(id) { return document.getElementById(id); }
 
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* 段階をまたいで持ち回る */
+  var ctx = null;     // 命式などの計算結果
+  var tarot = null;   // 引いたカード
+
   function initSelects() {
     var y = el("k-year"), m = el("k-month"), d = el("k-day"),
         h = el("k-hour"), mi = el("k-min"), pf = el("k-pref");
@@ -119,6 +129,76 @@
          + row[1].replace(/\n\n/g, "<br><br>") + "</p></details>";
     });
     el("k-already").innerHTML = a;
+
+    /* 命式などを次の段階へ渡す */
+    ctx = { name: name, y: y, m: m, d: d, hour: hour, minute: minute, pref: pref,
+            gender: gender, tone: tone, topic: topic, ms: ms, du: du, k: k,
+            age: age, curPillar: curPillar };
+
+    el("k-out").classList.remove("hidden");
+    el("k-draft-wrap").classList.add("hidden");
+    el("k-cards-wrap").classList.add("hidden");
+    tarot = null;
+    el("k-out").scrollIntoView({ behavior: "smooth" });
+  }
+
+  /* ===== タロット ===== */
+
+  function initSpreads() {
+    var sel = el("k-spread");
+    var S = window.Tarot.SPREADS;
+    ["custom", "choice", "three", "celtic", "one"].forEach(function (key) {
+      var n = (key === "custom") ? "カスタム（相談に合わせて組む）"
+            : S[key].name + "（" + S[key].pos.length + "枚）";
+      sel.add(new Option(n, key));
+    });
+    sel.value = "custom";
+    el("k-positions").value = window.Tarot.CUSTOM_TEMPLATE.join("\n");
+    onSpreadChange();
+    sel.addEventListener("change", onSpreadChange);
+  }
+
+  function onSpreadChange() {
+    var key = el("k-spread").value;
+    var S = window.Tarot.SPREADS[key];
+    el("k-spread-note").textContent = S.note;
+    el("k-pos-wrap").classList.toggle("hidden", key !== "custom");
+  }
+
+  function drawCards() {
+    var key = el("k-spread").value;
+    var positions = el("k-positions").value.split("\n");
+    var r = window.Tarot.draw(key, positions);
+    if (!r) {
+      el("k-spread-note").textContent = "ポジションを1行以上入力してください。";
+      return;
+    }
+    tarot = r;
+
+    var h = "";
+    h += '<p class="drawn-at">' + r.spread + "　" + r.cards.length + "枚　引いた時刻 " + r.drawnAt + "</p>";
+    h += '<table class="chart-tbl cards"><tbody>';
+    r.cards.forEach(function (c, i) {
+      h += "<tr><th>" + (i + 1) + "　" + esc(c.position) + "</th>"
+         + '<td class="cname">' + esc(c.name) + "</td>"
+         + '<td class="' + (c.reversed ? "rev" : "") + '">' + c.orientation + "</td>"
+         + "<td>" + esc(c.meaning) + "</td></tr>";
+    });
+    h += "</tbody></table>";
+    el("k-cards").innerHTML = h;
+    el("k-cards-wrap").classList.remove("hidden");
+    el("k-cards-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /* ===== プロンプト生成 ===== */
+
+  function makePrompt() {
+    if (!ctx) return;
+    var name = ctx.name, y = ctx.y, m = ctx.m, d = ctx.d;
+    var hour = ctx.hour, minute = ctx.minute, pref = ctx.pref;
+    var gender = ctx.gender, tone = ctx.tone, topic = ctx.topic;
+    var ms = ctx.ms, du = ctx.du, k = ctx.k, age = ctx.age, curPillar = ctx.curPillar;
+    var M = window.Meishiki, R = window.Reading;
 
     /* --- GPT用プロンプト --- */
     var P = [];
@@ -234,6 +314,24 @@
       line(row[1].replace(/\n\n/g, " "));
       line();
     });
+    if (tarot) {
+      line("━━━━━━━━━━━━━━━━━━━━");
+      line("【タロット】");
+      line("━━━━━━━━━━━━━━━━━━━━");
+      line("スプレッド：" + tarot.spread + "（" + tarot.cards.length + "枚）");
+      line("引いた時刻：" + tarot.drawnAt);
+      line();
+      line("※このカードは、相談内容を読む前に78枚から無作為に引いたものです。");
+      line("　都合よく差し替えず、出たカードのまま解釈してください。");
+      line();
+      tarot.cards.forEach(function (c, i) {
+        line((i + 1) + ". 【" + c.position + "】");
+        line("　　" + c.name + "（" + c.orientation + "）");
+        line("　　" + c.meaning);
+      });
+      line();
+    }
+
     line("━━━━━━━━━━━━━━━━━━━━");
     line("【ご相談内容】");
     line("━━━━━━━━━━━━━━━━━━━━");
@@ -279,6 +377,13 @@
     line("　 やるべきことより、こちらの方が満足度に効きます。");
     line();
     line("9. 締めでは、決めるのは本人であることを伝えて主導権を返してください。");
+    line();
+    line("10. タロットが提示されている場合：");
+    line("　  カードの意味をそのまま並べないでください。相談内容に当てて読みます。");
+    line("　  鑑定書の中に、引いたカード名とその正逆を必ず明記してください。");
+    line("　  何を引いたか隠すと、後から都合よく選んだのと区別がつかなくなります。");
+    line("　  命式から読めることとカードが食い違う場合は、食い違い自体を書いてください。");
+    line("　  そこがこの人にとって一番重要な論点であることが多いためです。");
     line();
     line("━━━━━━━━━━━━━━━━━━━━");
     line("【出力の形式】");
@@ -327,7 +432,15 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     initSelects();
+    initSpreads();
     el("k-run").addEventListener("click", build);
+    el("k-drawc").addEventListener("click", drawCards);
+    el("k-redraw").addEventListener("click", drawCards);
+    el("k-make").addEventListener("click", function () {
+      makePrompt();
+      el("k-draft-wrap").classList.remove("hidden");
+      el("k-draft-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     el("k-copy").addEventListener("click", copy);
   });
 })();

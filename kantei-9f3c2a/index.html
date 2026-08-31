@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>本鑑定 下書き作成｜黒の占い師</title>
-<link rel="stylesheet" href="/css/style.css?v=14">
+<link rel="stylesheet" href="/css/style.css?v=15">
 </head>
 <body>
 
@@ -73,7 +73,7 @@
       <textarea id="k-topic" class="text-input" rows="14" placeholder="事前相談フォームの回答を、見出しごとそのまま貼ってください。&#10;悩み・今の状況・迷っている選択肢・理想・不安・テーマ・その他、全部です。&#10;整形は不要です。そのままの形の方が、GPTが悩みを拾いやすくなります。"></textarea>
     </div>
 
-    <button class="btn-primary" id="k-run">下書きを作る</button>
+    <button class="btn-primary" id="k-run">タロットに進む</button>
   </section>
 
   <section class="tool-out hidden" id="k-out">
@@ -84,11 +84,49 @@
     <h2 class="sec-head">本人が既に読んだ内容</h2>
     <div class="already-wrap" id="k-already"></div>
 
+    <section class="tarot">
+      <h2>タロット</h2>
+      <p class="guide-p">
+        78枚から重複なしで引きます。正位置・逆位置も1枚ずつ判定します。
+        <strong>先に引いてから解釈させるのが要点です。</strong>
+        相談内容を見てから都合のいいカードを選ぶと、占いではなく作文になります。
+      </p>
+
+      <div class="fld">
+        <label for="k-spread">スプレッド</label>
+        <div class="date-row"><select id="k-spread" class="text-input"></select></div>
+        <p class="fld-note" id="k-spread-note"></p>
+      </div>
+
+      <div class="fld hidden" id="k-pos-wrap">
+        <label for="k-positions">ポジション（1行に1つ）</label>
+        <textarea id="k-positions" class="text-input" rows="8"></textarea>
+        <p class="fld-note">
+          相談内容に合わせて書き換えてください。<br>
+          「AとBで迷っている」なら、A・Bそれぞれの行方を position にすると答えが出しやすくなります。
+        </p>
+      </div>
+
+      <button class="btn-primary" id="k-drawc">カードを引く</button>
+
+      <div class="hidden" id="k-cards-wrap">
+        <div id="k-cards"></div>
+        <button class="btn-ghost" id="k-redraw">引き直す</button>
+        <p class="fld-note center">
+          本来のタロットは引き直しません。位置の組み方を変えたい場合のみ使ってください。
+        </p>
+      </div>
+    </section>
+
+    <button class="btn-primary btn-wide" id="k-make">下書きを作る</button>
+
+    <div class="hidden" id="k-draft-wrap">
     <div class="draft-head">
       <h2>GPTに貼るプロンプト</h2>
       <button class="btn-copy" id="k-copy">プロンプトを全文コピー</button>
     </div>
     <textarea class="draft" id="k-draft" spellcheck="false"></textarea>
+    </div>
 
     <div class="checklist">
       <h2>GPTの出力をそのまま送らないこと</h2>
@@ -110,8 +148,9 @@
   </section>
 </div>
 
-<script src="/js/meishiki.js?v=14"></script>
-<script src="/js/reading.js?v=14"></script>
-<script src="/js/kantei.js?v=14"></script>
+<script src="/js/meishiki.js?v=15"></script>
+<script src="/js/tarot.js?v=15"></script>
+<script src="/js/reading.js?v=15"></script>
+<script src="/js/kantei.js?v=15"></script>
 </body>
 </html>

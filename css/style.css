@@ -461,3 +461,13 @@ select.text-input{margin-bottom:0}
 .thanks{padding:40px 24px;border:1px solid var(--line);background:var(--bg2);border-radius:2px;text-align:center}
 .thanks h3{color:var(--accent);font-size:17px;font-weight:500;margin:0 0 18px}
 .thanks p{font-size:14.5px;line-height:2;margin:0 0 14px}
+
+/* タロット */
+.tarot{margin-top:48px;padding-top:34px;border-top:1px solid var(--line)}
+.tarot h2{margin-top:0}
+.btn-wide{display:block;width:100%;margin:32px 0 0}
+.drawn-at{color:var(--mute);font-size:12.5px;letter-spacing:.06em;margin:0 0 14px}
+.chart-tbl.cards th{width:22%;white-space:normal;color:var(--fg)}
+.chart-tbl.cards .cname{color:var(--accent);white-space:nowrap;width:1%}
+.chart-tbl.cards .rev{color:#c98b8b;white-space:nowrap;width:1%}
+.fld-note.center{text-align:center}
