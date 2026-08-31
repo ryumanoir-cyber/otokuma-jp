@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>本鑑定 下書き作成｜黒の占い師</title>
-<link rel="stylesheet" href="/css/style.css?v=10">
+<link rel="stylesheet" href="/css/style.css?v=11">
 </head>
 <body>
 
@@ -35,8 +35,17 @@
     </div>
 
     <div class="fld">
-      <label for="k-hour">生まれた時刻</label>
-      <div class="date-row"><select id="k-hour"></select></div>
+      <label>出生時刻（分かる場合）</label>
+      <div class="date-row">
+        <select id="k-hour"></select><span class="unit">時</span>
+        <select id="k-min"></select><span class="unit">分</span>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label for="k-pref">出生地</label>
+      <div class="date-row"><select id="k-pref"></select></div>
+      <p class="fld-note">真太陽時に補正します。時支の境目にいる人は、これで時柱が変わります。</p>
     </div>
 
     <div class="fld">
@@ -50,8 +59,18 @@
     </div>
 
     <div class="fld">
-      <label for="k-topic">ご相談内容（そのまま貼る）</label>
-      <textarea id="k-topic" class="text-input" rows="4" placeholder="フォームで受け取った「今の状況」「一番知りたいこと」を貼ってください。下書きの冒頭に引用として差し込みます。"></textarea>
+      <label for="k-tone">お伝えの仕方</label>
+      <div class="date-row">
+        <select id="k-tone">
+          <option value="hard">覚悟して聞きたい</option>
+          <option value="soft">優しく聞きたい</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fld">
+      <label for="k-topic">フォームの回答（まるごと貼る）</label>
+      <textarea id="k-topic" class="text-input" rows="14" placeholder="事前相談フォームの回答を、見出しごとそのまま貼ってください。&#10;悩み・今の状況・迷っている選択肢・理想・不安・テーマ・その他、全部です。&#10;整形は不要です。そのままの形の方が、GPTが悩みを拾いやすくなります。"></textarea>
     </div>
 
     <button class="btn-primary" id="k-run">下書きを作る</button>
@@ -91,8 +110,8 @@
   </section>
 </div>
 
-<script src="/js/meishiki.js?v=10"></script>
-<script src="/js/reading.js?v=10"></script>
-<script src="/js/kantei.js?v=10"></script>
+<script src="/js/meishiki.js?v=11"></script>
+<script src="/js/reading.js?v=11"></script>
+<script src="/js/kantei.js?v=11"></script>
 </body>
 </html>

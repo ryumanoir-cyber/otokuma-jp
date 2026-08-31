@@ -118,11 +118,36 @@ window.Meishiki = (function () {
     return UNSEI[step];
   }
 
+  /* 出生地の経度（県庁所在地の概値）。日本標準時は東経135度が基準。
+     経度が1度ずれるごとに、実際の太陽の位置は4分ずれる。 */
+  var PREF = [
+    ["北海道",141.35],["青森",140.74],["岩手",141.15],["宮城",140.87],["秋田",140.10],
+    ["山形",140.36],["福島",140.47],["茨城",140.45],["栃木",139.88],["群馬",139.06],
+    ["埼玉",139.65],["千葉",140.12],["東京",139.69],["神奈川",139.64],["新潟",139.02],
+    ["富山",137.21],["石川",136.63],["福井",136.22],["山梨",138.57],["長野",138.18],
+    ["岐阜",136.72],["静岡",138.38],["愛知",136.91],["三重",136.51],["滋賀",135.87],
+    ["京都",135.76],["大阪",135.52],["兵庫",135.18],["奈良",135.83],["和歌山",135.17],
+    ["鳥取",134.24],["島根",133.05],["岡山",133.93],["広島",132.46],["山口",131.47],
+    ["徳島",134.56],["香川",134.04],["愛媛",132.77],["高知",133.53],["福岡",130.42],
+    ["佐賀",130.30],["長崎",129.87],["熊本",130.74],["大分",131.61],["宮崎",131.42],
+    ["鹿児島",130.56],["沖縄",127.68]
+  ];
+
+  /* 真太陽時への補正（分）。経度差のみを見る。
+     均時差（年間で±16分ほど動く分）は含めていない。 */
+  function solarOffsetMinutes(pref) {
+    for (var i = 0; i < PREF.length; i++) {
+      if (PREF[i][0] === pref) return Math.round((PREF[i][1] - 135) * 4);
+    }
+    return 0;
+  }
+
   /* 時柱：出生時刻が分かる場合のみ
      時支は23時から子の刻で始まり、2時間ごとに進む。
      時干は五鼠遁（日干から子の刻の干を決め、そこから順に進める）。 */
-  function hourPillar(dayKanIdx, hour) {
-    var shi = Math.floor(((hour + 1) % 24) / 2);
+  function hourPillar(dayKanIdx, minutes) {
+    /* 子の刻は23時に始まるので、60分ぶん進めてから2時間で割る */
+    var shi = Math.floor(((((minutes + 60) % 1440) + 1440) % 1440) / 120);
     var base = [0, 2, 4, 6, 8][dayKanIdx % 5]; // 甲己→甲子, 乙庚→丙子, 丙辛→戊子, 丁壬→庚子, 戊癸→壬子
     return { kan: (base + shi) % 10, shi: shi };
   }
@@ -234,14 +259,21 @@ window.Meishiki = (function () {
   }
 
   /* 公開API */
-  function build(y, m, d, hour) {
+  function build(y, m, d, hour, minute, pref) {
     var sm = solarMonth(y, m, d);
     var yp = yearPillar(sm.year);
     var mp = monthPillar(yp.kan, sm.shi);
     var dp = dayPillar(y, m, d);
     var dayGyo = KAN_GYO[dp.kan];
     var hasHour = (typeof hour === "number" && hour >= 0 && hour <= 23);
-    var hp = hasHour ? hourPillar(dp.kan, hour) : null;
+    /* 分が渡されなければ、その時間帯の真ん中（30分）とみなす */
+    var min = (typeof minute === "number" && minute >= 0 && minute <= 59) ? minute : 30;
+    var offset = pref ? solarOffsetMinutes(pref) : 0;
+    /* 出生地が分かる場合は真太陽時に寄せてから時支を決める。
+       時支の境目にいる人は、これで柱が変わる。 */
+    var localMin = hasHour ? (hour * 60 + min) : null;
+    var solarMin = hasHour ? (localMin + offset) : null;
+    var hp = hasHour ? hourPillar(dp.kan, solarMin) : null;
 
     return {
       year:  { kan: KAN[yp.kan], shi: SHI[yp.shi], kanIdx: yp.kan },
@@ -261,7 +293,14 @@ window.Meishiki = (function () {
       hour: hasHour ? { kan: KAN[hp.kan], shi: SHI[hp.shi], kanIdx: hp.kan } : null,
       hourTsuhen: hasHour ? tsuhen(dp.kan, hp.kan) : null,   // 時干との関係＝隠れているもの
       hourJunisei: hasHour ? junisei(dp.kan, hp.shi) : null,
-      stars: stars(dp.kan, [yp.kan, mp.kan, hasHour ? hp.kan : null])
+      stars: stars(dp.kan, [yp.kan, mp.kan, hasHour ? hp.kan : null]),
+      solarOffset: offset,
+      birthMinutes: localMin,
+      solarMinutes: solarMin,
+      solarTimeText: hasHour
+        ? (Math.floor((((solarMin % 1440) + 1440) % 1440) / 60) + "時"
+           + ("0" + ((((solarMin % 60) + 60) % 60))).slice(-2) + "分")
+        : null
     };
   }
 
@@ -295,6 +334,8 @@ window.Meishiki = (function () {
 
   return {
     build: build,
+    PREF: PREF,
+    solarOffsetMinutes: solarOffsetMinutes,
     years: years,
     daiun: daiunFor,
     KAN: KAN,

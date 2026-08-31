@@ -389,3 +389,4 @@ details.already[open] summary::before{content:"−　"}
 details.already p{
   margin:0;padding:16px 20px;font-size:14px;line-height:1.95;color:var(--mute);
 }
+.fld-note{color:var(--mute);font-size:12px;line-height:1.8;margin:8px 0 0}

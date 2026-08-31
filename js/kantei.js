@@ -7,14 +7,19 @@
   function el(id) { return document.getElementById(id); }
 
   function initSelects() {
-    var y = el("k-year"), m = el("k-month"), d = el("k-day"), h = el("k-hour");
+    var y = el("k-year"), m = el("k-month"), d = el("k-day"),
+        h = el("k-hour"), mi = el("k-min"), pf = el("k-pref");
     var now = new Date().getFullYear(), i;
     for (i = now - 12; i >= 1930; i--) y.add(new Option(i, i));
     for (i = 1; i <= 12; i++) m.add(new Option(i, i));
     for (i = 1; i <= 31; i++) d.add(new Option(i, i));
     h.add(new Option("わからない", ""));
-    for (i = 0; i <= 23; i++) h.add(new Option(i + "時台", i));
-    y.value = 1995; m.value = 1; d.value = 1; h.value = "";
+    for (i = 0; i <= 23; i++) h.add(new Option(i, i));
+    mi.add(new Option("不明", ""));
+    for (i = 0; i <= 59; i++) mi.add(new Option(("0" + i).slice(-2), i));
+    pf.add(new Option("不明・海外", ""));
+    window.Meishiki.PREF.forEach(function (row) { pf.add(new Option(row[0], row[0])); });
+    y.value = 1995; m.value = 1; d.value = 1; h.value = ""; mi.value = ""; pf.value = "";
   }
 
   function ageNow(y, m, d) {
@@ -31,12 +36,16 @@
     var d      = Number(el("k-day").value);
     var hv     = el("k-hour").value;
     var hour   = hv === "" ? null : Number(hv);
+    var mv     = el("k-min").value;
+    var minute = mv === "" ? null : Number(mv);
+    var pref   = el("k-pref").value || null;
     var gender = el("k-gender").value;
+    var tone   = el("k-tone").value;
     var topic  = el("k-topic").value.trim();
 
     var M  = window.Meishiki;
     var R  = window.Reading;
-    var ms = M.build(y, m, d, hour);
+    var ms = M.build(y, m, d, hour, minute, pref);
     var du = M.daiun(y, m, d, gender);
     var k  = ms.dayKan;
     var age = ageNow(y, m, d);
@@ -144,7 +153,14 @@
     line("【この相談者の命式】");
     line("━━━━━━━━━━━━━━━━━━━━");
     line("お名前：" + name + "　／　" + (gender === "male" ? "男性" : "女性") + "　／　" + age + "歳");
-    line("生年月日：" + y + "年" + m + "月" + d + "日" + (ms.hasHour ? "　" + hour + "時台生まれ" : "（出生時刻は不明）"));
+    line("生年月日：" + y + "年" + m + "月" + d + "日"
+       + (ms.hasHour ? "　" + hour + "時" + (minute === null ? "頃" : ("0" + minute).slice(-2) + "分") : "（出生時刻は不明）"));
+    if (pref) {
+      line("出生地：" + pref + "　… 真太陽時に補正（" + (ms.solarOffset >= 0 ? "+" : "") + ms.solarOffset
+         + "分）。補正後の時刻は" + ms.solarTimeText + "。時柱はこの補正後の時刻で立てています。");
+    } else if (ms.hasHour) {
+      line("出生地：不明　… 真太陽時の補正なし。時柱は境目の場合ずれる可能性があります。");
+    }
     line();
     line("年柱：" + ms.year.kan + ms.year.shi);
     line("月柱：" + ms.month.kan + ms.month.shi);
@@ -196,6 +212,10 @@
     line("通る言い方：" + R.advice[ms.tsuhen].in);
     line("逆効果になる言い方：" + R.advice[ms.tsuhen].out);
     line("今は動かす時期か：" + R.timing[ms.junisei]);
+    line("本人の希望する伝え方：" + (tone === "hard" ? "覚悟して聞きたい" : "優しく聞きたい"));
+    line(tone === "hard"
+      ? "　→ 遠慮せず、厳しい部分をはっきり書いてください。"
+      : "　→ 内容は変えず、語尾だけ和らげてください。伝える中身を甘くしないこと。");
     line();
     line("助言を書くときは、上の「通る言い方」の形にしてください。");
     line("「逆効果」に挙げた形は使わないでください。");
@@ -222,6 +242,12 @@
     line("━━━━━━━━━━━━━━━━━━━━");
     line("【書き方の指示】");
     line("━━━━━━━━━━━━━━━━━━━━");
+    line("0. 相談内容はフォームの回答をそのまま貼ってあります。");
+    line("　 「悩み」「今の状況」「迷っている選択肢」「理想」「不安」など、");
+    line("　 見出しごとに書かれている内容を、すべて材料として使ってください。");
+    line("　 特に「本当はどうなりたいか」と「特に不安に感じていること」は必ず本文で扱ってください。");
+    line("　 理想は着地点、不安は「目を背けていること」の章に直結します。");
+    line();
     line("1. まず相談文を読み、この人が抱えている悩みをすべて洗い出してください。");
     line("　 数え漏らさないこと。相談文に書かれた悩みは、ひとつ残らず扱います。");
     line();
