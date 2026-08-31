@@ -202,6 +202,33 @@
             gender: gender, tone: tone, topic: topic, ms: ms, du: du, k: k,
             age: age, curPillar: curPillar, num: num, astro: astro, lun: lun, zw: zw };
 
+    /* GPTにポジションを考えさせるための短いプロンプト */
+    if (topic) {
+      var Q = [];
+      Q.push("以下はある人から届いた占いの相談文です。");
+      Q.push("この相談に答えるために、タロットで引くべき「聞くこと」を5〜7個考えてください。");
+      Q.push("");
+      Q.push("【条件】");
+      Q.push("・1行に1つ、短く書く（例：相手の本音／このまま待った場合）");
+      Q.push("・相談者が知りたいことを漏らさない。書かれている悩みは全部拾う");
+      Q.push("・「AとBで迷っている」なら、AとBそれぞれの行方を別の行にする");
+      Q.push("・最後の行は必ず「この相談への結論」にする");
+      Q.push("・番号や記号を付けない。説明や前置きも書かない。行だけを出力する");
+      Q.push("");
+      Q.push("【相談文】");
+      Q.push(topic);
+      el("k-ask").value = Q.join("\n");
+      el("k-ask-wrap").classList.remove("hidden");
+    } else {
+      el("k-ask-wrap").classList.add("hidden");
+    }
+
+    /* ポジションは空にしておく。GPTに考えさせるか、種類から選ぶ */
+    el("k-positions").value = "";
+    el("k-spread").value = "custom";
+    onSpreadChange();
+    [].forEach.call(el("k-templates").children, function (c) { c.classList.remove("on"); });
+
     el("k-out").classList.remove("hidden");
     el("k-draft-wrap").classList.add("hidden");
     el("k-cards-wrap").classList.add("hidden");
@@ -220,9 +247,25 @@
       sel.add(new Option(n, key));
     });
     sel.value = "custom";
-    el("k-positions").value = window.Tarot.CUSTOM_TEMPLATE.join("\n");
     onSpreadChange();
     sel.addEventListener("change", onSpreadChange);
+
+    /* 相談の種類ボタン。押すと質問が入る */
+    var box = el("k-templates");
+    window.Tarot.TEMPLATES.forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.textContent = t.name;
+      b.addEventListener("click", function () {
+        el("k-positions").value = t.pos.join("\n");
+        el("k-spread").value = "custom";
+        onSpreadChange();
+        [].forEach.call(box.children, function (c) { c.classList.remove("on"); });
+        b.classList.add("on");
+      });
+      box.appendChild(b);
+    });
   }
 
   function onSpreadChange() {
@@ -230,6 +273,7 @@
     var S = window.Tarot.SPREADS[key];
     el("k-spread-note").textContent = S.note;
     el("k-pos-wrap").classList.toggle("hidden", key !== "custom");
+    el("k-templates").parentNode.classList.toggle("hidden", key !== "custom");
   }
 
   function drawCards() {
@@ -576,5 +620,14 @@
       el("k-draft-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
     });
     el("k-copy").addEventListener("click", copy);
+    el("k-ask-copy").addEventListener("click", function () {
+      var ta = el("k-ask");
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      var b = el("k-ask-copy"), old = b.textContent;
+      b.textContent = ok ? "コピーしました" : "コピーできませんでした";
+      setTimeout(function () { b.textContent = old; }, 1600);
+    });
   });
 })();

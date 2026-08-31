@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>本鑑定 下書き作成｜黒の占い師</title>
-<link rel="stylesheet" href="/css/style.css?v=16">
+<link rel="stylesheet" href="/css/style.css?v=20">
 </head>
 <body>
 
@@ -93,19 +93,42 @@
       </p>
 
       <div class="fld">
-        <label for="k-spread">スプレッド</label>
-        <div class="date-row"><select id="k-spread" class="text-input"></select></div>
-        <p class="fld-note" id="k-spread-note"></p>
+        <label>GPTを使わない場合は、種類から選ぶ</label>
+        <p class="fld-note" style="margin-top:0;margin-bottom:12px">
+          押すと下の欄が入れ替わります。
+        </p>
+        <div class="checks" id="k-templates"></div>
       </div>
 
-      <div class="fld hidden" id="k-pos-wrap">
-        <label for="k-positions">ポジション（1行に1つ）</label>
-        <textarea id="k-positions" class="text-input" rows="8"></textarea>
+      <div class="fld" id="k-ask-wrap">
+        <label>まず、何を聞くかを決める</label>
+        <p class="fld-note" style="margin-top:0;margin-bottom:12px">
+          カードを引く前に決めます。順序が逆だと、出たカードに合う意味を後から付けたのと同じになります。<br>
+          下を全文コピーしてGPTに貼ると、この相談に合った行が返ってきます。それを次の欄に貼り替えてください。
+        </p>
+        <div class="draft-head">
+          <span></span>
+          <button class="btn-copy" id="k-ask-copy">この文をコピー</button>
+        </div>
+        <textarea class="draft" id="k-ask" spellcheck="false" style="min-height:240px"></textarea>
+      </div>
+
+      <div class="fld" id="k-pos-wrap">
+        <label for="k-positions">カードに聞くこと（1行に1つ）</label>
+        <textarea id="k-positions" class="text-input" rows="8" placeholder="GPTが返してきた行を貼るか、上の種類ボタンから選んでください"></textarea>
         <p class="fld-note">
-          相談内容に合わせて書き換えてください。<br>
-          「AとBで迷っている」なら、A・Bそれぞれの行方を position にすると答えが出しやすくなります。
+          1行が1枚のカードになります。相談文にある疑問を、そのまま行にするのが確実です。<br>
+          4〜7行が扱いやすい長さです。
         </p>
       </div>
+
+      <details class="adv">
+        <summary>決まった型のスプレッドを使う</summary>
+        <div class="date-row" style="margin-top:14px">
+          <select id="k-spread" class="text-input"></select>
+        </div>
+        <p class="fld-note" id="k-spread-note"></p>
+      </details>
 
       <button class="btn-primary" id="k-drawc">カードを引く</button>
 
@@ -148,13 +171,13 @@
   </section>
 </div>
 
-<script src="/js/meishiki.js?v=16"></script>
-<script src="/js/numerology.js?v=16"></script>
-<script src="/js/astro.js?v=16"></script>
-<script src="/js/lunar.js?v=16"></script>
-<script src="/js/ziwei.js?v=16"></script>
-<script src="/js/tarot.js?v=16"></script>
-<script src="/js/reading.js?v=16"></script>
-<script src="/js/kantei.js?v=16"></script>
+<script src="/js/meishiki.js?v=20"></script>
+<script src="/js/numerology.js?v=20"></script>
+<script src="/js/astro.js?v=20"></script>
+<script src="/js/lunar.js?v=20"></script>
+<script src="/js/ziwei.js?v=20"></script>
+<script src="/js/tarot.js?v=20"></script>
+<script src="/js/reading.js?v=20"></script>
+<script src="/js/kantei.js?v=20"></script>
 </body>
 </html>

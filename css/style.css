@@ -471,3 +471,20 @@ select.text-input{margin-bottom:0}
 .chart-tbl.cards .cname{color:var(--accent);white-space:nowrap;width:1%}
 .chart-tbl.cards .rev{color:#c98b8b;white-space:nowrap;width:1%}
 .fld-note.center{text-align:center}
+.chip{
+  background:var(--bg2);border:1px solid var(--line);color:var(--mute);
+  padding:9px 15px;border-radius:2px;font-family:inherit;font-size:13.5px;cursor:pointer;
+}
+.chip:hover{border-color:var(--accent-dim);color:var(--fg)}
+.chip.on{border-color:var(--accent);color:var(--accent);background:#17161e}
+details.adv{margin-top:26px}
+details.adv summary{color:var(--mute);font-size:13px;cursor:pointer}
+details.adv summary::-webkit-details-marker{display:none}
+details.adv summary::before{content:"＋　";color:var(--accent-dim)}
+details.adv[open] summary::before{content:"−　"}
+.auto-note{
+  color:var(--fg);font-size:13.5px;line-height:1.9;
+  padding:14px 16px;margin:0 0 26px;
+  background:var(--bg2);border-left:2px solid var(--accent-dim);border-radius:2px;
+}
+.auto-note strong{color:var(--accent);font-weight:500}
