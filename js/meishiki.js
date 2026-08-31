@@ -177,8 +177,31 @@ window.Meishiki = (function () {
     };
   }
 
-  /* 命式にどの星があるか（日干以外の天干＝年干・月干・時干を見る）
-     無い星は、その人に欠けている働き。相談の核心になりやすい。 */
+  /* 蔵干 ─ 地支の中に隠れている天干。余気・中気・本気の順で、最後が本気（その支の主）。
+     天干だけを見て「無い星」と言うと、地支に入っている星まで無いことにしてしまう。
+     たとえば日干が己で地支に亥があれば、蔵干の壬（正財）甲（正官）が実際にはある。
+     有料鑑定では「あなたには財星がありません」を根拠に使うため、ここまで見ないと成立しない。 */
+  var ZOKAN = [
+    [8, 9],        /* 子　壬 癸 */
+    [9, 7, 5],     /* 丑　癸 辛 己 */
+    [4, 2, 0],     /* 寅　戊 丙 甲 */
+    [0, 1],        /* 卯　甲 乙 */
+    [1, 9, 4],     /* 辰　乙 癸 戊 */
+    [4, 6, 2],     /* 巳　戊 庚 丙 */
+    [2, 5, 3],     /* 午　丙 己 丁 */
+    [3, 1, 5],     /* 未　丁 乙 己 */
+    [4, 8, 6],     /* 申　戊 壬 庚 */
+    [6, 7],        /* 酉　庚 辛 */
+    [7, 3, 4],     /* 戌　辛 丁 戊 */
+    [4, 0, 8]      /* 亥　戊 甲 壬 */
+  ];
+
+  var STAR_KEYS = ["hikyo", "shokusho", "zaisei", "kansei", "insei"];
+
+  /* 命式にどの星があるか。
+     天干（年干・月干・時干）に出ている星＝普段から使っている力。
+     蔵干にしかない星＝持っているが表に出せていない力。
+     どちらにも無い星＝本当に欠けている働き。 */
   var STAR_GROUP = {
     "比肩":"hikyo", "劫財":"hikyo",
     "食神":"shokusho", "傷官":"shokusho",
@@ -187,23 +210,44 @@ window.Meishiki = (function () {
     "偏印":"insei",  "印綬":"insei"
   };
 
-  function stars(dayKanIdx, kanIdxList) {
-    var found = {}, list = [];
+  function stars(dayKanIdx, kanIdxList, shiIdxList) {
+    var surface = {}, list = [];
     kanIdxList.forEach(function (ki) {
       if (ki === null || ki === undefined) return;
       var t = tsuhen(dayKanIdx, ki);
       list.push(t);
-      found[STAR_GROUP[t]] = true;
+      surface[STAR_GROUP[t]] = true;
     });
+
+    /* 地支の蔵干まで見る。日支も含める（日干だけが基準側で、日支は対象） */
+    var buried = {}, zokan = [], buriedList = [];
+    (shiIdxList || []).forEach(function (si) {
+      if (si === null || si === undefined) return;
+      var kanNames = [], starNames = [];
+      ZOKAN[si].forEach(function (ki) {
+        var t = tsuhen(dayKanIdx, ki);
+        kanNames.push(KAN[ki]);
+        starNames.push(t);
+        buried[STAR_GROUP[t]] = true;
+        if (buriedList.indexOf(t) < 0) buriedList.push(t);
+      });
+      zokan.push({ shi: SHI[si], kans: kanNames, stars: starNames });
+    });
+
+    var has = {}, onlyBuried = {}, hasAny = {};
+    STAR_KEYS.forEach(function (g) {
+      has[g] = !!surface[g];                        // 天干に出ている
+      onlyBuried[g] = !surface[g] && !!buried[g];   // 蔵干にだけある
+      hasAny[g] = !!surface[g] || !!buried[g];      // どこかにある
+    });
+
     return {
-      list: list,
-      has: {
-        hikyo:    !!found.hikyo,     // 比劫：独立・競争
-        shokusho: !!found.shokusho,  // 食傷：表現・発信
-        zaisei:   !!found.zaisei,    // 財星：お金・現実・（男性から見た）異性
-        kansei:   !!found.kansei,    // 官星：責任・立場・（女性から見た）異性
-        insei:    !!found.insei      // 印星：学び・支え
-      }
+      list: list,                 // 天干の通変星
+      buriedList: buriedList,     // 蔵干の通変星（重複なし）
+      zokan: zokan,               // 地支ごとの蔵干の内訳
+      has: has,                   // 表に出ている
+      onlyBuried: onlyBuried,     // 内側にだけある
+      hasAny: hasAny              // 表か内かにある
     };
   }
 
@@ -293,7 +337,9 @@ window.Meishiki = (function () {
       hour: hasHour ? { kan: KAN[hp.kan], shi: SHI[hp.shi], kanIdx: hp.kan, shiIdx: hp.shi } : null,
       hourTsuhen: hasHour ? tsuhen(dp.kan, hp.kan) : null,   // 時干との関係＝隠れているもの
       hourJunisei: hasHour ? junisei(dp.kan, hp.shi) : null,
-      stars: stars(dp.kan, [yp.kan, mp.kan, hasHour ? hp.kan : null]),
+      stars: stars(dp.kan,
+                   [yp.kan, mp.kan, hasHour ? hp.kan : null],
+                   [yp.shi, mp.shi, dp.shi, hasHour ? hp.shi : null]),
       solarOffset: offset,
       birthMinutes: localMin,
       solarMinutes: solarMin,

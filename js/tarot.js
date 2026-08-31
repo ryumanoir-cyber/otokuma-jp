@@ -271,6 +271,12 @@ window.Tarot = (function () {
     return arr;
   }
 
+  /* 「形になり始める。共同で進む。」→「形になり始める／共同で進む」
+     文として渡すとGPTがそのまま鑑定文へ写すため、キーワードの並びに崩す */
+  function kw(text) {
+    return String(text).split("。").filter(function (t) { return t.trim(); }).join("／");
+  }
+
   function describe(card) {
     if (card.type === "major") {
       var m = MAJOR[card.idx];
@@ -278,7 +284,9 @@ window.Tarot = (function () {
         label: m.name + "（大アルカナ " + m.n + "）",
         name: m.name,
         arcana: "大アルカナ " + m.n,
-        meaning: card.rev ? m.rev : m.up
+        meaning: card.rev ? m.rev : m.up,
+        keywords: kw(card.rev ? m.rev : m.up),
+        field: null
       };
     }
     var s = SUITS[card.suit], r = RANKS[card.rank];
@@ -286,7 +294,9 @@ window.Tarot = (function () {
       label: s.name + "の" + r.name,
       name: s.name + "の" + r.name,
       arcana: "小アルカナ・" + s.name + "（" + s.elem + "／" + s.field + "）",
-      meaning: (card.rev ? r.rev : r.up) + "。扱う領域は" + s.field + "。"
+      meaning: (card.rev ? r.rev : r.up) + "。扱う領域は" + s.field + "。",
+      keywords: kw(card.rev ? r.rev : r.up),
+      field: s.field
     };
   }
 
@@ -304,7 +314,9 @@ window.Tarot = (function () {
         arcana: info.arcana,
         reversed: c.rev,
         orientation: c.rev ? "逆位置" : "正位置",
-        meaning: info.meaning
+        meaning: info.meaning,
+        keywords: info.keywords,
+        field: info.field
       });
     }
     return { cards: out, drawnAt: new Date().toLocaleString("ja-JP") };

@@ -490,3 +490,6 @@ details.adv[open] summary::before{content:"−　"}
 .auto-note strong{color:var(--accent);font-weight:500}
 .chk.chk-wide{width:100%;align-items:flex-start;padding:14px 16px;line-height:1.7}
 .chk.chk-wide input{margin-top:2px;flex:0 0 auto}
+
+/* タロットの「主に扱う領域」。キーワード本体と区別して弱く見せる */
+.chart-tbl.cards .cfield { color: var(--muted); font-size: .82rem; }

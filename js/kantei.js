@@ -6,6 +6,15 @@
 
   function el(id) { return document.getElementById(id); }
 
+  /* ASC・MCが出せない理由を、実際に欠けているものだけで言う。
+     出生地が分かっているのに「出生地が不明」と書くと、有料商品として矛盾する */
+  function ascWhy(ms) {
+    var miss = [];
+    if (!ms || !ms.hasHour) miss.push("出生時刻");
+    if (!el("k-pref").value) miss.push("出生地");
+    return miss.join("と") || "必要な情報";
+  }
+
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -92,7 +101,10 @@
     c += "<tr><th>五行</th><td colspan='3'>最多 " + ms.balance.mostName
        + (ms.balance.lackName ? " ／ 欠 " + ms.balance.lackAll.join("・") : " ／ 欠なし")
        + "（" + ms.balance.chars + "文字で判定）</td></tr>";
-    c += "<tr><th>持つ星</th><td colspan='3'>" + (ms.stars.list.join("・") || "—") + "</td></tr>";
+    c += "<tr><th>天干の星</th><td colspan='3'>" + (ms.stars.list.join("・") || "—") + "</td></tr>";
+    c += "<tr><th>蔵干の星</th><td colspan='3'>"
+       + ms.stars.zokan.map(function (z) { return z.shi + "：" + z.stars.join("・"); }).join(" ／ ")
+       + "</td></tr>";
     c += "</tbody></table>";
 
     c += '<h2>大運（' + (du.forward ? "順行" : "逆行") + " ／ 立運 " + du.startAge + "歳）</h2>";
@@ -128,7 +140,7 @@
     if (astro.asc) {
       c += "<tr><th>ASC</th><td>" + astro.asc.text + "</td><th>MC</th><td>" + astro.mc.text + "</td></tr>";
     } else {
-      c += "<tr><th>ASC</th><td colspan='3'>出生時刻・出生地が不明のため算出せず</td></tr>";
+      c += "<tr><th>ASC</th><td colspan='3'>" + ascWhy(ms) + "が不明のため算出せず</td></tr>";
     }
     if (astro.aspects.length) {
       c += "<tr><th>アスペクト</th><td colspan='3'>"
@@ -169,19 +181,23 @@
     g += "<h2>今は動かす時期か</h2>";
     g += "<p class='guide-p'>十二運「" + ms.junisei + "」　" + R.timing[ms.junisei] + "</p>";
 
-    g += "<h2>命式に無い星（相談の根本になりやすい）</h2>";
+    g += "<h2>五つの星（天干＝表に出ている／蔵干＝内側にある）</h2>";
     g += '<table class="chart-tbl"><tbody>';
     var lackedAny = false;
     ["zaisei","kansei","insei","shokusho","hikyo"].forEach(function (key) {
       var n = R.starNote[key];
-      var has = ms.stars.has[key];
-      if (!has) lackedAny = true;
-      g += "<tr class='" + (has ? "" : "ng") + "'><th>" + n.name + "</th>"
-         + "<td>" + (has ? "あり" : "なし") + "</td>"
-         + "<td>" + (has ? n.yes : n.no) + "</td></tr>";
+      var where, note, cls;
+      if (ms.stars.has[key])            { where = "表に出ている"; note = n.yes;    cls = ""; }
+      else if (ms.stars.onlyBuried[key]) { where = "内側にある";   note = n.buried; cls = "mid"; }
+      else                               { where = "なし";        note = n.no;     cls = "ng"; lackedAny = true; }
+      g += "<tr class='" + cls + "'><th>" + n.name + "</th>"
+         + "<td>" + where + "</td><td>" + note + "</td></tr>";
     });
     g += "</tbody></table>";
-    if (!lackedAny) g += "<p class='guide-p'>五つとも揃っています。突出した欠けがないぶん、決め手も出にくい人です。</p>";
+    g += "<p class='guide-p'>天干に出ている星は普段から使っている力です。"
+       + "蔵干にしかない星は、持っているのに表へ出していない力で、相談の根本はたいていここにあります。"
+       + "どちらにも無い星だけが、本当に欠けている働きです。</p>";
+    if (!lackedAny) g += "<p class='guide-p'>五つとも、表か内かのどちらかにあります。完全な欠けはありません。</p>";
     el("k-guide").innerHTML = g;
 
     /* --- 本人が既に読んだ内容（繰り返し禁止） --- */
@@ -220,7 +236,8 @@
       h += "<tr><th>" + c.order + "枚目</th>"
          + '<td class="cname">' + esc(c.name) + "</td>"
          + '<td class="' + (c.reversed ? "rev" : "") + '">' + c.orientation + "</td>"
-         + "<td>" + esc(c.meaning) + "</td></tr>";
+         + "<td>" + esc(c.keywords) + (c.field ? "<br><span class='cfield'>" + esc(c.field) + "</span>" : "")
+         + "</td></tr>";
     });
     h += "</tbody></table>";
     el("k-cards").innerHTML = h;
@@ -242,7 +259,8 @@
     var P = [];
     function line(t) { P.push(t === undefined ? "" : t); }
 
-    line("あなたは「黒の占い師」という四柱推命の鑑定士です。");
+    line("あなたは「黒の占い師」という、複数の占術を統合して鑑定する占い師です。");
+    line("四柱推命を主軸とし、タロット・数秘術・西洋占星術を補助的に使用してください。");
     line("以下の命式と相談内容をもとに、有料の本鑑定書を作成してください。");
     line();
     line("━━━━━━━━━━━━━━━━━━━━");
@@ -273,11 +291,14 @@
     line("お名前：" + name + "　／　" + (gender === "male" ? "男性" : "女性") + "　／　" + age + "歳");
     line("生年月日：" + y + "年" + m + "月" + d + "日"
        + (ms.hasHour ? "　" + hour + "時" + (minute === null ? "頃" : ("0" + minute).slice(-2) + "分") : "（出生時刻は不明）"));
-    if (pref) {
+    if (ms.hasHour && pref) {
       line("出生地：" + pref + "　… 真太陽時に補正（" + (ms.solarOffset >= 0 ? "+" : "") + ms.solarOffset
          + "分）。補正後の時刻は" + ms.solarTimeText + "。時柱はこの補正後の時刻で立てています。");
     } else if (ms.hasHour) {
       line("出生地：不明　… 真太陽時の補正なし。時柱は境目の場合ずれる可能性があります。");
+    } else {
+      line("出生地：" + (pref || "不明"));
+      line("出生時刻が不明のため、真太陽時の補正も時柱の算出も行っていません。三柱で判断します。");
     }
     line();
     line("年柱：" + ms.year.kan + ms.year.shi);
@@ -292,18 +313,39 @@
     line("五行バランス：最多は" + ms.balance.mostName
        + (ms.balance.lackName ? "、欠けているのは" + ms.balance.lackAll.join("・") : "、欠けなし")
        + "（" + ms.balance.chars + "文字で判定）");
-    line("命式にある星：" + (ms.stars.list.join("・") || "なし"));
-    var lacks = [];
-    ["zaisei","kansei","insei","shokusho","hikyo"].forEach(function (key) {
-      if (!ms.stars.has[key]) lacks.push(R.starNote[key].name);
+    line("天干に出ている星：" + (ms.stars.list.join("・") || "なし"));
+    line("蔵干（地支の中）の星：");
+    ms.stars.zokan.forEach(function (z) {
+      line("　" + z.shi + "　" + z.kans.join("") + " → " + z.stars.join("・"));
     });
-    line("命式に無い星：" + (lacks.length ? lacks.join("・") : "なし（五つとも揃っている）"));
-    if (lacks.length) {
+    var surfaced = [], buriedOnly = [], absent = [];
+    ["zaisei","kansei","insei","shokusho","hikyo"].forEach(function (key) {
+      var n = R.starNote[key].name;
+      if (ms.stars.has[key]) surfaced.push(n);
+      else if (ms.stars.onlyBuried[key]) buriedOnly.push(n);
+      else absent.push(n);
+    });
+    line();
+    line("表に出ている星：" + (surfaced.join("・") || "なし"));
+    line("内側にだけある星：" + (buriedOnly.join("・") || "なし"));
+    line("どこにも無い星：" + (absent.join("・") || "なし（五つとも揃っている）"));
+    line();
+    line("※この三つを混同しないでください。");
+    line("　表に出ている星は、普段から使っている力です。");
+    line("　内側にだけある星は、持っているのに使えていない力です。「ありません」と書いてはいけません。");
+    line("　どこにも無い星だけが、本当に欠けている働きです。");
+    if (buriedOnly.length) {
       line();
-      line("※無い星は、この人が繰り返しつまずく場所です。相談の根本がここにある可能性が高いので、");
-      line("　当てはまる場合は鑑定の軸に据えてください。");
+      line("【内側にだけある星 ─ 相談の根本になりやすい場所】");
       ["zaisei","kansei","insei","shokusho","hikyo"].forEach(function (key) {
-        if (!ms.stars.has[key]) line("　・" + R.starNote[key].name + "がない … " + R.starNote[key].no);
+        if (ms.stars.onlyBuried[key]) line("　・" + R.starNote[key].name + " … " + R.starNote[key].buried);
+      });
+    }
+    if (absent.length) {
+      line();
+      line("【どこにも無い星 ─ 本当に欠けている働き】");
+      ["zaisei","kansei","insei","shokusho","hikyo"].forEach(function (key) {
+        if (!ms.stars.hasAny[key]) line("　・" + R.starNote[key].name + "がない … " + R.starNote[key].no);
       });
     }
     line();
@@ -348,7 +390,7 @@
       line("　アセンダント：" + ctx.astro.asc.text + "　… 外に見せている顔、第一印象");
       line("　MC：" + ctx.astro.mc.text + "　… 社会的な到達点、目指す方向");
     } else {
-      line("　アセンダントとMCは、出生時刻または出生地が不明のため算出していません。");
+      line("　アセンダントとMCは、" + ascWhy(ms) + "が不明のため算出していません。");
       line("　推測で補わないでください。");
     }
     if (ctx.astro.aspects.length) {
@@ -421,9 +463,15 @@
       line("※このカードは、相談内容を読む前に無作為に引いたものです。");
       line("　差し替えたり、引き直したことにしないでください。");
       line();
+      line("※以下の基礎キーワードは、解釈を固定するものではありません。");
+      line("　鑑定文へそのまま書き写さないでください。相談内容との関係を優先して読み、");
+      line("　相談者について書かれていない事実を、カードだけで作らないでください。");
+      line("　カード名と正逆は変更禁止です。当て方だけを相談内容に合わせます。");
+      line();
       tarot.cards.forEach(function (c) {
         line(c.order + "枚目　" + c.name + "（" + c.orientation + "）");
-        line("　　" + c.meaning);
+        line("　　基礎キーワード：" + c.keywords);
+        if (c.field) line("　　主に扱う領域：" + c.field);
       });
       line();
       line("【カードの割り当て方 ─ ここは選ばないでください】");
@@ -445,6 +493,11 @@
       line("　　　「この悩みにはカードが回らなかった」と鑑定書に明記した上で、");
       line("　　　命式や他の材料から読んで、必ず答えを書いてください。");
       line("　　　書かれた悩みは、ひとつ残らず扱います。");
+      line();
+      line("　「本人が気づいていないこと」に札が回った場合は、");
+      line("　相談文・命式・そのカードから確認できる盲点だけを扱ってください。");
+      line("　本人の過去や心理を創作しないでください。");
+      line("　たとえば下書きに書かれていない生い立ちを理由にするのは、事実でないことを売ることになります。");
       line();
       line("　この対応表を、鑑定書の中に書き出してください。");
       line("　どのカードがどの悩みに当たったか、どの悩みに札が無かったかを、");
@@ -493,9 +546,13 @@
     line("　 「行動することが大切です」のような文は削ってください。");
     line("　 次に何をどうするかまで、具体的に書きます。");
     line();
-    line("6. 時期を言い切ってください。");
-    line("　 大運と年運を使い、「◯年ごろに動く」「◯歳までは仕込みの時期」と示します。");
+    line("6. 時期は具体的に示してください。");
+    line("　 大運と年運を使い、「何年に何を意識するか」「何歳までは何を優先するか」を明確にします。");
     line("　 ぼかすと無料鑑定と変わらなくなります。");
+    line("　 ただし「その年に必ず出来事が起こる」という未来の断定はしません。");
+    line("　 年や年齢は言い切る。その年に起こることは言い切らない。この二つを区別してください。");
+    line("　 　×「2028年に副業が成功します」");
+    line("　 　○「2028年は、それまで試したものから一つに絞り、力を集中させる時期です」");
     line();
     line("7. 相談者が「どちらを選ぶべきか」と聞いている場合は、必ずどちらかを選んで答えてください。");
     line("　 両論併記にしないこと。選んだ理由を命式から示します。");
@@ -523,7 +580,9 @@
     line("━━━━━━━━━━━━━━━━━━━━");
     line("【出力の形式】");
     line("━━━━━━━━━━━━━━━━━━━━");
-    line("・全体で4,000〜5,000字");
+    line("・全体は4,500〜6,000字程度を目安とする");
+    line("・相談テーマが多い場合は多少超過してよい。少ない場合は無理に引き伸ばさない");
+    line("・同じ内容の言い換えで文字数を増やさない");
     line("・冒頭：相談内容を受け止め、結論を1〜2行で言い切る");
     line("・中盤：悩みごとの章（相談内容から章立てを決める）");
     line("・終盤：絶対にしてはいけないこと3つ → 締め");
