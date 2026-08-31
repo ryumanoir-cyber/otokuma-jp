@@ -290,7 +290,7 @@ window.Meishiki = (function () {
       junisei: junisei(dp.kan, dp.shi),      // 日支との関係＝今の段階
       balance: balance(yp, mp, dp, hp),      // 五行の偏り（時柱があれば8文字で判定）
       hasHour: hasHour,
-      hour: hasHour ? { kan: KAN[hp.kan], shi: SHI[hp.shi], kanIdx: hp.kan } : null,
+      hour: hasHour ? { kan: KAN[hp.kan], shi: SHI[hp.shi], kanIdx: hp.kan, shiIdx: hp.shi } : null,
       hourTsuhen: hasHour ? tsuhen(dp.kan, hp.kan) : null,   // 時干との関係＝隠れているもの
       hourJunisei: hasHour ? junisei(dp.kan, hp.shi) : null,
       stars: stars(dp.kan, [yp.kan, mp.kan, hasHour ? hp.kan : null]),

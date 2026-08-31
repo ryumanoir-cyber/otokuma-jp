@@ -60,6 +60,23 @@
     var k  = ms.dayKan;
     var age = ageNow(y, m, d);
 
+    /* 数秘術 */
+    var num = window.Numerology.build(y, m, d, new Date().getFullYear());
+
+    /* 西洋占星術 */
+    var astro = window.Astro.build(y, m, d, hour, minute, pref);
+
+    /* 旧暦と紫微斗数。出生時刻が無ければ命盤は組まない */
+    var lun = window.Lunar.toLunar(y, m, d);
+    var zw = null;
+    if (ms.hasHour && lun) {
+      var gzYear = (lun.month >= 11) ? lun.year - 1 : lun.year;
+      var gzIdx = ((gzYear - 4) % 60 + 60) % 60;
+      zw = window.Ziwei.build(lun.month, lun.day, ms.hour.shiIdx,
+                              gzIdx % 10, gzIdx % 12, lun.leap);
+      zw.ganzhiYear = gzYear;
+    }
+
     /* --- 命式パネル --- */
     var c = "";
     c += '<h2>命式</h2>';
@@ -89,6 +106,56 @@
          + "<td>" + (cur ? "← 現在" : "") + "</td></tr>";
     });
     c += "</tbody></table>";
+    /* 数秘術 */
+    c += "<h2>数秘術</h2>";
+    c += '<table class="chart-tbl"><tbody>';
+    c += "<tr><th>ライフパス</th><td>" + num.lifePath + "（" + num.lifePathInfo.key + "）</td>"
+       + "<th>誕生数</th><td>" + num.birthday + "（" + num.birthdayInfo.key + "）</td></tr>";
+    c += "<tr><th>個人年</th><td colspan='3'>"
+       + num.personalYears.map(function (v) { return v.year + "年:" + v.num; }).join("　") + "</td></tr>";
+    c += "</tbody></table>";
+
+    /* 西洋占星術 */
+    c += "<h2>西洋占星術</h2>";
+    c += '<table class="chart-tbl"><tbody>';
+    var pk = Object.keys(astro.planets);
+    for (var pi = 0; pi < pk.length; pi += 2) {
+      c += "<tr><th>" + pk[pi] + "</th><td>" + astro.planets[pk[pi]].text + "</td>";
+      if (pk[pi + 1]) c += "<th>" + pk[pi + 1] + "</th><td>" + astro.planets[pk[pi + 1]].text + "</td>";
+      else c += "<th></th><td></td>";
+      c += "</tr>";
+    }
+    if (astro.asc) {
+      c += "<tr><th>ASC</th><td>" + astro.asc.text + "</td><th>MC</th><td>" + astro.mc.text + "</td></tr>";
+    } else {
+      c += "<tr><th>ASC</th><td colspan='3'>出生時刻・出生地が不明のため算出せず</td></tr>";
+    }
+    if (astro.aspects.length) {
+      c += "<tr><th>アスペクト</th><td colspan='3'>"
+         + astro.aspects.map(function (a) { return a.a + "-" + a.b + " " + a.name; }).join("　") + "</td></tr>";
+    }
+    c += "</tbody></table>";
+
+    /* 紫微斗数 */
+    c += "<h2>紫微斗数</h2>";
+    if (!zw) {
+      c += "<p class='guide-p'>出生時刻が不明のため、命盤は組みません。"
+         + "<strong>時刻なしで命盤を作ると、結果を創作することになります。</strong>"
+         + (lun ? "（旧暦は " + lun.text + "）" : "") + "</p>";
+    } else {
+      c += "<p class='guide-p'>旧暦 " + lun.text + "　／　命宮 " + zw.meiKan + zw.meiBranch
+         + "　身宮 " + zw.shenPalace + "　／　" + zw.nayin + " → " + zw.kyokuName
+         + "　／　紫微 " + zw.ziwei + "　天府 " + zw.tenfu + "</p>";
+      c += '<table class="chart-tbl ziwei"><tbody>';
+      zw.palaces.forEach(function (p) {
+        c += "<tr" + (p.isMei ? ' class="cur"' : "") + "><th>" + p.name
+           + (p.isShen ? "（身）" : "") + "</th><td>" + p.kan + p.branch + "</td>"
+           + '<td class="cname">' + (p.stars.join("・") || "—") + "</td>"
+           + "<td>" + p.meaning + "</td></tr>";
+      });
+      c += "</tbody></table>";
+    }
+
     el("k-chart").innerHTML = c;
 
     /* --- 申し送り（書き手向け） --- */
@@ -133,7 +200,7 @@
     /* 命式などを次の段階へ渡す */
     ctx = { name: name, y: y, m: m, d: d, hour: hour, minute: minute, pref: pref,
             gender: gender, tone: tone, topic: topic, ms: ms, du: du, k: k,
-            age: age, curPillar: curPillar };
+            age: age, curPillar: curPillar, num: num, astro: astro, lun: lun, zw: zw };
 
     el("k-out").classList.remove("hidden");
     el("k-draft-wrap").classList.add("hidden");
@@ -287,6 +354,65 @@
     });
     line();
     line("━━━━━━━━━━━━━━━━━━━━");
+    line("【数秘術】");
+    line("━━━━━━━━━━━━━━━━━━━━");
+    line("ライフパス：" + ctx.num.lifePath + "（" + ctx.num.lifePathInfo.key + "）");
+    line("　" + ctx.num.lifePathInfo.text);
+    line("誕生数：" + ctx.num.birthday + "（" + ctx.num.birthdayInfo.key + "）");
+    line("　" + ctx.num.birthdayInfo.text);
+    line();
+    line("個人年（9年で一巡する。その年に置かれるテーマ）");
+    ctx.num.personalYears.forEach(function (v) {
+      line("　" + v.year + "年：" + v.num + " … " + v.text);
+    });
+    line();
+
+    line("━━━━━━━━━━━━━━━━━━━━");
+    line("【西洋占星術】");
+    line("━━━━━━━━━━━━━━━━━━━━");
+    Object.keys(ctx.astro.planets).forEach(function (n) {
+      line("　" + n + "：" + ctx.astro.planets[n].text);
+    });
+    if (ctx.astro.asc) {
+      line("　アセンダント：" + ctx.astro.asc.text + "　… 外に見せている顔、第一印象");
+      line("　MC：" + ctx.astro.mc.text + "　… 社会的な到達点、目指す方向");
+    } else {
+      line("　アセンダントとMCは、出生時刻または出生地が不明のため算出していません。");
+      line("　推測で補わないでください。");
+    }
+    if (ctx.astro.aspects.length) {
+      line();
+      line("　主なアスペクト（天体どうしの角度。性質の組み合わさり方を見る）");
+      ctx.astro.aspects.forEach(function (a) {
+        line("　　" + a.a + " と " + a.b + "：" + a.name + "（誤差" + a.orb + "度）");
+      });
+    }
+    line();
+
+    line("━━━━━━━━━━━━━━━━━━━━");
+    line("【紫微斗数】");
+    line("━━━━━━━━━━━━━━━━━━━━");
+    if (!ctx.zw) {
+      line("出生時刻が不明のため、命盤を組んでいません。");
+      line("紫微斗数の結果として何かを書くことは、創作になります。絶対に書かないでください。");
+      if (ctx.lun) line("（旧暦は " + ctx.lun.text + " です）");
+    } else {
+      line("旧暦：" + ctx.lun.text + "（" + ctx.zw.ganzhiYear + "年）");
+      line("命宮：" + ctx.zw.meiKan + ctx.zw.meiBranch + "　身宮：" + ctx.zw.shenPalace);
+      line("五行局：" + ctx.zw.nayin + " → " + ctx.zw.kyokuName);
+      line("紫微：" + ctx.zw.ziwei + "　天府：" + ctx.zw.tenfu);
+      line();
+      line("十二宮と主星");
+      ctx.zw.palaces.forEach(function (p) {
+        line("　" + (p.isMei ? "★" : "　") + p.name + "（" + p.kan + p.branch + "）"
+           + "　" + (p.stars.join("・") || "主星なし") + "　… " + p.meaning);
+      });
+      line();
+      line("※主星のない宮は、対面の宮の星を借りて読みます。");
+    }
+    line();
+
+    line("━━━━━━━━━━━━━━━━━━━━");
     line("【この相談者への伝え方】");
     line("━━━━━━━━━━━━━━━━━━━━");
     line("通る言い方：" + R.advice[ms.tsuhen].in);
@@ -378,7 +504,15 @@
     line();
     line("9. 締めでは、決めるのは本人であることを伝えて主導権を返してください。");
     line();
-    line("10. タロットが提示されている場合：");
+    line("10. 複数の占術を使う場合：");
+    line("　  結果を並べるだけにしないでください。相談内容に対する答えを出すために使います。");
+    line("　  占術どうしが食い違う場合、無理に一致させないでください。");
+    line("　  食い違い自体を書き、どちらを重く見るかを理由とともに示します。");
+    line("　  そこがこの人にとって一番重要な論点であることが多いためです。");
+    line("　  算出していないと明記されているものについては、何も書かないでください。");
+    line("　  それらしい結果を作ると、事実でないことを売ることになります。");
+    line();
+    line("11. タロットが提示されている場合：");
     line("　  カードの意味をそのまま並べないでください。相談内容に当てて読みます。");
     line("　  鑑定書の中に、引いたカード名とその正逆を必ず明記してください。");
     line("　  何を引いたか隠すと、後から都合よく選んだのと区別がつかなくなります。");
