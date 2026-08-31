@@ -202,33 +202,6 @@
             gender: gender, tone: tone, topic: topic, ms: ms, du: du, k: k,
             age: age, curPillar: curPillar, num: num, astro: astro, lun: lun, zw: zw };
 
-    /* GPTにポジションを考えさせるための短いプロンプト */
-    if (topic) {
-      var Q = [];
-      Q.push("以下はある人から届いた占いの相談文です。");
-      Q.push("この相談に答えるために、タロットで引くべき「聞くこと」を5〜7個考えてください。");
-      Q.push("");
-      Q.push("【条件】");
-      Q.push("・1行に1つ、短く書く（例：相手の本音／このまま待った場合）");
-      Q.push("・相談者が知りたいことを漏らさない。書かれている悩みは全部拾う");
-      Q.push("・「AとBで迷っている」なら、AとBそれぞれの行方を別の行にする");
-      Q.push("・最後の行は必ず「この相談への結論」にする");
-      Q.push("・番号や記号を付けない。説明や前置きも書かない。行だけを出力する");
-      Q.push("");
-      Q.push("【相談文】");
-      Q.push(topic);
-      el("k-ask").value = Q.join("\n");
-      el("k-ask-wrap").classList.remove("hidden");
-    } else {
-      el("k-ask-wrap").classList.add("hidden");
-    }
-
-    /* ポジションは空にしておく。GPTに考えさせるか、種類から選ぶ */
-    el("k-positions").value = "";
-    el("k-spread").value = "custom";
-    onSpreadChange();
-    [].forEach.call(el("k-templates").children, function (c) { c.classList.remove("on"); });
-
     el("k-out").classList.remove("hidden");
     el("k-draft-wrap").classList.add("hidden");
     el("k-cards-wrap").classList.add("hidden");
@@ -238,59 +211,13 @@
 
   /* ===== タロット ===== */
 
-  function initSpreads() {
-    var sel = el("k-spread");
-    var S = window.Tarot.SPREADS;
-    ["custom", "choice", "three", "celtic", "one"].forEach(function (key) {
-      var n = (key === "custom") ? "カスタム（相談に合わせて組む）"
-            : S[key].name + "（" + S[key].pos.length + "枚）";
-      sel.add(new Option(n, key));
-    });
-    sel.value = "custom";
-    onSpreadChange();
-    sel.addEventListener("change", onSpreadChange);
-
-    /* 相談の種類ボタン。押すと質問が入る */
-    var box = el("k-templates");
-    window.Tarot.TEMPLATES.forEach(function (t) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "chip";
-      b.textContent = t.name;
-      b.addEventListener("click", function () {
-        el("k-positions").value = t.pos.join("\n");
-        el("k-spread").value = "custom";
-        onSpreadChange();
-        [].forEach.call(box.children, function (c) { c.classList.remove("on"); });
-        b.classList.add("on");
-      });
-      box.appendChild(b);
-    });
-  }
-
-  function onSpreadChange() {
-    var key = el("k-spread").value;
-    var S = window.Tarot.SPREADS[key];
-    el("k-spread-note").textContent = S.note;
-    el("k-pos-wrap").classList.toggle("hidden", key !== "custom");
-    el("k-templates").parentNode.classList.toggle("hidden", key !== "custom");
-  }
-
   function drawCards() {
-    var key = el("k-spread").value;
-    var positions = el("k-positions").value.split("\n");
-    var r = window.Tarot.draw(key, positions);
-    if (!r) {
-      el("k-spread-note").textContent = "ポジションを1行以上入力してください。";
-      return;
-    }
+    var r = window.Tarot.drawN(8);
     tarot = r;
-
-    var h = "";
-    h += '<p class="drawn-at">' + r.spread + "　" + r.cards.length + "枚　引いた時刻 " + r.drawnAt + "</p>";
+    var h = '<p class="drawn-at">8枚　引いた時刻 ' + r.drawnAt + "</p>";
     h += '<table class="chart-tbl cards"><tbody>';
-    r.cards.forEach(function (c, i) {
-      h += "<tr><th>" + (i + 1) + "　" + esc(c.position) + "</th>"
+    r.cards.forEach(function (c) {
+      h += "<tr><th>" + c.order + "枚目</th>"
          + '<td class="cname">' + esc(c.name) + "</td>"
          + '<td class="' + (c.reversed ? "rev" : "") + '">' + c.orientation + "</td>"
          + "<td>" + esc(c.meaning) + "</td></tr>";
@@ -488,17 +415,40 @@
       line("━━━━━━━━━━━━━━━━━━━━");
       line("【タロット】");
       line("━━━━━━━━━━━━━━━━━━━━");
-      line("スプレッド：" + tarot.spread + "（" + tarot.cards.length + "枚）");
+      line("78枚から重複なしで8枚引きました。正位置・逆位置も1枚ずつ乱数で決めています。");
       line("引いた時刻：" + tarot.drawnAt);
       line();
-      line("※このカードは、相談内容を読む前に78枚から無作為に引いたものです。");
-      line("　都合よく差し替えず、出たカードのまま解釈してください。");
+      line("※このカードは、相談内容を読む前に無作為に引いたものです。");
+      line("　差し替えたり、引き直したことにしないでください。");
       line();
-      tarot.cards.forEach(function (c, i) {
-        line((i + 1) + ". 【" + c.position + "】");
-        line("　　" + c.name + "（" + c.orientation + "）");
+      tarot.cards.forEach(function (c) {
+        line(c.order + "枚目　" + c.name + "（" + c.orientation + "）");
         line("　　" + c.meaning);
       });
+      line();
+      line("【カードの割り当て方 ─ ここは選ばないでください】");
+      line("どのカードをどの悩みに当てるかを、あなたが選んではいけません。");
+      line("選べる状態だと、都合のいいカードを都合のいい悩みに当てられてしまいます。");
+      line("次の規則で機械的に決めてください。");
+      line();
+      line("　1. 相談文に書かれている悩みを、書かれている順に並べる");
+      line("　2. 1枚目を1つ目の悩み、2枚目を2つ目の悩み、と順に対応させる");
+      line("　3. 悩みの数より枚数が余ったら、残りを順に次へ充てる");
+      line("　　　・本人が気づいていないこと");
+      line("　　　・今、助けになるもの");
+      line("　　　・今、妨げになるもの");
+      line("　　　・この相談への結論");
+      line("　4. 悩みの数の方が多ければ、後ろの悩みは他の占術で読む");
+      line();
+      line("　この対応表を、鑑定書の中に書き出してください。");
+      line("　どのカードがどの悩みに当たったかが読者に見える形にします。");
+      line();
+      line("【読み方】");
+      line("・カードの意味をそのまま書き写さないこと。相談内容に当てて読みます。");
+      line("・鑑定書の中に、カード名と正逆を必ず明記してください。");
+      line("　何を引いたか伏せると、後から都合よく選んだのと区別がつかなくなります。");
+      line("・命式から読めることとカードが食い違う場合は、食い違い自体を書いてください。");
+      line("　そこがこの人にとって一番重要な論点であることが多いためです。");
       line();
     }
 
@@ -610,24 +560,15 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     initSelects();
-    initSpreads();
     el("k-run").addEventListener("click", build);
     el("k-drawc").addEventListener("click", drawCards);
     el("k-redraw").addEventListener("click", drawCards);
+    el("k-copy").addEventListener("click", copy);
     el("k-make").addEventListener("click", function () {
       makePrompt();
       el("k-draft-wrap").classList.remove("hidden");
       el("k-draft-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
     });
     el("k-copy").addEventListener("click", copy);
-    el("k-ask-copy").addEventListener("click", function () {
-      var ta = el("k-ask");
-      ta.select();
-      var ok = false;
-      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
-      var b = el("k-ask-copy"), old = b.textContent;
-      b.textContent = ok ? "コピーしました" : "コピーできませんでした";
-      setTimeout(function () { b.textContent = old; }, 1600);
-    });
   });
 })();

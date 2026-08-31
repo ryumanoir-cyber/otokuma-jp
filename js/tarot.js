@@ -134,6 +134,18 @@ window.Tarot = (function () {
 
 
   /* 相談の種類ごとのポジション見本。選んで、必要なら書き換えて使う */
+  /* どんな相談にも当てはまる汎用の位置。テーマを選ばずに引ける */
+  var GENERAL = [
+    "今どこに立っているか",
+    "本人が自覚していること",
+    "本人が気づいていないこと",
+    "今、助けになるもの",
+    "今、妨げになるもの",
+    "このまま進んだ場合",
+    "動いた場合",
+    "この相談への結論"
+  ];
+
   var TEMPLATES = [
     { key: "work", name: "仕事・転職", pos: [
       "今の職場でのこの人の立ち位置",
@@ -278,6 +290,26 @@ window.Tarot = (function () {
     };
   }
 
+  /* 位置を決めずに n 枚引く。何を指すかは読み手が決める */
+  function drawN(n) {
+    var d = shuffle(deck());
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var c = d[i];
+      c.rev = (rnd(2) === 1);
+      var info = describe(c);
+      out.push({
+        order: i + 1,
+        name: info.name,
+        arcana: info.arcana,
+        reversed: c.rev,
+        orientation: c.rev ? "逆位置" : "正位置",
+        meaning: info.meaning
+      });
+    }
+    return { cards: out, drawnAt: new Date().toLocaleString("ja-JP") };
+  }
+
   /* スプレッドを引く */
   function draw(spreadKey, customPositions) {
     var sp = SPREADS[spreadKey];
@@ -309,7 +341,9 @@ window.Tarot = (function () {
   return {
     SPREADS: SPREADS,
     TEMPLATES: TEMPLATES,
+    GENERAL: GENERAL,
     CUSTOM_TEMPLATE: CUSTOM_TEMPLATE,
-    draw: draw
+    draw: draw,
+    drawN: drawN
   };
 })();
