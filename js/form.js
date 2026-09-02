@@ -4,8 +4,8 @@
 (function () {
   "use strict";
 
-  /* ここに Apps Script のデプロイURLを入れる */
-  var ENDPOINT = "";
+  /* Apps Script のデプロイURL（noir.xadアカウント・スプシ「本鑑定 申込」） */
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbxSwxzz0zt1vmlr_RyiWybQAu4Sc2YcMIjNkp28CC5Yx_cPzjL3fmib7_zNqc0MG6X_/exec";
 
     var THEMES = [
     "仕事・転職", "副業・独立・起業", "お金・収入", "恋愛", "結婚", "復縁",
@@ -43,7 +43,7 @@
   function validate(form) {
     var missing = [];
     ["注文番号", "メールアドレス", "お名前", "生年月日", "性別",
-     "一番鑑定してほしいこと", "今の状況", "理想", "不安"].forEach(function (nm) {
+     "一番鑑定してほしいこと", "悩み"].forEach(function (nm) {
       var f = form.querySelector('[name="' + nm + '"]');
       if (f && !f.value.trim()) missing.push(nm);
     });
