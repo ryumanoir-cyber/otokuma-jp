@@ -1,7 +1,11 @@
 /* 黒の占い師 — 無料鑑定フロー
-   命式は Meishiki、本文は Reading から引く。すべて端末内で完結。 */
+   命式は Meishiki、本文は Reading から引く。鑑定はすべて端末内で完結。
+   入力された属性だけを LOG_ENDPOINT へ記録する（結果表示はログの成否と無関係）。 */
 (function () {
   "use strict";
+
+  /* form.js と同じ受信GAS。種別:無料 で「無料鑑定」タブに貯まる */
+  var LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbxSwxzz0zt1vmlr_RyiWybQAu4Sc2YcMIjNkp28CC5Yx_cPzjL3fmib7_zNqc0MG6X_/exec";
 
   function el(id) { return document.getElementById(id); }
   function show(id) { el(id).classList.remove("hidden"); }
@@ -56,7 +60,30 @@
 
   var LOADING = ["命式を立てています", "命式を立てています．", "命式を立てています．．", "命式を立てています．．．"];
 
+  /* 入力属性をシートへ送るだけ。失敗しても何もしない（鑑定は止めない） */
+  function logFree() {
+    try {
+      if (!LOG_ENDPOINT) return;
+      var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+      var data = {
+        "種別": "無料",
+        "送信日時": new Date().toLocaleString("ja-JP"),
+        "お名前": el("name").value.trim(),
+        "生年月日": el("year").value + "-" + pad(Number(el("month").value)) + "-" + pad(Number(el("day").value)),
+        "出生時刻": state.hour === null || state.hour === "" ? "" : state.hour + "時台",
+        "性別": state.gender === "female" ? "女性" : "男性"
+      };
+      fetch(LOG_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data)
+      }).catch(function () {});
+    } catch (e) { /* ログ失敗は無視 */ }
+  }
+
   function run() {
+    logFree();
     hide("step4"); show("loading"); scrollTop();
     var i = 0;
     var timer = setInterval(function () {
