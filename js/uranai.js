@@ -145,6 +145,11 @@
 
     h += sec("性格");
     h += paras(R.character[k]);
+    h += "<p class=\"axis\">日柱は" + ms.day.kan + ms.day.shi + "。<strong>"
+       + ms.junisei + "</strong>の帯びを持って生まれています。</p>";
+    h += paras(R.juniseiChar[ms.junisei]);
+    var bridge = R.juniseiBridge[ms.day.kan + ms.junisei];
+    if (bridge) h += paras(bridge);
 
     h += sec("社会での出方");
     h += "<p class=\"axis\">月柱の天干は" + ms.month.kan + "。日干" + k + "から見ると<strong>"
