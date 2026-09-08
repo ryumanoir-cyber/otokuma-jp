@@ -384,6 +384,7 @@ window.Meishiki = (function () {
     solarOffsetMinutes: solarOffsetMinutes,
     years: years,
     daiun: daiunFor,
+    junisei: junisei,
     KAN: KAN,
     SHI: SHI,
     GYO_NAME: GYO_NAME

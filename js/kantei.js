@@ -311,7 +311,17 @@
     line();
     line("日干：" + k + "（" + ms.dayKanYomi + "）　五行は" + ms.dayGyoName);
     line("通変星（月干との関係）：" + ms.tsuhen + "　… 社会での出方を表す");
-    line("十二運（日支）：" + ms.junisei + "　… 今どのエネルギー段階にいるか");
+    line("十二運（日支）：" + ms.junisei + "　… 生まれ持ったエネルギーの帯び。性格の第二レンズ");
+    line();
+    line("【十二運「" + ms.junisei + "」の性格材料 ─ 日干の性格と重ねて使う】");
+    R.juniseiChar[ms.junisei].split("\n\n").forEach(function (p) { line("　" + p); });
+    var jBridge = R.juniseiBridge[k + ms.junisei];
+    if (jBridge) {
+      line();
+      line("【性格の二面性 ─ この日柱は日干の性格と十二運の性格が逆を向く】");
+      line("　矛盾として片方を捨てない。両方本物として扱い、必ず「分かれ目」で噛み合わせること。");
+      jBridge.split("\n\n").forEach(function (p) { line("　" + p); });
+    }
     if (ms.hasHour) line("時柱の通変星：" + ms.hourTsuhen + "　… まだ表に出していない部分と後半の形");
     line("五行バランス：最多は" + ms.balance.mostName
        + (ms.balance.lackName ? "、欠けているのは" + ms.balance.lackAll.join("・") : "、欠けなし")
@@ -361,6 +371,9 @@
     if (curPillar) {
       line();
       line("現在の大運の意味：" + R.daiunRel[curPillar.rel][curPillar.yang ? "yang" : "yin"]);
+      var duStage = M.junisei(ms.dayKanIdx, M.SHI.indexOf(curPillar.shi));
+      line("現在の大運の帯び（十二運）：" + duStage + "　… この10年のエネルギー段階。時期の章の材料にする");
+      R.junisei[duStage].split("\n\n").forEach(function (p) { line("　" + p); });
     }
     line();
     line("【年運】");
