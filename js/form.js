@@ -7,11 +7,6 @@
   /* Apps Script のデプロイURL（noir.xadアカウント・スプシ「本鑑定 申込」） */
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbxSwxzz0zt1vmlr_RyiWybQAu4Sc2YcMIjNkp28CC5Yx_cPzjL3fmib7_zNqc0MG6X_/exec";
 
-    var THEMES = [
-    "仕事・転職", "副業・独立・起業", "お金・収入", "恋愛", "結婚", "復縁",
-    "相性", "人間関係", "家族", "将来・人生全般", "才能・適職", "運気・転機", "その他"
-  ];
-
   function el(id) { return document.getElementById(id); }
 
   function initPref() {
@@ -20,22 +15,12 @@
     window.Meishiki.PREF.forEach(function (row) { p.add(new Option(row[0], row[0])); });
   }
 
-  function initThemes() {
-    var box = el("f-themes");
-    THEMES.forEach(function (t) {
-      var lab = document.createElement("label");
-      lab.className = "chk";
-      lab.innerHTML = '<input type="checkbox" name="テーマ" value="' + t + '"><span>' + t + "</span>";
-      box.appendChild(lab);
-    });
-  }
-
   function collect(form) {
     var out = {};
     var fd = new FormData(form);
     fd.forEach(function (v, kk) {
       if (out[kk] === undefined) out[kk] = v;
-      else out[kk] = out[kk] + "、" + v;   // テーマの複数選択をまとめる
+      else out[kk] = out[kk] + "、" + v;   // 複数値の項目をまとめる
     });
     return out;
   }
@@ -47,7 +32,6 @@
       var f = form.querySelector('[name="' + nm + '"]');
       if (f && !f.value.trim()) missing.push(nm);
     });
-    if (!form.querySelector('[name="テーマ"]:checked')) missing.push("テーマ");
     if (!form.querySelector('[name="伝え方"]:checked')) missing.push("お伝えの仕方");
     return missing;
   }
@@ -114,7 +98,6 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     initPref();
-    initThemes();
     el("kanteiForm").addEventListener("submit", submit);
   });
 })();
