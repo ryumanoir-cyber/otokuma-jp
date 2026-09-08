@@ -3,8 +3,8 @@
 (function () {
   "use strict";
 
-  /* STORESの商品URLを入れる */
-  var BUY_URL = "";
+  /* STORESの商品URL。ショップを公開すると購入可能になる */
+  var BUY_URL = "https://kuronouranaishi.stores.jp/items/6a9514ef6cfe534b0b89ad67";
 
   document.addEventListener("DOMContentLoaded", function () {
     var b = document.getElementById("buyLink");
