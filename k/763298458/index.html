@@ -118,22 +118,19 @@
   <p class="url">otokuma-jp.com</p>
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js"></script>
 <script>
-document.getElementById("saveBtn").addEventListener("click",async function(){
-  var btn=this,old=btn.textContent;
-  if(typeof html2pdf==="undefined"){alert("保存の準備中です。数秒おいてもう一度お試しください。");return;}
-  btn.textContent="保存中…";btn.disabled=true;
-  try{if(document.fonts&&document.fonts.ready){await document.fonts.ready;}}catch(e){}
-  var el=document.querySelector(".sheet");
-  var mobile=/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  var opt={margin:0,filename:"黒の占い師_鑑定書.pdf",image:{type:"jpeg",quality:0.92},
-    html2canvas:{scale:mobile?1:2,backgroundColor:"#0e0e13",useCORS:true},
-    jsPDF:{unit:"pt",format:"a4",orientation:"portrait"},
-    pagebreak:{mode:["css","legacy"]}};
-  try{await html2pdf().set(opt).from(el).save();}
-  catch(e){alert("保存に失敗しました。通信環境の良い場所で開き直してお試しください。");}
-  btn.textContent=old;btn.disabled=false;
+document.getElementById("saveBtn").addEventListener("click",function(){
+  try{
+    var clone=document.documentElement.cloneNode(true);
+    clone.querySelectorAll(".save,script").forEach(function(n){n.remove();});
+    var html="<!DOCTYPE html>\n"+clone.outerHTML;
+    var blob=new Blob([html],{type:"application/octet-stream"});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement("a");
+    a.href=url;a.download="黒の占い師_鑑定書.html";
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){a.remove();URL.revokeObjectURL(url);},1500);
+  }catch(e){alert("保存に失敗しました。ページを開き直してお試しください。");}
 });
 </script>
 </body>
