@@ -98,7 +98,7 @@
 </style>
 </head>
 <body>
-<button class="save" id="saveBtn" type="button">PDFで保存</button>
+<button class="save" id="saveBtn" type="button">保存する</button>
 <div class="sheet">
 <header class="cover">
   <div class="cover-frame"></div>
@@ -108,7 +108,6 @@
   <div class="cover-rule"></div>
   <div class="meta">
     <div class="row"><span class="k">ご相談者</span><span class="v">今村 一博　様</span></div>
-    <div class="row"><span class="k">テーマ</span><span class="v">仕事</span></div>
     <div class="row"><span class="k">鑑定日</span><span class="v">2026年9月13日</span></div>
   </div>
 </header>
@@ -119,8 +118,23 @@
   <p class="url">otokuma-jp.com</p>
 </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.3/html2pdf.bundle.min.js"></script>
 <script>
-document.getElementById("saveBtn").addEventListener("click",function(){window.print();});
+document.getElementById("saveBtn").addEventListener("click",async function(){
+  var btn=this,old=btn.textContent;
+  if(typeof html2pdf==="undefined"){alert("保存の準備中です。数秒おいてもう一度お試しください。");return;}
+  btn.textContent="保存中…";btn.disabled=true;
+  try{if(document.fonts&&document.fonts.ready){await document.fonts.ready;}}catch(e){}
+  var el=document.querySelector(".sheet");
+  var mobile=/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var opt={margin:0,filename:"黒の占い師_鑑定書.pdf",image:{type:"jpeg",quality:0.92},
+    html2canvas:{scale:mobile?1:2,backgroundColor:"#0e0e13",useCORS:true},
+    jsPDF:{unit:"pt",format:"a4",orientation:"portrait"},
+    pagebreak:{mode:["css","legacy"]}};
+  try{await html2pdf().set(opt).from(el).save();}
+  catch(e){alert("保存に失敗しました。通信環境の良い場所で開き直してお試しください。");}
+  btn.textContent=old;btn.disabled=false;
+});
 </script>
 </body>
 </html>
