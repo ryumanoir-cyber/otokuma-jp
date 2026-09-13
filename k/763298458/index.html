@@ -78,7 +78,7 @@
   .seal .name{font-family:var(--display-serif);letter-spacing:.3em;text-indent:.3em;color:var(--cream);font-size:14px;margin:0 0 4px;}
   .seal .url{color:var(--faint);font-size:11px;letter-spacing:.08em;}
 
-  .save{position:fixed;right:16px;bottom:16px;z-index:20;font-family:var(--body-serif);
+  .save{text-decoration:none;position:fixed;right:16px;bottom:16px;z-index:20;font-family:var(--body-serif);
     background:rgba(20,20,27,.92);color:var(--gold);border:1px solid var(--gold-dim);border-radius:40px;
     padding:11px 20px;font-size:14px;letter-spacing:.14em;text-indent:.14em;cursor:pointer;
     backdrop-filter:blur(6px);box-shadow:0 6px 22px rgba(0,0,0,.45);transition:background .2s,color .2s;}
@@ -88,17 +88,21 @@
   @media (max-width:420px){.cover h1{font-size:38px;}.sheet p{font-size:1.02rem;}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
   @media print{
-    @page{margin:16mm 14mm;}
-    body{background:var(--ground);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    @page{margin:0;size:A4;}
+    html,body{background:var(--ground);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .save{display:none!important;}
-    .cover{margin:0 0 30px;}
-    .chapter,.subhead{break-after:avoid;}
-    .note,.seal{break-inside:avoid;}
+    .sheet{max-width:none;padding:0 46px 46px;}
+    .cover{margin:0;padding:150px 40px;min-height:1040px;page-break-after:always;}
+    .lead{page-break-before:always;padding-top:40px;}
+    .chapter,.subhead{page-break-before:always;break-after:avoid;padding-top:24px;}
+    .final-body,.note{break-inside:avoid;}
+    .note{page-break-before:always;}
+    .seal{page-break-before:always;padding-top:120px;}
   }
 </style>
 </head>
 <body>
-<button class="save" id="saveBtn" type="button">保存する</button>
+<a class="save" id="saveBtn" href="kantei.pdf" download="黒の占い師_鑑定書.pdf">PDFで保存</a>
 <div class="sheet">
 <header class="cover">
   <div class="cover-frame"></div>
@@ -118,20 +122,5 @@
   <p class="url">otokuma-jp.com</p>
 </div>
 </div>
-<script>
-document.getElementById("saveBtn").addEventListener("click",function(){
-  try{
-    var clone=document.documentElement.cloneNode(true);
-    clone.querySelectorAll(".save,script").forEach(function(n){n.remove();});
-    var html="<!DOCTYPE html>\n"+clone.outerHTML;
-    var blob=new Blob([html],{type:"application/octet-stream"});
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement("a");
-    a.href=url;a.download="黒の占い師_鑑定書.html";
-    document.body.appendChild(a);a.click();
-    setTimeout(function(){a.remove();URL.revokeObjectURL(url);},1500);
-  }catch(e){alert("保存に失敗しました。ページを開き直してお試しください。");}
-});
-</script>
 </body>
 </html>
