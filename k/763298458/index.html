@@ -85,10 +85,10 @@
   .save:hover{background:var(--gold);color:#141019;}
   .save:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
 
-  @media (max-width:480px){.cover h1{font-size:38px;}}
+  @media (max-width:480px){.sheet{max-width:375px;padding:0 20px 84px;}.cover h1{font-size:38px;}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
   @media print{
-    @page{margin:0;size:103mm 200mm;}
+    @page{margin:0;size:99.2mm 200mm;}
     html,body{background:var(--ground);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
     .save{display:none!important;}
     .sheet{max-width:none;padding:0 20px 24px;}
