@@ -5,9 +5,8 @@
 (function () {
   "use strict";
 
-  /* ▼▼▼ 無料鑑定サーバー（Code.gs をデプロイして得た /exec のURLを貼る）▼▼▼ */
-  var GAS_URL = "https://script.google.com/macros/s/AKfycbywfDbsOw4_Yd5I-KbDtr05vfla8oPB01ZIcbmiA4iUOU9QyFg6qSLBiz5XE5l2QcZw/exec";
-  /* ▲▲▲ ここだけ差し替える ▲▲▲ */
+  /* 無料鑑定サーバー（Cloudflare Worker）。CORS対応なので普通の fetch(GET) で読める。 */
+  var WORKER_URL = "https://kurono-free-reading.noir-xad.workers.dev";
 
   /* 属性ログ用（既存のフォーム受信GAS。鑑定サーバーとは別でよい） */
   var LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbxSwxzz0zt1vmlr_RyiWybQAu4Sc2YcMIjNkp28CC5Yx_cPzjL3fmib7_zNqc0MG6X_/exec";
@@ -82,42 +81,22 @@
     } catch (e) { /* ログ失敗は無視 */ }
   }
 
-  /* JSONP（scriptタグ）でサーバー(GAS)へ鑑定を依頼する。
-     GASは fetch(POST) だと 302→googleusercontent/echo が断続的に404になり不安定なため、
-     CORS・echoリダイレクトを回避できる scriptタグ方式にする。名前はサーバーに渡さず、
-     返ってきた {{NAME}} をここで置換する。 */
+  /* サーバー(Cloudflare Worker)へ鑑定を依頼して #meishiki / #reading に流し込む。
+     WorkerはCORSを返すので普通のfetch(GET)でOK。名前はサーバーに渡さず {{NAME}} をここで置換。 */
   function fetchReadingOnce() {
-    return new Promise(function (resolve, reject) {
-      var cb = "__kr" + Date.now() + "_" + Math.floor(Math.random() * 100000);
-      var s = document.createElement("script");
-      var done = false;
-      function cleanup() {
-        clearTimeout(timer);
-        try { delete window[cb]; } catch (e) { window[cb] = undefined; }
-        if (s.parentNode) s.parentNode.removeChild(s);
-      }
-      var timer = setTimeout(function () {
-        if (done) return; done = true; cleanup(); reject(new Error("timeout"));
-      }, 20000);
-      window[cb] = function (res) {
-        if (done) return; done = true; cleanup();
-        if (!res || !res.ok) { reject(new Error((res && res.error) || "reading failed")); return; }
-        var nm = esc(state.name || el("name").value.trim());
-        el("meishiki").innerHTML = res.meishikiHtml;
-        el("reading").innerHTML  = res.readingHtml.replace(/\{\{NAME\}\}/g, nm);
-        resolve();
-      };
-      var q = "?callback=" + cb
-            + "&year="   + encodeURIComponent(el("year").value)
-            + "&month="  + encodeURIComponent(el("month").value)
-            + "&day="    + encodeURIComponent(el("day").value)
-            + "&hour="   + encodeURIComponent(state.hour == null ? "" : state.hour)
-            + "&gender=" + encodeURIComponent(state.gender);
-      s.src = GAS_URL + q;
-      s.onerror = function () {
-        if (done) return; done = true; cleanup(); reject(new Error("script error"));
-      };
-      document.head.appendChild(s);
+    var q = "?year="   + encodeURIComponent(el("year").value)
+          + "&month="  + encodeURIComponent(el("month").value)
+          + "&day="    + encodeURIComponent(el("day").value)
+          + "&hour="   + encodeURIComponent(state.hour == null ? "" : state.hour)
+          + "&gender=" + encodeURIComponent(state.gender);
+    return fetch(WORKER_URL + q, { method: "GET" }).then(function (r) {
+      if (!r.ok) throw new Error("http " + r.status);
+      return r.json();
+    }).then(function (res) {
+      if (!res || !res.ok) throw new Error((res && res.error) || "reading failed");
+      var nm = esc(state.name || el("name").value.trim());
+      el("meishiki").innerHTML = res.meishikiHtml;
+      el("reading").innerHTML  = res.readingHtml.replace(/\{\{NAME\}\}/g, nm);
     });
   }
 
