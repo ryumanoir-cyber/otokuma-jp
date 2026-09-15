@@ -1,10 +1,15 @@
-/* 黒の占い師 — 無料鑑定フロー
-   命式は Meishiki、本文は Reading から引く。鑑定はすべて端末内で完結。
-   入力された属性だけを LOG_ENDPOINT へ記録する（結果表示はログの成否と無関係）。 */
+/* 黒の占い師 — 無料鑑定フロー（クライアント・薄い版）
+   鑑定ロジックと本文はサーバー(GAS)側にある。ここは
+   「入力を集める → GASへ送る → 返ってきた完成HTMLを表示する」だけ。
+   命式計算(meishiki)も本文(reading)もブラウザには含めない＝流出しない。 */
 (function () {
   "use strict";
 
-  /* form.js と同じ受信GAS。種別:無料 で「無料鑑定」タブに貯まる */
+  /* ▼▼▼ 無料鑑定サーバー（Code.gs をデプロイして得た /exec のURLを貼る）▼▼▼ */
+  var GAS_URL = "https://script.google.com/macros/s/AKfycbywfDbsOw4_Yd5I-KbDtr05vfla8oPB01ZIcbmiA4iUOU9QyFg6qSLBiz5XE5l2QcZw/exec";
+  /* ▲▲▲ ここだけ差し替える ▲▲▲ */
+
+  /* 属性ログ用（既存のフォーム受信GAS。鑑定サーバーとは別でよい） */
   var LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbxSwxzz0zt1vmlr_RyiWybQAu4Sc2YcMIjNkp28CC5Yx_cPzjL3fmib7_zNqc0MG6X_/exec";
 
   function el(id) { return document.getElementById(id); }
@@ -14,11 +19,6 @@
     return String(s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
-  }
-  function paras(text) {
-    return String(text).split("\n\n").map(function (p) {
-      return "<p>" + esc(p).replace(/\n/g, "<br>") + "</p>";
-    }).join("");
   }
   function scrollTop() {
     window.scrollTo({ top: el("start").offsetTop - 20, behavior: "smooth" });
@@ -60,7 +60,7 @@
 
   var LOADING = ["命式を立てています", "命式を立てています．", "命式を立てています．．", "命式を立てています．．．"];
 
-  /* 入力属性をシートへ送るだけ。失敗しても何もしない（鑑定は止めない） */
+  /* 入力属性をシートへ送るだけ（従来どおり）。失敗しても鑑定は止めない */
   function logFree() {
     try {
       if (!LOG_ENDPOINT) return;
@@ -82,6 +82,29 @@
     } catch (e) { /* ログ失敗は無視 */ }
   }
 
+  /* サーバーへ鑑定を依頼して #meishiki / #reading に流し込む。
+     名前はサーバーに渡さず、返ってきた {{NAME}} をここで置換する。 */
+  function fetchReading() {
+    var payload = {
+      year:  Number(el("year").value),
+      month: Number(el("month").value),
+      day:   Number(el("day").value),
+      hour:  state.hour,               // null または 0〜23
+      gender: state.gender
+    };
+    return fetch(GAS_URL, {
+      method: "POST",
+      /* text/plain の“単純リクエスト”にしてCORSプリフライトを避ける */
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (!res || !res.ok) throw new Error((res && res.error) || "reading failed");
+      var nm = esc(state.name || el("name").value.trim());
+      el("meishiki").innerHTML = res.meishikiHtml;
+      el("reading").innerHTML  = res.readingHtml.replace(/\{\{NAME\}\}/g, nm);
+    });
+  }
+
   function run() {
     logFree();
     hide("step4"); show("loading"); scrollTop();
@@ -90,99 +113,19 @@
       el("loadingText").textContent = LOADING[i % LOADING.length];
       i++;
     }, 420);
-    setTimeout(function () {
+
+    var started = Date.now();
+    fetchReading().then(function () {
+      var wait = Math.max(0, 1400 - (Date.now() - started)); // 演出の最低表示時間
+      setTimeout(function () {
+        clearInterval(timer);
+        hide("loading"); show("result"); scrollTop();
+      }, wait);
+    }).catch(function () {
       clearInterval(timer);
-      render();
-      hide("loading"); show("result"); scrollTop();
-    }, 2800);
-  }
-
-  function render() {
-    var y = Number(el("year").value),
-        m = Number(el("month").value),
-        d = Number(el("day").value);
-
-    var ms = window.Meishiki.build(y, m, d, state.hour);
-    var R  = window.Reading;
-    var k  = ms.dayKan;
-    var nm = esc(state.name);
-
-    /* 命式 */
-    var mh = "";
-    mh += '<p class="meishiki-label">あなたの命式</p>';
-    mh += '<div class="pillars">';
-    mh += '<div class="pillar"><span class="pl">年柱</span><span class="pv">' + ms.year.kan + ms.year.shi + "</span></div>";
-    mh += '<div class="pillar"><span class="pl">月柱</span><span class="pv">' + ms.month.kan + ms.month.shi + "</span></div>";
-    mh += '<div class="pillar"><span class="pl">日柱</span><span class="pv">' + ms.day.kan + ms.day.shi + "</span></div>";
-    if (ms.hasHour) {
-      mh += '<div class="pillar"><span class="pl">時柱</span><span class="pv">' + ms.hour.kan + ms.hour.shi + "</span></div>";
-    }
-    mh += "</div>";
-    mh += '<p class="meishiki-note">あなたの本質を表すのは日柱の天干、<strong>' + k
-        + "（" + ms.dayKanYomi + "）</strong>。五行では<strong>" + ms.dayGyoName + "</strong>にあたります。</p>";
-    mh += '<div class="attrs">';
-    mh += '<div class="attr"><span class="al">社会での出方</span><span class="av">' + ms.tsuhen + "</span></div>";
-    mh += '<div class="attr"><span class="al">今の段階</span><span class="av">' + ms.junisei + "</span></div>";
-    mh += '<div class="attr"><span class="al">五行の偏り</span><span class="av">'
-        + ms.balance.mostName + "が最多"
-        + (ms.balance.lackName ? " / " + ms.balance.lackAll.join("・") + "が欠" : "")
-        + '<em class="src">' + ms.balance.chars + "文字で判定</em></span></div>";
-    mh += "</div>";
-    el("meishiki").innerHTML = mh;
-
-    /* 本文（時柱の有無でセクション数が変わるので番号は動的に振る） */
-    var NUM = ["一","二","三","四","五","六","七","八","九","十"];
-    var n = 0;
-    function sec(title) { n++; return "<h3>" + NUM[n - 1] + "　" + title + "</h3>"; }
-
-    var h = "";
-
-    h += sec("宿命・本質");
-    h += "<p>" + nm + "さん。前置きはしません。</p>";
-    h += paras(R.destiny[k]);
-    h += "<p>" + esc(R.gyoMost[ms.balance.mostName]) + "</p>";
-    h += "<p>" + esc(ms.balance.lackName ? R.gyoLack[ms.balance.lackName] : R.gyoNone) + "</p>";
-
-    h += sec("性格");
-    h += paras(R.character[k]);
-    h += "<p class=\"axis\">日柱は" + ms.day.kan + ms.day.shi + "。<strong>"
-       + ms.junisei + "</strong>の帯びを持って生まれています。</p>";
-    h += paras(R.juniseiChar[ms.junisei]);
-    var bridge = R.juniseiBridge[ms.day.kan + ms.junisei];
-    if (bridge) h += paras(bridge);
-
-    h += sec("社会での出方");
-    h += "<p class=\"axis\">月柱の天干は" + ms.month.kan + "。日干" + k + "から見ると<strong>"
-       + ms.tsuhen + "</strong>にあたります。</p>";
-    h += paras(R.tsuhen[ms.tsuhen]);
-
-    h += sec("恋愛・結婚");
-    h += paras(R.love[k]);
-    h += "<p>" + esc(R.loveByGender[k][state.gender]) + "</p>";
-
-    h += sec("仕事・お金");
-    h += paras(R.work[k]);
-
-    h += sec("今の段階");
-    h += "<p class=\"axis\">日支は" + ms.day.shi + "。十二運では<strong>"
-       + ms.junisei + "</strong>の位置にあります。</p>";
-    h += paras(R.junisei[ms.junisei]);
-
-    if (ms.hasHour) {
-      h += sec("隠れているもの");
-      h += "<p class=\"axis\">時柱は" + ms.hour.kan + ms.hour.shi + "。日干" + k
-         + "から見ると<strong>" + ms.hourTsuhen + "</strong>にあたります。</p>";
-      h += paras(R.hourTsuhen[ms.hourTsuhen]);
-    }
-
-    h += sec("気をつけること");
-    h += paras(R.caution[k]);
-
-    h += sec("最後に");
-    h += paras(R.summary[k]);
-    h += "<p>" + nm + "さん。決めるのはあなたです。私は視えたものをお伝えしただけです。</p>";
-
-    el("reading").innerHTML = h;
+      el("loadingText").textContent = "通信が混み合っています。少し待って、もう一度お試しください。";
+      setTimeout(function () { hide("loading"); show("step4"); scrollTop(); }, 1900);
+    });
   }
 
   function reset() {
@@ -210,9 +153,7 @@
       hide("step1"); show("step2"); scrollTop();
     });
 
-    /* 日本語入力の変換確定Enterで次へ進まないようにする。
-       IME変換中のEnterは e.isComposing が true（古い環境では keyCode 229）。
-       compositionend の直後に keydown が来る環境もあるので、フラグでも保険をかける。 */
+    /* 日本語入力の変換確定Enterで次へ進まないようにする */
     var composing = false;
     var composeEndedAt = 0;
     el("name").addEventListener("compositionstart", function () { composing = true; });
@@ -222,8 +163,8 @@
     });
     el("name").addEventListener("keydown", function (e) {
       if (e.key !== "Enter") return;
-      if (e.isComposing || e.keyCode === 229 || composing) return;   // 変換中
-      if (Date.now() - composeEndedAt < 120) return;                  // 確定直後
+      if (e.isComposing || e.keyCode === 229 || composing) return;
+      if (Date.now() - composeEndedAt < 120) return;
       e.preventDefault();
       el("to2").click();
     });
