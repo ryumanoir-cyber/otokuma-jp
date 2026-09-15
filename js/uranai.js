@@ -82,27 +82,56 @@
     } catch (e) { /* ログ失敗は無視 */ }
   }
 
-  /* サーバーへ鑑定を依頼して #meishiki / #reading に流し込む。
-     名前はサーバーに渡さず、返ってきた {{NAME}} をここで置換する。 */
-  function fetchReading() {
-    var payload = {
-      year:  Number(el("year").value),
-      month: Number(el("month").value),
-      day:   Number(el("day").value),
-      hour:  state.hour,               // null または 0〜23
-      gender: state.gender
-    };
-    return fetch(GAS_URL, {
-      method: "POST",
-      /* text/plain の“単純リクエスト”にしてCORSプリフライトを避ける */
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    }).then(function (r) { return r.json(); }).then(function (res) {
-      if (!res || !res.ok) throw new Error((res && res.error) || "reading failed");
-      var nm = esc(state.name || el("name").value.trim());
-      el("meishiki").innerHTML = res.meishikiHtml;
-      el("reading").innerHTML  = res.readingHtml.replace(/\{\{NAME\}\}/g, nm);
+  /* JSONP（scriptタグ）でサーバー(GAS)へ鑑定を依頼する。
+     GASは fetch(POST) だと 302→googleusercontent/echo が断続的に404になり不安定なため、
+     CORS・echoリダイレクトを回避できる scriptタグ方式にする。名前はサーバーに渡さず、
+     返ってきた {{NAME}} をここで置換する。 */
+  function fetchReadingOnce() {
+    return new Promise(function (resolve, reject) {
+      var cb = "__kr" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+      var s = document.createElement("script");
+      var done = false;
+      function cleanup() {
+        clearTimeout(timer);
+        try { delete window[cb]; } catch (e) { window[cb] = undefined; }
+        if (s.parentNode) s.parentNode.removeChild(s);
+      }
+      var timer = setTimeout(function () {
+        if (done) return; done = true; cleanup(); reject(new Error("timeout"));
+      }, 20000);
+      window[cb] = function (res) {
+        if (done) return; done = true; cleanup();
+        if (!res || !res.ok) { reject(new Error((res && res.error) || "reading failed")); return; }
+        var nm = esc(state.name || el("name").value.trim());
+        el("meishiki").innerHTML = res.meishikiHtml;
+        el("reading").innerHTML  = res.readingHtml.replace(/\{\{NAME\}\}/g, nm);
+        resolve();
+      };
+      var q = "?callback=" + cb
+            + "&year="   + encodeURIComponent(el("year").value)
+            + "&month="  + encodeURIComponent(el("month").value)
+            + "&day="    + encodeURIComponent(el("day").value)
+            + "&hour="   + encodeURIComponent(state.hour == null ? "" : state.hour)
+            + "&gender=" + encodeURIComponent(state.gender);
+      s.src = GAS_URL + q;
+      s.onerror = function () {
+        if (done) return; done = true; cleanup(); reject(new Error("script error"));
+      };
+      document.head.appendChild(s);
     });
+  }
+
+  /* 失敗時は少し待って最大3回まで試す（GAS・回線の一時的な不調対策） */
+  function fetchReading() {
+    var attempts = 0;
+    function attempt() {
+      attempts++;
+      return fetchReadingOnce().catch(function (e) {
+        if (attempts >= 3) throw e;
+        return new Promise(function (r) { setTimeout(r, 700); }).then(attempt);
+      });
+    }
+    return attempt();
   }
 
   function run() {
