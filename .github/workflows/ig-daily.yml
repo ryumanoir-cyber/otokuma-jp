@@ -1,0 +1,28 @@
+name: IG 毎日21時の投稿
+
+on:
+  schedule:
+    # 12:00 UTC = 21:00 JST。GitHubのcronは混雑時に数分〜20分ほど遅れることがある
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+    # 手動実行もできるようにしておく（取りこぼした日のリカバリ用）
+
+concurrency:
+  group: ig-daily
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 翌日分をカルーセル投稿
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python3 tools/ig_publish.py

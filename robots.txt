@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /form/
 Disallow: /k/
+Disallow: /ig/
 
 Sitemap: https://otokuma-jp.com/
