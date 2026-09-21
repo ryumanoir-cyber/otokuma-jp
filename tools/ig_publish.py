@@ -80,9 +80,10 @@ def main():
     manifest = day / "post.json"
 
     if not manifest.exists():
-        # 在庫切れ。落とさずに知らせるだけにする（毎朝の失敗通知で気づける）
-        print(f"◦ {target} の投稿データが無いので何もしない（在庫切れ）")
-        return
+        # 在庫切れ。黙って成功扱いにすると誰も気づかないまま止まるので、
+        # ここは失敗にしてメール通知を飛ばす
+        die(f"{target} の投稿データがありません（在庫切れ）。今夜の投稿は出ていません。\n"
+            "  補充: ig-daily/batch.py → ig-publish/prepare.py --commit")
 
     post = json.loads(manifest.read_text(encoding="utf-8"))
     caption = post["caption"]
