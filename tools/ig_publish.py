@@ -71,6 +71,26 @@ def wait_until_live(urls, tries=10, wait=30):
     die("画像が公開URLに出てこない:\n  " + "\n  ".join(missing))
 
 
+def wait_until_finished(container_id, tries=20, wait=15):
+    """コンテナがFINISHEDになるまで待つ。
+
+    作った直後に media_publish を叩くと
+    「The media is not ready for publishing」(code 9007) で400になる。
+    Metaが裏で画像を取りに行って処理し終えるのを待つ必要がある。
+    """
+    for n in range(1, tries + 1):
+        r = api("GET", container_id, fields="status_code,status")
+        code = r.get("status_code")
+        if code == "FINISHED":
+            print(f"  ✓ コンテナ {container_id} 準備完了")
+            return
+        if code == "ERROR":
+            die(f"コンテナ {container_id} がERROR: {r.get('status')}")
+        print(f"  … コンテナ {container_id} は {code}（{n}/{tries}）{wait}秒待つ")
+        time.sleep(wait)
+    die(f"コンテナ {container_id} がFINISHEDにならない（{tries * wait}秒待った）")
+
+
 def main():
     if not IG_USER_ID or not TOKEN:
         die("IG_USER_ID / IG_ACCESS_TOKEN が未設定")
@@ -111,7 +131,10 @@ def main():
                  children=",".join(children), caption=caption)
     print("  carousel", parent["id"])
 
-    # 3. 公開
+    # 3. 処理が終わるまで待つ（ここを飛ばすと400で落ちる）
+    wait_until_finished(parent["id"])
+
+    # 4. 公開
     pub = api("POST", f"{IG_USER_ID}/media_publish", creation_id=parent["id"])
     print(f"✓ 公開した media_id={pub['id']}  ({target}分)")
 
