@@ -22,6 +22,7 @@ API = "https://graph.instagram.com/v23.0"
 SITE = "https://otokuma-jp.com"
 ROOT = Path(__file__).resolve().parent.parent      # リポジトリのルート
 JST = datetime.timezone(datetime.timedelta(hours=9))
+EVENING_FROM = 20      # この時刻(JST)以降だけ「翌日分」を出す
 
 IG_USER_ID = os.environ.get("IG_USER_ID", "").strip()
 TOKEN = os.environ.get("IG_ACCESS_TOKEN", "").strip()
@@ -32,8 +33,13 @@ def die(msg, code=1):
     sys.exit(code)
 
 
-def api(method, path, **params):
-    """Graph APIを叩く。失敗時はMetaのエラー本文をそのまま出して落とす。"""
+def api(method, path, optional=False, **params):
+    """Graph APIを叩く。失敗時はMetaのエラー本文をそのまま出して落とす。
+
+    optional=True なら落とさずNoneを返す。投稿に必須でない問い合わせ
+    （投稿枠の確認など）に使う。権限や一時的な制限で読み取りだけ
+    弾かれることがあり、それで投稿自体を止めたくないため。
+    """
     params["access_token"] = TOKEN
     url = f"{API}/{path}"
     data = urllib.parse.urlencode(params).encode()
@@ -46,6 +52,9 @@ def api(method, path, **params):
             return json.loads(r.read().decode())
     except urllib.error.HTTPError as e:
         body = e.read().decode(errors="replace")
+        if optional:
+            print(f"… {method} {path} は {e.code} で取れず（続行）\n  {body}")
+            return None
         die(f"{method} {path} が {e.code} で失敗\n{body}")
 
 
@@ -130,8 +139,9 @@ def publish(target):
     wait_until_live(urls)
 
     limit = api("GET", f"{IG_USER_ID}/content_publishing_limit",
-                fields="config,quota_usage")
-    print("  投稿枠:", json.dumps(limit.get("data", [{}])[0], ensure_ascii=False))
+                optional=True, fields="config,quota_usage")
+    if limit:
+        print("  投稿枠:", json.dumps(limit.get("data", [{}])[0], ensure_ascii=False))
 
     # 1. 各画像のコンテナ
     children = []
@@ -158,13 +168,23 @@ def main():
     if not IG_USER_ID or not TOKEN:
         die("IG_USER_ID / IG_ACCESS_TOKEN が未設定")
 
-    today = datetime.datetime.now(JST).date()
+    now = datetime.datetime.now(JST)
+    today = now.date()
     tomorrow = today + datetime.timedelta(days=1)
 
-    # 本命は「翌日分」。ただし前夜の実行が落ちていると今日分が出ていないので、
-    # 今日分も対象に入れて取りこぼしを拾う（昨日以前は日が過ぎているので追わない）。
+    # 本命は「翌日分を夜に出す」。ただし前夜の実行が全部落ちていると
+    # 今日分が出ていないので、今日分も対象に入れて取りこぼしを拾う。
+    # 昨日以前は日が過ぎていて意味が無いので追わない。
+    candidates = [today]
+    if now.hour >= EVENING_FROM:
+        candidates.append(tomorrow)
+    else:
+        # 朝の救済実行で翌日分まで出すと丸一日早まってしまう
+        print(f"・{now:%H:%M} なので翌日分（{tomorrow}）はまだ出さない"
+              f"（{EVENING_FROM}時以降）")
+
     todo = []
-    for d in (today, tomorrow):
+    for d in candidates:
         s = d.isoformat()
         if not (ROOT / "ig" / s / "post.json").exists():
             continue
