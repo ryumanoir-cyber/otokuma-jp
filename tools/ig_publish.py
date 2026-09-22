@@ -91,20 +91,31 @@ def wait_until_finished(container_id, tries=20, wait=15):
     die(f"コンテナ {container_id} がFINISHEDにならない（{tries * wait}秒待った）")
 
 
-def main():
-    if not IG_USER_ID or not TOKEN:
-        die("IG_USER_ID / IG_ACCESS_TOKEN が未設定")
+def marker(date_str):
+    """キャプションに必ず入っている日付の目印。例: 【2026年9月23日】"""
+    d = datetime.date.fromisoformat(date_str)
+    return f"【{d.year}年{d.month}月{d.day}日】"
 
-    target = (datetime.datetime.now(JST) + datetime.timedelta(days=1)).date().isoformat()
-    day = ROOT / "ig" / target
-    manifest = day / "post.json"
 
-    if not manifest.exists():
-        # 在庫切れ。黙って成功扱いにすると誰も気づかないまま止まるので、
-        # ここは失敗にしてメール通知を飛ばす
-        die(f"{target} の投稿データがありません（在庫切れ）。今夜の投稿は出ていません。\n"
-            "  補充: ig-daily/batch.py → ig-publish/prepare.py --commit")
+def posted_markers(limit=25):
+    """直近の投稿のキャプションから、既に出してある日付の目印を集める。
 
+    「その日の分を既に投稿したか」をこれで判定する。リポジトリに状態を
+    書き戻さずに済むので、二重投稿の防止がInstagram側の事実だけで完結する。
+    """
+    r = api("GET", f"{IG_USER_ID}/media", fields="caption", limit=limit)
+    out = set()
+    for m in r.get("data", []):
+        cap = m.get("caption") or ""
+        for part in cap.split("【")[1:]:
+            if "】" in part:
+                out.add("【" + part.split("】")[0] + "】")
+    return out
+
+
+def publish(target):
+    """target（YYYY-MM-DD）の分を1件投稿する。"""
+    manifest = ROOT / "ig" / target / "post.json"
     post = json.loads(manifest.read_text(encoding="utf-8"))
     caption = post["caption"]
     images = post["images"]
@@ -137,6 +148,42 @@ def main():
     # 4. 公開
     pub = api("POST", f"{IG_USER_ID}/media_publish", creation_id=parent["id"])
     print(f"✓ 公開した media_id={pub['id']}  ({target}分)")
+
+
+def main():
+    if not IG_USER_ID or not TOKEN:
+        die("IG_USER_ID / IG_ACCESS_TOKEN が未設定")
+
+    today = datetime.datetime.now(JST).date()
+    tomorrow = today + datetime.timedelta(days=1)
+
+    # 本命は「翌日分」。ただし前夜の実行が落ちていると今日分が出ていないので、
+    # 今日分も対象に入れて取りこぼしを拾う（昨日以前は日が過ぎているので追わない）。
+    done = posted_markers()
+    todo = []
+    for d in (today, tomorrow):
+        s = d.isoformat()
+        if not (ROOT / "ig" / s / "post.json").exists():
+            continue
+        if marker(s) in done:
+            print(f"・{s} 分は投稿済み。飛ばす")
+            continue
+        todo.append(s)
+
+    if not todo:
+        if not (ROOT / "ig" / tomorrow.isoformat() / "post.json").exists():
+            # 在庫切れ。ここでは落とさない。1日に何度も走るので、
+            # 落とすとメールが何通も飛ぶ。通知は ig_stock_check.py の役目
+            # （あちらは本命の実行でだけ動くので、1日1通で済む）
+            print(f"※ {tomorrow} の投稿データがありません（在庫切れ）")
+            return
+        print("✓ 出すべきものは全て投稿済み。何もしない")
+        return
+
+    for i, s in enumerate(todo):
+        if i:
+            time.sleep(30)     # 連続投稿になるので少し空ける
+        publish(s)
 
 
 if __name__ == "__main__":
