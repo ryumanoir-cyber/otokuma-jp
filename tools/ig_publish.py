@@ -91,26 +91,29 @@ def wait_until_finished(container_id, tries=20, wait=15):
     die(f"コンテナ {container_id} がFINISHEDにならない（{tries * wait}秒待った）")
 
 
-def marker(date_str):
-    """キャプションに必ず入っている日付の目印。例: 【2026年9月23日】"""
-    d = datetime.date.fromisoformat(date_str)
-    return f"【{d.year}年{d.month}月{d.day}日】"
+def stamp_path(date_str):
+    return ROOT / "ig" / date_str / ".published"
 
 
-def posted_markers(limit=25):
-    """直近の投稿のキャプションから、既に出してある日付の目印を集める。
+def is_published(date_str):
+    """その日の分を既に投稿したか。
 
-    「その日の分を既に投稿したか」をこれで判定する。リポジトリに状態を
-    書き戻さずに済むので、二重投稿の防止がInstagram側の事実だけで完結する。
+    Instagramに問い合わせて確かめるのが素直だが、`GET /{user}/media` は
+    このアプリの権限では `API access blocked` で弾かれる（投稿はできるが
+    読み取りはできない）。なので投稿できた時点でリポジトリに印を残し、
+    それを見る。どの日が実際に出たかを後から目で追えるのも利点。
     """
-    r = api("GET", f"{IG_USER_ID}/media", fields="caption", limit=limit)
-    out = set()
-    for m in r.get("data", []):
-        cap = m.get("caption") or ""
-        for part in cap.split("【")[1:]:
-            if "】" in part:
-                out.add("【" + part.split("】")[0] + "】")
-    return out
+    return stamp_path(date_str).exists()
+
+
+def mark_published(date_str, media_id):
+    p = stamp_path(date_str)
+    p.write_text(
+        json.dumps({"media_id": media_id,
+                    "at": datetime.datetime.now(JST).isoformat()},
+                   ensure_ascii=False) + "\n",
+        encoding="utf-8")
+    print(f"  印を残した: {p.relative_to(ROOT)}")
 
 
 def publish(target):
@@ -148,6 +151,7 @@ def publish(target):
     # 4. 公開
     pub = api("POST", f"{IG_USER_ID}/media_publish", creation_id=parent["id"])
     print(f"✓ 公開した media_id={pub['id']}  ({target}分)")
+    mark_published(target, pub["id"])
 
 
 def main():
@@ -159,13 +163,12 @@ def main():
 
     # 本命は「翌日分」。ただし前夜の実行が落ちていると今日分が出ていないので、
     # 今日分も対象に入れて取りこぼしを拾う（昨日以前は日が過ぎているので追わない）。
-    done = posted_markers()
     todo = []
     for d in (today, tomorrow):
         s = d.isoformat()
         if not (ROOT / "ig" / s / "post.json").exists():
             continue
-        if marker(s) in done:
+        if is_published(s):
             print(f"・{s} 分は投稿済み。飛ばす")
             continue
         todo.append(s)

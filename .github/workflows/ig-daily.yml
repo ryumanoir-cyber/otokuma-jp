@@ -18,6 +18,11 @@ concurrency:
   group: ig-daily
   cancel-in-progress: false
 
+permissions:
+  # 投稿できた日に ig/<日付>/.published を置いて push し返すため。
+  # 次の実行はそれを見て「もう出した日」を飛ばす（＝二重投稿しない）
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -33,6 +38,26 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
         run: python3 tools/ig_publish.py
+
+      # 投稿できた日の印を push し返す。これが残っていないと、
+      # 次の実行が同じ日をもう一度投稿してしまう
+      - name: 投稿済みの印をpushする
+        if: always()
+        run: |
+          if [ -z "$(git status --porcelain ig)" ]; then
+            echo "印の追加なし"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ig
+          git commit -m "Record which nights actually went out to Instagram"
+          # 他のpushと競合しても落とさない
+          for i in 1 2 3; do
+            git pull --rebase --autostash && git push && exit 0
+            sleep 5
+          done
+          echo "::warning::印のpushに失敗した。次の実行で同じ日を再投稿する恐れがある"
 
       # 在庫切れは正常終了なので通知が飛ばない。ここで別ステップにして、
       # 残りが少なくなったらわざと失敗させ、補充をメールで知らせる。
