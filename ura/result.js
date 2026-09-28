@@ -52,33 +52,64 @@
     if (el) el.addEventListener("click", fn);
   }
 
-  // X と Threads は普通のリンクにする。スマホで window.open や新しいタブで開くとアプリに切り替わらず
-  // ブラウザ版が開いてしまうため、スマホでは同じタブで開いてアプリに渡す。パソコンだけ新しいタブ
   var mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  function link(id, href) {
-    var el = document.getElementById(id);
-    if (!el) return;
-    el.href = href;
-    if (!mobile) { el.target = "_blank"; el.rel = "noopener"; }
+  var xWeb = "https://x.com/intent/post?text=" + encodeURIComponent(text + "\n") + "&url=" + encodeURIComponent(url);
+
+  // アプリを直接開く。ブラウザ版を経由して「アプリで開く」を押すと、Xは下書きを捨ててホームに飛ぶため。
+  // アプリが入っていなければ（ページが裏に回らなければ）ブラウザ版へ切り替える
+  function openApp(scheme, web) {
+    var left = false;
+    function onHide() { if (document.hidden) left = true; }
+    document.addEventListener("visibilitychange", onHide);
+    location.href = scheme;
+    setTimeout(function () {
+      document.removeEventListener("visibilitychange", onHide);
+      if (!left && !document.hidden) location.href = web;
+    }, 1600);
   }
-  link("shareX", "https://x.com/intent/post?text=" + encodeURIComponent(text + "\n") + "&url=" + encodeURIComponent(url));
-  link("shareThreads", "https://www.threads.net/intent/post?text=" + encodeURIComponent(text + "\n" + url));
-  // Instagramには投稿用のURLが無いので、スマホの共有シートに結果画像を渡す（ストーリーズを選べる）。
-  // iPhoneはタップ直後でないと共有シートを開けないため、画像は先に読み込んでおく
-  var igFile = null;
-  if (mine && body.dataset.og === "1") fetch("../../og/" + code + ".png").then(function (r) {
+
+  // Threads は普通のリンクでアプリの投稿画面が開く（本人の実機で確認済み）
+  var th = document.getElementById("shareThreads");
+  if (th) {
+    th.href = "https://www.threads.net/intent/post?text=" + encodeURIComponent(text + "\n" + url);
+    if (!mobile) { th.target = "_blank"; th.rel = "noopener"; }
+  }
+
+  on("shareX", function (ev) {
+    ev.preventDefault();
+    if (!mobile) { window.open(xWeb, "_blank", "noopener"); return; }
+    openApp("twitter://post?message=" + encodeURIComponent(text + "\n" + url), xWeb);
+  });
+
+  // 結果画像（Xのカードと同じ画像）。iPhone はタップ直後でないと共有シートを開けないので先に読んでおく
+  var imgUrl = "../../og/" + code + ".png", imgFile = null;
+  if (mine && body.dataset.og === "1") fetch(imgUrl).then(function (r) {
     return r.ok ? r.blob() : null;
   }).then(function (b) {
-    if (b) igFile = new File([b], "ura-" + code + ".png", { type: "image/png" });
+    if (b) imgFile = new File([b], "ura-" + code + ".png", { type: "image/png" });
   }).catch(function () {});
+
+  // Instagram には外から投稿画面を開くURLが無いので、シェア文をコピーしてストーリーズのカメラを開く
   on("shareIG", function () {
-    if (igFile && navigator.canShare && navigator.canShare({ files: [igFile] })) {
-      navigator.share({ files: [igFile], text: text + "\n" + url }).catch(function () {});
+    copy(text + "\n" + url).catch(function () {}).finally(function () {
+      say("シェア文をコピーしました。「画像を保存」で保存した結果画像をストーリーズに貼ってください。");
+      if (mobile) openApp("instagram://story-camera", "https://www.instagram.com/");
+      else window.open("https://www.instagram.com/", "_blank", "noopener");
+    });
+  });
+
+  // 画像を保存：スマホは共有シートの「画像を保存」で写真に入る。パソコンはそのままダウンロード
+  on("saveImg", function () {
+    if (imgFile && navigator.canShare && navigator.canShare({ files: [imgFile] })) {
+      navigator.share({ files: [imgFile] }).catch(function () {});
       return;
     }
-    copy(text + "\n" + url).finally(function () {
-      say("シェア文をコピーしました。この画面をスクショして、インスタのストーリーズに貼ってください。");
-    });
+    var a = document.createElement("a");
+    a.href = imgUrl;
+    a.download = "ura-" + code + ".png";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   });
   on("copy", function () {
     copy(url).then(function () { say("リンクをコピーしました"); });

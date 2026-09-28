@@ -169,7 +169,7 @@ img{max-width:100%;display:block}
 
 .share{margin-top:40px;text-align:center}
 .share-title{font-family:var(--mincho);font-weight:700;font-size:17px;letter-spacing:.15em;margin:0 0 14px}
-.share-row{display:flex;justify-content:center;gap:18px}
+.share-row{display:flex;justify-content:center;gap:12px}
 .sns{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0;text-decoration:none;color:inherit}
 .sns svg{width:56px;height:56px;padding:14px;border-radius:50%;fill:#fff;transition:transform .12s}
 .sns:active svg{transform:scale(.92)}
@@ -177,6 +177,7 @@ img{max-width:100%;display:block}
 .sns-x svg{background:#000;border:1px solid #333}
 .sns-threads svg{background:#000;border:1px solid #333}
 .sns-ig svg{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%);fill:none}
+.sns-save svg{background:var(--panel);border:1px solid var(--gold2);fill:none;color:var(--gold)}
 .sns-link svg{background:var(--panel);border:1px solid var(--line);fill:none;color:var(--fg)}
 .toast{margin:14px auto 0;max-width:320px;font-size:13px;line-height:1.7;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .cta{margin-top:40px;padding:28px 20px;border-radius:20px;text-align:center;background:radial-gradient(ellipse at 50% 0%,#2b2536,#111016 70%);border:1px solid var(--gold2)}
