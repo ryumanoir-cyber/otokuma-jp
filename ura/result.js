@@ -81,35 +81,47 @@
     openApp("twitter://post?message=" + encodeURIComponent(text + "\n" + url), xWeb);
   });
 
-  // 結果画像（Xのカードと同じ画像）。iPhone はタップ直後でないと共有シートを開けないので先に読んでおく
-  var imgUrl = "../../og/" + code + ".png", imgFile = null;
-  if (mine && body.dataset.og === "1") fetch(imgUrl).then(function (r) {
-    return r.ok ? r.blob() : null;
-  }).then(function (b) {
-    if (b) imgFile = new File([b], "ura-" + code + ".png", { type: "image/png" });
-  }).catch(function () {});
+  // 結果画像。iPhone はタップ直後でないと共有シートを開けないので先に読んでおく
+  // card＝Xのカードと同じ横長、story＝ストーリーズ用の縦長
+  var imgUrl = "../../og/" + code + ".png", storyUrl = "../../og/" + code + "-story.png";
+  var imgFile = null, storyFile = null;
+  function preload(src, name, done) {
+    fetch(src).then(function (r) { return r.ok ? r.blob() : null; })
+      .then(function (b) { if (b) done(new File([b], name, { type: "image/png" })); })
+      .catch(function () {});
+  }
+  if (mine && body.dataset.og === "1") {
+    preload(imgUrl, "ura-" + code + ".png", function (f) { imgFile = f; });
+    preload(storyUrl, "ura-" + code + "-story.png", function (f) { storyFile = f; });
+  }
+  function canShareFile(f) { return f && navigator.canShare && navigator.canShare({ files: [f] }); }
 
-  // Instagram には外から投稿画面を開くURLが無いので、シェア文をコピーしてストーリーズのカメラを開く
+  // Instagram：サイトからストーリーズへ画像を直接渡す手段は無いので、共有シートに縦長画像だけを渡す。
+  // 文章も一緒に渡すと Instagram が共有先の一覧から消えるため、画像のみ。リンクはコピーしてリンクスタンプに貼ってもらう
   on("shareIG", function () {
-    copy(text + "\n" + url).catch(function () {}).finally(function () {
-      say("シェア文をコピーしました。「画像を保存」で保存した結果画像をストーリーズに貼ってください。");
-      if (mobile) openApp("instagram://story-camera", "https://www.instagram.com/");
-      else window.open("https://www.instagram.com/", "_blank", "noopener");
-    });
-  });
-
-  // 画像を保存：スマホは共有シートの「画像を保存」で写真に入る。パソコンはそのままダウンロード
-  on("saveImg", function () {
-    if (imgFile && navigator.canShare && navigator.canShare({ files: [imgFile] })) {
-      navigator.share({ files: [imgFile] }).catch(function () {});
+    copy(url).catch(function () {});
+    if (canShareFile(storyFile)) {
+      say("一覧から「Instagram」→「ストーリーズ」を選んでください。リンクはコピー済みなので、リンクスタンプに貼れます。");
+      navigator.share({ files: [storyFile] }).catch(function () {});
       return;
     }
+    save(storyUrl, "ura-" + code + "-story.png");
+    say("画像を保存しました。インスタのストーリーズでこの画像を選んでください。");
+  });
+
+  function save(src, name) {
     var a = document.createElement("a");
-    a.href = imgUrl;
-    a.download = "ura-" + code + ".png";
+    a.href = src;
+    a.download = name;
     document.body.appendChild(a);
     a.click();
     a.remove();
+  }
+
+  // 画像を保存：スマホは共有シートの「画像を保存」で写真に入る。パソコンはそのままダウンロード
+  on("saveImg", function () {
+    if (canShareFile(imgFile)) { navigator.share({ files: [imgFile] }).catch(function () {}); return; }
+    save(imgUrl, "ura-" + code + ".png");
   });
   on("copy", function () {
     copy(url).then(function () { say("リンクをコピーしました"); });
