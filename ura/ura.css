@@ -170,7 +170,7 @@ img{max-width:100%;display:block}
 .share{margin-top:40px;text-align:center}
 .share-title{font-family:var(--mincho);font-weight:700;font-size:17px;letter-spacing:.15em;margin:0 0 14px}
 .share-row{display:flex;justify-content:center;gap:18px}
-.sns{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0}
+.sns{display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0;text-decoration:none;color:inherit}
 .sns svg{width:56px;height:56px;padding:14px;border-radius:50%;fill:#fff;transition:transform .12s}
 .sns:active svg{transform:scale(.92)}
 .sns span{font-size:11px;color:var(--mute)}

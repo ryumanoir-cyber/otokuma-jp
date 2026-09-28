@@ -52,12 +52,17 @@
     if (el) el.addEventListener("click", fn);
   }
 
-  on("shareX", function () {
-    window.open("https://x.com/intent/post?text=" + encodeURIComponent(text + "\n") + "&url=" + encodeURIComponent(url), "_blank", "noopener");
-  });
-  on("shareThreads", function () {
-    window.open("https://www.threads.net/intent/post?text=" + encodeURIComponent(text + "\n" + url), "_blank", "noopener");
-  });
+  // X と Threads は普通のリンクにする。スマホで window.open や新しいタブで開くとアプリに切り替わらず
+  // ブラウザ版が開いてしまうため、スマホでは同じタブで開いてアプリに渡す。パソコンだけ新しいタブ
+  var mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  function link(id, href) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.href = href;
+    if (!mobile) { el.target = "_blank"; el.rel = "noopener"; }
+  }
+  link("shareX", "https://x.com/intent/post?text=" + encodeURIComponent(text + "\n") + "&url=" + encodeURIComponent(url));
+  link("shareThreads", "https://www.threads.net/intent/post?text=" + encodeURIComponent(text + "\n" + url));
   // Instagramには投稿用のURLが無いので、スマホの共有シートに結果画像を渡す（ストーリーズを選べる）。
   // iPhoneはタップ直後でないと共有シートを開けないため、画像は先に読み込んでおく
   var igFile = null;
