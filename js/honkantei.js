@@ -11,6 +11,9 @@
     if (!b) return;
     if (BUY_URL) {
       b.href = BUY_URL;
+      b.addEventListener("click", function () {
+        if (window.track) window.track("honkantei_buy_click");
+      });
     } else {
       b.href = "#";
       b.classList.add("disabled");

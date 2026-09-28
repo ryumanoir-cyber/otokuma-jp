@@ -4,6 +4,9 @@
   var m = parseInt(p.get("m"), 10), a = (p.get("a") || "").split("-").map(Number);
   var mine = !isNaN(m) && a.length === 4 && a.every(function (x) { return x >= 50 && x <= 100; });
   var url = location.origin + location.pathname;
+  function track(name, params) { if (window.track) window.track(name, params); }
+  // own＝自分で診断した人、shared＝人のシェアから結果ページだけ見に来た人
+  track("ura_result_view", { type: code, viewer: mine ? "own" : "shared" });
 
   if (mine) {
     document.getElementById("kicker").textContent = "あなたの裏の顔は";
@@ -51,6 +54,11 @@
     var el = document.getElementById(id);
     if (el) el.addEventListener("click", fn);
   }
+  // シェア系ボタンは押された数を method 別に数える
+  [["shareX", "x"], ["shareThreads", "threads"], ["shareIG", "instagram"], ["saveImg", "save"], ["copy", "copy"]].forEach(function (b) {
+    on(b[0], function () { track("ura_share", { method: b[1], type: code }); });
+  });
+  on("toFree", function () { track("ura_to_free_click", { type: code, viewer: mine ? "own" : "shared" }); });
 
   var mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   var xWeb = "https://x.com/intent/post?text=" + encodeURIComponent(text + "\n") + "&url=" + encodeURIComponent(url);

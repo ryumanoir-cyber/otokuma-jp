@@ -113,8 +113,17 @@
     return attempt();
   }
 
+  /* 計測（js/ga.js）。裏の顔診断から来た人は ?from=ura が付いている */
+  var FROM = (location.search.match(/[?&]from=([\w-]+)/) || [])[1] || "";
+  function track(name) {
+    if (!window.track) return;
+    window.track(name, { from: FROM || "direct" });
+    if (FROM === "ura") window.track("ura_" + name);
+  }
+
   function run() {
     logFree();
+    track("free_submit");
     hide("step4"); show("loading"); scrollTop();
     var i = 0;
     var timer = setInterval(function () {
@@ -128,6 +137,7 @@
       setTimeout(function () {
         clearInterval(timer);
         hide("loading"); show("result"); scrollTop();
+        track("free_result");
       }, wait);
     }).catch(function () {
       clearInterval(timer);
@@ -147,6 +157,7 @@
     initGender();
 
     el("begin").addEventListener("click", function () {
+      track("free_start");
       show("start");
       hide("step2"); hide("step3"); hide("step4"); hide("loading"); hide("result");
       show("step1");

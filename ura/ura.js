@@ -6,10 +6,12 @@
   var answers = new Array(Q.length).fill(null);
   var page = 0;
   var $ = function (id) { return document.getElementById(id); };
+  function track(name, params) { if (window.track) window.track(name, params); }
 
   $("start").addEventListener("click", function () {
     $("landing").hidden = true;
     $("quiz").hidden = false;
+    track("ura_start");
     render();
     window.scrollTo(0, 0);
   });
@@ -69,7 +71,7 @@
     if (page > 0) { page--; render(); window.scrollTo(0, 0); }
   });
   $("next").addEventListener("click", function () {
-    if (page < PAGES - 1) { page++; render(); window.scrollTo(0, 0); return; }
+    if (page < PAGES - 1) { page++; track("ura_page", { page: page + 1 }); render(); window.scrollTo(0, 0); return; }
     finish();
   });
 
@@ -97,6 +99,7 @@
 
   function finish() {
     var r = score();
+    track("ura_complete", { type: r.code, mask: r.mask });
     try { localStorage.setItem("ura_result", JSON.stringify(r)); } catch (e) {}
     $("quiz").hidden = true;
     $("loading").hidden = false;
