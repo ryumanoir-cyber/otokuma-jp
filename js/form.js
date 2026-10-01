@@ -106,5 +106,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     initPref();
     el("kanteiForm").addEventListener("submit", submit);
+    /* 送信ボタンは HTML では押せない状態にしてあり、準備ができてから押せるようにする */
+    el("f-submit").disabled = false;
   });
 })();

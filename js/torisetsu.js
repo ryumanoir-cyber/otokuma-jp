@@ -83,5 +83,8 @@
   document.addEventListener("DOMContentLoaded", function () {
     initSelects();
     el("toriForm").addEventListener("submit", submit);
+    /* 送信ボタンは HTML では押せない状態にしてあり、準備ができてから押せるようにする。
+       読み込み途中に押されると、ブラウザ標準の送信で入力内容が URL に載ってしまうため */
+    el("t-submit").disabled = false;
   });
 })();

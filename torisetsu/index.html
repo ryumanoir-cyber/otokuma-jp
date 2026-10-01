@@ -31,7 +31,7 @@
 <main>
 <section class="section" id="form">
   <div class="wrap">
-    <form id="toriForm" novalidate>
+    <form id="toriForm" method="post" action="#" novalidate>
 
       <div class="fld">
         <label for="t-name">お名前（呼び方） <span class="req">必須</span></label>
@@ -67,7 +67,7 @@
         第三者に開示することはありません。
       </p>
 
-      <button type="submit" class="btn-primary btn-submit" id="t-submit">無料で申し込む</button>
+      <button type="submit" class="btn-primary btn-submit" id="t-submit" disabled>無料で申し込む</button>
       <p class="form-msg" id="t-msg"></p>
     </form>
 
@@ -94,6 +94,6 @@
   </div>
 </footer>
 
-<script src="/js/torisetsu.js?v=1"></script>
+<script src="/js/torisetsu.js?v=2"></script>
 </body>
 </html>
