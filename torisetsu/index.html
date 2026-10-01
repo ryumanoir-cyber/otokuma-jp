@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script src="/js/ga.js?v=1"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生の取扱説明書｜黒の占い師</title>
+<meta name="description" content="生まれた日の空から読み解く、あなただけの人生の取扱説明書。">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=1">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=1">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1">
+<link rel="stylesheet" href="/css/style.css?v=33">
+</head>
+<body>
+
+<header class="hero hero-sub">
+  <div class="hero-inner">
+    <p class="eyebrow">黒の占い師</p>
+    <h1>人生の取扱説明書</h1>
+    <p class="lead">
+      生まれた日の空から、あなたの性質を読み解き、<br>
+      一冊の「取扱説明書」にしてお届けします。
+    </p>
+    <p class="lead strong">
+      何で動き、何で止まり、どうすれば立て直せるのか。
+    </p>
+  </div>
+</header>
+
+<main>
+<section class="section" id="form">
+  <div class="wrap">
+    <form id="toriForm" novalidate>
+
+      <div class="fld">
+        <label for="t-name">お名前（呼び方） <span class="req">必須</span></label>
+        <input type="text" id="t-name" name="お名前" class="text-input" required maxlength="30" autocomplete="nickname">
+        <p class="fld-note">取扱説明書の表紙に入れます。ニックネームでも構いません。</p>
+      </div>
+
+      <div class="fld">
+        <label for="t-mail">メールアドレス <span class="req">必須</span></label>
+        <input type="email" id="t-mail" name="メールアドレス" class="text-input" required
+               autocomplete="email" inputmode="email" placeholder="example@example.com">
+        <p class="fld-note">取扱説明書のお届け先です。お間違いがあるとお届けできませんので、ご確認のうえご記入ください。</p>
+      </div>
+
+      <div class="fld">
+        <label for="t-birth">生年月日 <span class="req">必須</span></label>
+        <input type="date" id="t-birth" name="生年月日" class="text-input" required min="1900-01-01" max="2099-12-31">
+      </div>
+
+      <div class="fld">
+        <label for="t-hour">生まれた時刻</label>
+        <select id="t-hour" name="出生時刻" class="text-input"></select>
+        <p class="fld-note">分かる方のみ（母子手帳に書いてあります）。何時ごろか分かると、心の動き方まで、さらに正確に読めます。</p>
+      </div>
+
+      <div class="fld">
+        <label for="t-pref">生まれた都道府県</label>
+        <select id="t-pref" name="出生地" class="text-input"></select>
+      </div>
+
+      <p class="privacy-note">
+        ご記入いただいた内容は、取扱説明書の作成とお届けのためだけに使用します。<br>
+        第三者に開示することはありません。
+      </p>
+
+      <button type="submit" class="btn-primary btn-submit" id="t-submit">この内容で申し込む</button>
+      <p class="form-msg" id="t-msg"></p>
+    </form>
+
+    <div class="thanks hidden" id="t-thanks">
+      <h3>お受けしました</h3>
+      <p>
+        お申し込みありがとうございます。<br>
+        あなたの取扱説明書を作成し、<br>
+        3日ほどで、ご記入いただいたメールアドレスへお送りします。
+      </p>
+      <p class="note">このページは閉じていただいて構いません。</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="fname">黒の占い師</p>
+    <nav>
+      <a href="/policy/">プライバシーポリシー・免責事項</a>
+    </nav>
+    <p class="copy">&copy; 黒の占い師</p>
+  </div>
+</footer>
+
+<script src="/js/torisetsu.js?v=1"></script>
+</body>
+</html>
