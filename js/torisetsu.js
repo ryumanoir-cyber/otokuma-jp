@@ -74,7 +74,7 @@
       el("t-thanks").scrollIntoView({ behavior: "smooth", block: "start" });
     }).catch(function () {
       btn.disabled = false;
-      btn.textContent = "この内容で申し込む";
+      btn.textContent = "無料で申し込む";
       msg.className = "form-msg err";
       msg.textContent = "送信できませんでした。通信環境をご確認のうえ、もう一度お試しください。";
     });
