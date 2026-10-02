@@ -7,7 +7,7 @@
   var ITEMS = [
     { href: "/", label: "無料鑑定", desc: "生年月日から、あなたがどういう人かを視る", key: "free" },
     { href: "/torisetsu/", label: "人生の取扱説明書", desc: "あなたの本質を一冊にしてお届け（無料）", key: "torisetsu" },
-    { href: "/ura/", label: "裏の顔診断", desc: "24の質問で、人に隠している本性を視る", key: "ura" },
+    { href: "/ura/", label: "裏の顔診断", desc: "5分で、人に隠している本性を視る", key: "ura" },
     { href: "/honkantei/", label: "本鑑定", desc: "あなたの悩みに直接お答えする（有料）", key: "paid", accent: true }
   ];
 
@@ -44,7 +44,6 @@
     ".kn-panel a strong{display:block;font-size:16px;letter-spacing:.06em}",
     ".kn-panel a span{display:block;color:#9a97a3;font-size:12px;margin-top:2px}",
     ".kn-panel a.on strong{color:#e6c98a}",
-    ".kn-panel a.on strong:after{content:'　（いまここ）';font-size:11px;color:#9a97a3}",
     ".kn-panel a.accent{margin-top:10px;border:1px solid #c9a45c;padding:12px 14px;border-radius:2px}",
     ".kn-panel a.accent strong{color:#e6c98a}",
     "body.kn-has{padding-top:54px}",
