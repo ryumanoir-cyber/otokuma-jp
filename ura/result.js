@@ -135,4 +135,30 @@
   on("copy", function () {
     copy(url).then(function () { say("リンクをコピーしました"); });
   });
+  /* 鑑定数値シートの「裏の顔診断」タブへ動きを記録する（名前や回答は送らない）。
+     ページを離れる直前でも届くよう sendBeacon を使う */
+  var LOG_ENDPOINT = "https://script.google.com/macros/s/AKfycbxSwxzz0zt1vmlr_RyiWybQAu4Sc2YcMIjNkp28CC5Yx_cPzjL3fmib7_zNqc0MG6X_/exec";
+  function logSheet(event) {
+    try {
+      var v = window.kuroVisitor ? window.kuroVisitor() : { id: "", src: "" };
+      var body = JSON.stringify({
+        "種別": "裏の顔診断", "送信日時": new Date().toLocaleString("ja-JP"), "できごと": event,
+        "タイプ": code + " " + name, "仮面度": mine ? m : "", "訪問者ID": v.id, "流入元": v.src
+      });
+      if (navigator.sendBeacon && navigator.sendBeacon(LOG_ENDPOINT, new Blob([body], { type: "text/plain;charset=utf-8" }))) return;
+      fetch(LOG_ENDPOINT, { method: "POST", mode: "no-cors", keepalive: true,
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, body: body }).catch(function () {});
+    } catch (e) {}
+  }
+  // 同じ結果ページの再読み込みでは二重に記録しない
+  (function () {
+    var key = "ura_logged_" + code + "_" + (mine ? m : "shared");
+    try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, "1"); } catch (e) {}
+    logSheet(mine ? "診断完了" : "シェアされた結果を見た");
+  })();
+  on("toPaid", function () { logSheet("本鑑定へ進んだ"); });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest("a[data-kn]") : null;
+    if (a) logSheet("メニューから「" + (a.querySelector("strong") || a).textContent.trim() + "」へ");
+  });
 })();
