@@ -11,29 +11,88 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=1">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1">
 <link rel="stylesheet" href="/css/style.css?v=33">
+<style>
+/* 人生の取扱説明書：鑑定書と同じ「取扱説明書」の体裁 */
+.tm{--gold:#c9a45c;--gold2:#e6c98a;--warn:#d9714e}
+.tm-cover{padding:40px 16px 56px;background:radial-gradient(120% 80% at 50% 0%,#1d1912 0%,var(--bg) 65%)}
+.tm-cover .frame{position:relative;max-width:560px;margin:0 auto;border:1px solid var(--gold);padding:8px}
+.tm-cover .frame-in{border:1px solid var(--gold);padding:44px 22px 36px;text-align:center}
+.tm-cover .en{color:var(--gold);letter-spacing:.5em;font-size:11px;margin:0}
+.tm-cover h1{font-size:34px;letter-spacing:.12em;margin:.3em 0 .1em;font-weight:700}
+.tm-cover .sub{color:var(--mute);font-size:13px;letter-spacing:.2em;margin:0 0 22px}
+.tm-cover .lead{margin:.4em 0}
+.tm-cover .lead.strong{color:var(--gold2)}
+.tm-seal{position:absolute;right:18px;top:18px;width:64px;height:64px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;transform:rotate(-12deg)}
+.tm-seal span{width:52px;height:52px;border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.1em}
+.tm-cover .btn-primary{margin-top:26px}
+.tm-label{display:block;color:var(--gold);font-size:11px;letter-spacing:.35em;margin-bottom:4px}
+.tm h2{border-bottom:1px solid var(--gold);padding-bottom:10px}
+.tm-divider{text-align:center;color:var(--gold);letter-spacing:1em;font-size:10px;margin:0}
+/* 目次 */
+.tm-toc{background:var(--bg2);border:1px solid var(--line);padding:22px 22px 10px;margin:8px 0 0}
+.tm-toc .ttl{text-align:center;color:var(--gold);letter-spacing:.4em;margin:0 0 6px}
+.tm-toc ol{list-style:none;margin:0;padding:0}
+.tm-toc li{display:grid;grid-template-columns:4.2em 1fr;gap:8px;padding:9px 0;border-bottom:1px dotted var(--line)}
+.tm-toc li:last-child{border-bottom:0}
+.tm-toc .no{color:var(--gold);font-size:12px;padding-top:3px}
+.tm-toc strong{display:block;font-weight:600}
+.tm-toc span.d{display:block;color:var(--mute);font-size:13px}
+.tm-tags{list-style:none;padding:0;margin:18px 0 0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tm-tags li{border:1px solid var(--gold);color:var(--gold2);padding:2px 12px;font-size:13px;letter-spacing:.08em}
+/* 見本 */
+.tm-sample{border:1px solid var(--gold);padding:6px;margin-top:8px}
+.tm-sample-in{border:1px solid var(--line);padding:20px 16px;background:#0f0e0b}
+.tm-plate{text-align:center;margin-bottom:18px}
+.tm-plate .prod{font-size:22px;color:var(--gold2);font-weight:700;letter-spacing:.08em;margin:.1em 0}
+.tm-plate .tm-tags{margin-top:8px}
+.tm-sample h3{color:var(--gold2);font-size:15px;margin:22px 0 8px}
+table.tm-spec{width:100%;border-collapse:collapse;font-size:14px}
+table.tm-spec th,table.tm-spec td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;line-height:1.7}
+table.tm-spec th{width:36%;background:var(--bg2);color:var(--gold2);font-weight:600}
+.tm-caution{border:1px solid var(--warn);background:#1a1310;padding:12px 14px;font-size:14px;line-height:1.8}
+.tm-caution .lb{color:var(--warn);font-weight:700;letter-spacing:.15em;font-size:12px}
+.tm-caution .lb:before{content:"⚠︎ "}
+.tm-caution b{display:block;color:var(--fg);margin:2px 0}
+.tm-caution .fix{border-top:1px dashed var(--line);margin-top:6px;padding-top:6px;color:var(--gold2)}
+.tm-strength{display:grid;grid-template-columns:44px 1fr;gap:10px;border:1px solid var(--line);background:var(--bg2);padding:10px 12px;font-size:14px;line-height:1.7}
+.tm-strength .rk{color:var(--gold);font-size:28px;font-weight:700;text-align:center;line-height:1.2}
+.tm-strength b{display:block}
+.tm-strength small{color:var(--mute)}
+table.tm-trouble{width:100%;border-collapse:collapse;font-size:13px;line-height:1.7}
+table.tm-trouble th{background:var(--gold);color:#14120e;padding:6px 8px;text-align:left}
+table.tm-trouble td{border-bottom:1px solid var(--line);padding:8px;vertical-align:top}
+table.tm-trouble td:first-child{color:var(--gold2)}
+.tm-fade{text-align:center;color:var(--mute);font-size:13px;margin:14px 0 0}
+/* 理由 */
+.tm-reasons{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
+.tm-reasons li{display:grid;grid-template-columns:40px 1fr;gap:10px;border:1px solid var(--line);background:var(--bg);padding:12px 14px}
+.tm-reasons .n{color:var(--gold);font-size:22px;font-weight:700;text-align:center}
+.tm-reasons strong{display:block}
+.tm-reasons span{color:var(--mute);font-size:14px}
+/* 申込書 */
+.tm-apply{border:1px dashed var(--gold);padding:26px 18px;margin-top:8px}
+.tm-apply .ttl{text-align:center;color:var(--gold);letter-spacing:.4em;margin:0 0 4px}
+.tm-apply .ttl-sub{text-align:center;color:var(--mute);font-size:13px;margin:0 0 18px}
+@media(max-width:480px){.tm-cover h1{font-size:28px}.tm-seal{width:52px;height:52px;right:12px;top:12px}.tm-seal span{width:42px;height:42px;font-size:10px}}
+</style>
 </head>
-<body>
+<body class="tm">
 
-<header class="hero hero-sub">
-  <div class="hero-inner">
-    <p class="eyebrow">黒の占い師</p>
-    <h1>人生の取扱説明書<br><span style="font-size:.55em;letter-spacing:.2em">無料鑑定</span></h1>
-    <p class="lead">
-      あなたという人間を、<br>
-      いちばん上手に扱うための説明書です。
-    </p>
-    <p class="lead strong">
-      あなた自身もまだ気づいていない、<br>
-      あなたの本質をお届けします。
-    </p>
+<header class="tm-cover">
+  <div class="frame"><div class="tm-seal"><span>無料</span></div><div class="frame-in">
+    <p class="en">INSTRUCTION MANUAL</p>
+    <h1>人生の取扱説明書</h1>
+    <p class="sub">黒の占い師 ／ 無料鑑定</p>
+    <p class="lead">あなたという人間を、<br>いちばん上手に扱うための説明書です。</p>
+    <p class="lead strong">あなた自身もまだ気づいていない、<br>あなたの本質をお届けします。</p>
     <a href="#form" class="btn-primary">自分の取扱説明書を受け取る（無料）</a>
-  </div>
+  </div></div>
 </header>
 
 <main>
 <section class="section">
   <div class="wrap narrow">
-    <h2>人生がうまくいかないのは、扱い方を知らないだけ</h2>
+    <h2><span class="tm-label">はじめに</span>人生がうまくいかないのは、扱い方を知らないだけ</h2>
     <p>頑張っているのに空回りする。向いていないところで力を使い切っている。疲れているのに、自分では気づいていない。<br>
     たいていは、能力が足りないのではありません。<strong>自分の扱い方を知らないだけ</strong>です。</p>
     <p>正しい扱い方が分かれば、同じ力でも、出せる結果が変わります。</p>
@@ -42,33 +101,49 @@
 
 <section class="section alt">
   <div class="wrap">
-    <h2>取扱説明書に書いてあること</h2>
-    <ul class="menu-lg">
-      <li><strong>一言でいうと、あなたはどんな人か</strong><span>外から見えるあなたと、内側のあなたの違い</span></li>
-      <li><strong>あなたの基本のつくり</strong><span>人生の軸と、心が満たされる条件</span></li>
-      <li><strong>あなたを動かすもの・止めるもの</strong><span>何を燃料に動き、何でブレーキがかかるのか</span></li>
-      <li><strong>あなたの一番の芯</strong><span>あなたを支えている、いちばん揺るがない強み</span></li>
-      <li><strong>崩れやすいところと、立て直し方</strong><span>こういう時にこうなる、こうすれば戻る</span></li>
-      <li><strong>才能の活かし方</strong><span>力がいちばん生きる仕事と働き方、お金との付き合い方</span></li>
-      <li><strong>人との関わり方・恋愛</strong><span>人との距離の取り方、愛し方、相性のいい人</span></li>
-      <li><strong>取扱説明書（まとめ）</strong><span>機嫌がいい時、やってはいけないこと、周りの人へのお願い</span></li>
-    </ul>
-    <p class="note-block">
-      自分でも気づいていなかった一面が書かれていることがあります。
-    </p>
+    <h2><span class="tm-label">目 次</span>取扱説明書に書いてあること</h2>
+    <div class="tm-toc"><ol>
+      <li><span class="no">はじめに</span><div><strong>一言でいうと、あなたはどんな人か</strong><span class="d">外から見えるあなたと、内側のあなたの違い</span></div></li>
+      <li><span class="no">第一章</span><div><strong>あなたの基本のつくり</strong><span class="d">人生の軸と、心が満たされる条件</span></div></li>
+      <li><span class="no">第二章</span><div><strong>あなたを動かすもの・止めるもの</strong><span class="d">何を燃料に動き、何でブレーキがかかるのか</span></div></li>
+      <li><span class="no">第三章</span><div><strong>あなたの一番の芯</strong><span class="d">あなたを支えている、いちばん揺るがない強み</span></div></li>
+      <li><span class="no">第四章</span><div><strong>崩れやすいところと、立て直し方</strong><span class="d">こういう時にこうなる、こうすれば戻る</span></div></li>
+      <li><span class="no">第五章</span><div><strong>才能の活かし方</strong><span class="d">力がいちばん生きる仕事と働き方、お金との付き合い方</span></div></li>
+      <li><span class="no">第六章</span><div><strong>人との関わり方・恋愛</strong><span class="d">人との距離の取り方、愛し方、相性のいい人</span></div></li>
+      <li><span class="no">第七章</span><div><strong>取扱説明書（まとめ）</strong><span class="d">機嫌がいい時、やってはいけないこと、周りの人へのお願い</span></div></li>
+    </ol></div>
+    <ul class="tm-tags"><li>あなたの仕様表</li><li>使用上の注意</li><li>強みベスト3</li><li>故障かな？と思ったら</li></ul>
+    <p class="note-block">自分でも気づいていなかった一面が書かれていることがあります。</p>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap narrow">
-    <h2>実際の取扱説明書から（一部）</h2>
-    <ul class="menu-lg">
-      <li><strong>一言でいうと</strong><span>「認められたい熱い心」を、「何年もかけて積み上げる現実的な頭」で動かしている人。</span></li>
-      <li><strong>あなたの一番の芯</strong><span>あなたの芯は「成果を現実に掴み取る力」です。チャンスは次々に来るのに、一人で全部取りにいくと消耗するつくりでもあります。</span></li>
-      <li><strong>表と裏</strong><span>知識はどんどん吸収できるのに、人に甘えるのは下手。この差が、気づかないうちに一人で抱え込んでしまう理由です。</span></li>
-      <li><strong>崩れやすいところ</strong><span>あなたの内側には、いつも自分を採点している厳しい監督が住んでいます。立て直し方は、昨日の自分ではなく「1年前の自分」と比べること。</span></li>
-      <li><strong>才能の活かし方</strong><span>数字と仕組みの人でありながら、ビジョンを熱く語れる。人を巻き込んで、事業を大きくする側に向いています。</span></li>
-    </ul>
+    <h2><span class="tm-label">見 本</span>実際の取扱説明書から（一部）</h2>
+    <div class="tm-sample"><div class="tm-sample-in">
+      <div class="tm-plate"><span class="tm-label">製品名</span><p class="prod">熱を秘めた設計者</p>
+        <ul class="tm-tags"><li>積み上げる力</li><li>成果を掴む力</li><li>作り直す頭</li></ul></div>
+      <p class="lead" style="margin:0">「認められたい熱い心」を、「何年もかけて積み上げる現実的な頭」で動かしている人。</p>
+      <h3>あなたの仕様表</h3>
+      <table class="tm-spec">
+        <tr><th>エネルギーの充電方法</th><td>自分で認められる結果が出ること。それを本気で褒められること</td></tr>
+        <tr><th>苦手な環境</th><td>細かく管理される／段取りなしで急かされる</td></tr>
+        <tr><th>最大の力が出る条件</th><td>数字で確かめながら、信頼できる人と組んで大きくしていくとき</td></tr>
+      </table>
+      <h3>使用上の注意</h3>
+      <div class="tm-caution"><span class="lb">注意</span><b>自分への採点が厳しすぎる</b>
+        あなたの内側には、いつも自分を採点している厳しい監督が住んでいます。
+        <div class="fix">立て直し方：昨日の自分ではなく「1年前の自分」と比べる</div></div>
+      <h3>強みベスト3（壱）</h3>
+      <div class="tm-strength"><div class="rk">壱</div><div><b>成果を現実に掴み取る力</b><small>活きる場面：目標と数字がはっきりしている仕事<br>裏目に出る場面：大きな話を一人で全部抱え込んだとき</small></div></div>
+      <h3>故障かな？と思ったら</h3>
+      <table class="tm-trouble">
+        <tr><th>こんな状態のとき</th><th>こうすると戻る</th></tr>
+        <tr><td>何をしても「まだ足りない」と感じる</td><td>昨日ではなく、1年前の自分と比べる</td></tr>
+        <tr><td>急に全部を変えたくなる</td><td>自分だけで決められる実験を1つ始める</td></tr>
+      </table>
+      <p class="tm-fade">…… このほか、全七章でお届けします</p>
+    </div></div>
     <p class="note">※内容は一人ひとり、生まれた日によってまったく変わります。</p>
   </div>
 </section>
@@ -77,18 +152,20 @@
   <div class="wrap narrow">
     <h2>自分のことは、案外自分がいちばん分かっていません。</h2>
     <p>だからこそ、迷ったときに立ち返れる「自分の説明書」が一冊あると、毎日の選び方が変わります。</p>
-    <ul class="menu-lg">
-      <li><strong>力を使う場所を間違えなくなる</strong><span>あなたの才能がいちばん生きる仕事と働き方が分かります</span></li>
-      <li><strong>迷ったときの判断基準になる</strong><span>何が自分を動かし、何が止めるのかが分かっていれば、選択がぶれません</span></li>
-      <li><strong>崩れても、すぐに戻れる</strong><span>自分がどんな時に崩れ、どうすれば戻るのかが書いてあります</span></li>
-      <li><strong>人との関係がラクになる</strong><span>自分の距離の取り方や愛し方のくせが分かると、すれ違いが減ります</span></li>
+    <ul class="tm-reasons">
+      <li><span class="n">一</span><div><strong>力を使う場所を間違えなくなる</strong><span>あなたの才能がいちばん生きる仕事と働き方が分かります</span></div></li>
+      <li><span class="n">二</span><div><strong>迷ったときの判断基準になる</strong><span>何が自分を動かし、何が止めるのかが分かっていれば、選択がぶれません</span></div></li>
+      <li><span class="n">三</span><div><strong>崩れても、すぐに戻れる</strong><span>自分がどんな時に崩れ、どうすれば戻るのかが書いてあります</span></div></li>
+      <li><span class="n">四</span><div><strong>人との関係がラクになる</strong><span>自分の距離の取り方や愛し方のくせが分かると、すれ違いが減ります</span></div></li>
     </ul>
   </div>
 </section>
 
 <section class="section" id="form">
   <div class="wrap">
-    <h2>お申し込み（無料）</h2>
+    <div class="tm-apply">
+    <p class="ttl">お 申 込 書</p>
+    <p class="ttl-sub">無料でお作りします</p>
     <ol class="steps">
       <li><strong>下のフォームに入力</strong><span>必要なのは、お名前・メールアドレス・生年月日だけです。生まれた時刻が分かると、さらに正確になります。</span></li>
       <li><strong>3日ほどで、メールでお届け</strong><span>あなたのためだけに作った取扱説明書をお送りします。</span></li>
@@ -132,6 +209,7 @@
       <button type="submit" class="btn-primary btn-submit" id="t-submit" disabled>無料で申し込む</button>
       <p class="form-msg" id="t-msg"></p>
     </form>
+    </div>
 
     <div class="thanks hidden" id="t-thanks">
       <h3>お受けしました</h3>
