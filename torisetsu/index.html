@@ -46,6 +46,9 @@
 .tm-plate{text-align:center;margin-bottom:18px}
 .tm-plate .prod{font-size:22px;color:var(--gold2);font-weight:700;letter-spacing:.08em;margin:.1em 0}
 .tm-plate .tm-tags{margin-top:8px}
+.tm-tags.tm-grid{display:grid;grid-template-columns:repeat(2,1fr);max-width:340px;margin-left:auto;margin-right:auto}
+.tm-tags.tm-grid li{text-align:center;padding:4px 6px;white-space:nowrap}
+@media(min-width:640px){.tm-tags.tm-grid{grid-template-columns:repeat(4,1fr);max-width:600px}}
 .tm-sample h3{color:var(--gold2);font-size:15px;margin:22px 0 8px}
 table.tm-spec{width:100%;border-collapse:collapse;font-size:14px}
 table.tm-spec th,table.tm-spec td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;line-height:1.7}
@@ -113,7 +116,7 @@ table.tm-trouble td:first-child{color:var(--gold2)}
       <li><span class="no">第六章</span><div><strong>人との関わり方・恋愛</strong><span class="d">人との距離の取り方、愛し方、相性のいい人</span></div></li>
       <li><span class="no">第七章</span><div><strong>取扱説明書（まとめ）</strong><span class="d">機嫌がいい時、やってはいけないこと、周りの人へのお願い</span></div></li>
     </ol></div>
-    <ul class="tm-tags"><li>あなたの仕様表</li><li>使用上の注意</li><li>強みベスト3</li><li>困ったときは</li></ul>
+    <ul class="tm-tags tm-grid"><li>あなたの仕様表</li><li>使用上の注意</li><li>強みベスト3</li><li>困ったときは</li></ul>
     <p class="note-block">自分でも気づいていなかった一面が書かれていることがあります。</p>
   </div>
 </section>
