@@ -59,6 +59,7 @@
     on(b[0], function () { track("ura_share", { method: b[1], type: code }); });
   });
   on("toFree", function () { track("ura_to_free_click", { type: code, viewer: mine ? "own" : "shared" }); });
+  on("toPaid", function () { track("ura_to_paid_click", { type: code, viewer: mine ? "own" : "shared" }); });
 
   var mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   var xWeb = "https://x.com/intent/post?text=" + encodeURIComponent(text + "\n") + "&url=" + encodeURIComponent(url);

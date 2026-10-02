@@ -182,6 +182,12 @@ img{max-width:100%;display:block}
 .toast{margin:14px auto 0;max-width:320px;font-size:13px;line-height:1.7;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
 .cta{margin-top:40px;padding:28px 20px;border-radius:20px;text-align:center;background:radial-gradient(ellipse at 50% 0%,#2b2536,#111016 70%);border:1px solid var(--gold2)}
 .cta-lead{margin:0;color:var(--mute);font-size:13px}
+.cta-body{margin:0 0 14px;font-size:13px;color:var(--fg);line-height:1.9}
+.cta-menu{list-style:none;margin:0 auto 14px;padding:0;max-width:320px;text-align:left;font-size:13px}
+.cta-menu li{padding:6px 0 6px 18px;border-bottom:1px dotted var(--gold2);position:relative}
+.cta-menu li:before{content:"◆";position:absolute;left:0;color:var(--gold);font-size:9px;top:10px}
+.cta-price{margin:4px 0 14px;font-family:var(--mincho);font-weight:700;color:var(--gold);letter-spacing:.1em}
+.cta-note{margin:12px 0 0;font-size:11px;color:var(--mute)}
 .cta-main{margin:6px 0 18px;font-family:var(--mincho);font-weight:800;font-size:22px;line-height:1.6}
 .again{margin-top:28px}
 
