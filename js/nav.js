@@ -7,7 +7,7 @@
   var ITEMS = [
     { href: "/", label: "無料鑑定", desc: "生年月日から、あなたがどういう人かを視る", key: "free" },
     { href: "/ura/", label: "裏の顔診断", desc: "5分で、人に隠している本性を視る", key: "ura" },
-    { href: "/torisetsu/", label: "あなた自身の取扱説明書", desc: "あなたの本質を一冊にしてお届け（無料）", key: "torisetsu" },
+    { href: "/torisetsu/", label: "あなた自身の取扱説明書", short: "あなたの取扱説明書", desc: "あなたの本質を一冊にしてお届け（無料）", key: "torisetsu" },
     { href: "/honkantei/", label: "本鑑定", desc: "あなたの悩みに直接お答えする（有料）", key: "paid", accent: true }
   ];
 
@@ -107,9 +107,15 @@
     "font-family:'Hiragino Mincho ProN','Yu Mincho',YuMincho,'Noto Serif JP',serif;margin-top:40px}",
     ".kf-name{color:#e6c98a;letter-spacing:.3em;font-size:14px;margin:0 0 22px}",
     ".kf-sns{display:flex;justify-content:center;gap:14px;margin:0 0 26px;flex-wrap:wrap}",
-    ".kf-sns a{width:44px;height:44px;border:1px solid rgba(201,164,92,.55);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}",
-    ".kf-sns a:hover{background:rgba(201,164,92,.15)}",
-    ".kf-sns svg{width:19px;height:19px;fill:#e6c98a}",
+    ".kf-sns a{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .15s,opacity .15s}",
+    ".kf-sns a:hover{transform:translateY(-2px);opacity:.9}",
+    ".kf-sns svg{width:20px;height:20px;fill:#fff}",
+    /* 各SNSの公式の色 */
+    ".kf-sns .kf-x,.kf-sns .kf-threads,.kf-sns .kf-tiktok{background:#000;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}",
+    ".kf-sns .kf-instagram{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}",
+    ".kf-sns .kf-tiktok svg{filter:drop-shadow(-1.2px -1px 0 #25f4ee) drop-shadow(1.2px 1px 0 #fe2c55)}",
+    ".kf-sns .kf-youtube{background:#fff}",
+    ".kf-sns .kf-youtube svg{fill:#ff0000;width:24px;height:24px}",
     ".kf-menu{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 16px;max-width:360px;margin:0 auto 24px}",
     ".kf-menu a{color:#e8e6e3;font-size:13px;text-decoration:none;letter-spacing:.04em;padding:4px 0}",
     ".kf-menu a:hover{color:#e6c98a}",
@@ -129,10 +135,10 @@
       '<p class="kf-name">黒の占い師</p>' +
       '<div class="kf-sns">' + SNS.map(function (s) {
         return '<a href="' + s.href + '" target="_blank" rel="noopener" aria-label="' + s.label + '" title="' + s.label +
-          '" data-kf="' + s.key + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + s.d + '"/></svg></a>';
+          '" class="kf-' + s.key + '" data-kf="' + s.key + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + s.d + '"/></svg></a>';
       }).join("") + "</div>" +
       '<nav class="kf-menu" aria-label="サイト内のページ">' + ITEMS.map(function (it) {
-        return '<a href="' + it.href + '" data-kf="' + it.key + '">' + it.label + "</a>";
+        return '<a href="' + it.href + '" data-kf="' + it.key + '">' + (it.short || it.label) + "</a>";
       }).join("") + "</nav>" +
       '<p class="kf-sub"><a href="/policy/">プライバシーポリシー・免責事項</a></p>' +
       '<p class="kf-copy">&copy; 黒の占い師</p>';
