@@ -7,7 +7,7 @@
   var ITEMS = [
     { href: "/", label: "無料鑑定", desc: "生年月日から、あなたがどういう人かを視る", key: "free" },
     { href: "/ura/", label: "裏の顔診断", desc: "5分で、人に隠している本性を視る", key: "ura" },
-    { href: "/torisetsu/", label: "あなた自身の取扱説明書", short: "自分の取扱説明書", desc: "あなたの本質を一冊にしてお届け（無料）", key: "torisetsu" },
+    { href: "/torisetsu/", label: "あなた自身の取扱説明書", short: "あなたの取扱説明書", desc: "あなたの本質を一冊にしてお届け（無料）", key: "torisetsu" },
     { href: "/honkantei/", label: "本鑑定", desc: "あなたの悩みに直接お答えする（有料）", key: "paid", accent: true }
   ];
 
