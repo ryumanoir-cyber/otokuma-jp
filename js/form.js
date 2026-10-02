@@ -85,6 +85,9 @@
 
     var data = collect(form);
     data["送信日時"] = new Date().toLocaleString("ja-JP");
+    var vis = window.kuroVisitor ? window.kuroVisitor() : { id: "", src: "" };
+    data["訪問者ID"] = vis.id;
+    data["流入元"] = vis.src;
 
     fetch(ENDPOINT, {
       method: "POST",

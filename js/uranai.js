@@ -72,6 +72,9 @@
         "出生時刻": state.hour === null || state.hour === "" ? "" : state.hour + "時台",
         "性別": state.gender === "female" ? "女性" : "男性"
       };
+      var vis = window.kuroVisitor ? window.kuroVisitor() : { id: "", src: "" };
+      data["訪問者ID"] = vis.id;
+      data["流入元"] = vis.src;
       fetch(LOG_ENDPOINT, {
         method: "POST",
         mode: "no-cors",

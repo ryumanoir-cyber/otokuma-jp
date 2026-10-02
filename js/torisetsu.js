@@ -61,6 +61,9 @@
       "出生時刻": form["出生時刻"].value,
       "出生地": form["出生地"].value
     };
+    var vis = window.kuroVisitor ? window.kuroVisitor() : { id: "", src: "" };
+    data["訪問者ID"] = vis.id;
+    data["流入元"] = vis.src;
 
     fetch(ENDPOINT, {
       method: "POST",
