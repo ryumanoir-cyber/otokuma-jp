@@ -89,21 +89,14 @@
     data["訪問者ID"] = vis.id;
     data["流入元"] = vis.src;
 
-    fetch(ENDPOINT, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(data)
-    }).then(function () {
-      form.classList.add("hidden");
-      el("f-thanks").classList.remove("hidden");
-      el("f-thanks").scrollIntoView({ behavior: "smooth", block: "start" });
-    }).catch(function () {
+    // 返事を待たずに完了ページへ（送信は裏で最後まで続く）。2026-10-04
+    var ok = window.kuroSend && window.kuroSend(ENDPOINT, data, "/form/thanks/");
+    if (!ok) {
       btn.disabled = false;
       btn.textContent = "この内容で送信する";
       msg.className = "form-msg err";
       msg.textContent = "送信できませんでした。通信環境をご確認のうえ、もう一度お試しください。";
-    });
+    }
   }
 
   document.addEventListener("DOMContentLoaded", function () {

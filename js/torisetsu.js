@@ -65,22 +65,15 @@
     data["訪問者ID"] = vis.id;
     data["流入元"] = vis.src;
 
-    fetch(ENDPOINT, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(data)
-    }).then(function () {
-      if (window.track) window.track("torisetsu_submit");
-      form.classList.add("hidden");
-      el("t-thanks").classList.remove("hidden");
-      el("t-thanks").scrollIntoView({ behavior: "smooth", block: "start" });
-    }).catch(function () {
+    // 返事を待たずに完了ページへ（送信は裏で最後まで続く）。2026-10-04
+    var ok = window.kuroSend && window.kuroSend(ENDPOINT, data, "/torisetsu/thanks/");
+    if (ok && window.track) window.track("torisetsu_submit");
+    if (!ok) {
       btn.disabled = false;
       btn.textContent = "無料で申し込む";
       msg.className = "form-msg err";
       msg.textContent = "送信できませんでした。通信環境をご確認のうえ、もう一度お試しください。";
-    });
+    }
   }
 
   document.addEventListener("DOMContentLoaded", function () {
