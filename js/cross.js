@@ -52,7 +52,7 @@
       html += '<div class="kn-paid">' +
         '<p class="kn-paid-k">本鑑定</p>' +
         '<p class="kn-paid-t">あなたの悩みそのものに、<br>私が直接お答えします。</p>' +
-        '<p class="kn-paid-d">生年月日とご相談の内容から、一人ずつ鑑定書にしてお届けします。</p>' +
+        '<p class="kn-paid-d">ご相談内容から、一人ずつ私が直接鑑定してお届けします。</p>' +
         '<p class="kn-paid-p">本鑑定　5,980円</p>' +
         '<a class="kn-paid-b" data-to="paid" href="' + esc(url("/honkantei/", from)) + '">本鑑定を見てみる</a>' +
         '<p class="kn-paid-n">甘いことは書きません。それでも構わない方だけ、お進みください。</p></div>';
