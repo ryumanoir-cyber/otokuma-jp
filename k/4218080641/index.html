@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script src="/js/ga.js?v=2"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>鑑定書 | 黒の占い師</title>
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600;700;900&family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#0e0e13; --panel:#14141b; --gold:#c2a869; --gold-dim:#8f7d4e;
+    --cream:#e9e5dc; --muted:#9a9488; --faint:#6f6b62; --hair:#2a2a33; --hair-soft:#22222b;
+    --body-serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+    --display-serif:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--ground);color:var(--cream);font-family:var(--body-serif);
+    -webkit-font-smoothing:antialiased;line-height:2.05;}
+  .sheet{max-width:640px;margin:0 auto;padding:0 22px 96px;}
+
+  .cover{position:relative;padding:64px 22px 52px;margin:0 -22px 40px;text-align:center;
+    background:radial-gradient(120% 80% at 50% 0%, rgba(194,168,105,.10), transparent 60%),
+      linear-gradient(180deg,#101017 0%, var(--ground) 100%);
+    border-bottom:1px solid var(--hair);}
+  .cover-frame{position:absolute;inset:16px;border:1px solid rgba(194,168,105,.28);pointer-events:none;}
+  .cover-frame::before{content:"";position:absolute;inset:5px;border:1px solid rgba(194,168,105,.14);}
+  .eyebrow{font-family:var(--display-serif);letter-spacing:.62em;color:var(--gold);
+    font-size:12px;font-weight:600;margin:0 0 30px;text-indent:.62em;}
+  .cover h1{font-family:var(--display-serif);font-weight:900;font-size:46px;letter-spacing:.32em;
+    text-indent:.32em;margin:0 0 4px;color:#f3efe6;}
+  .cover .sub{font-size:12.5px;letter-spacing:.42em;color:var(--muted);text-indent:.42em;margin:0 0 30px;}
+  .cover-rule{width:38px;height:1px;background:var(--gold);margin:0 auto 30px;}
+  .meta{display:flex;flex-direction:column;gap:11px;max-width:300px;margin:0 auto;font-size:14px;}
+  .meta .row{display:flex;align-items:baseline;justify-content:center;gap:14px;}
+  .meta .k{color:var(--gold-dim);font-size:11px;letter-spacing:.24em;min-width:74px;text-align:right;text-indent:.24em;}
+  .meta .v{color:var(--cream);font-size:15px;letter-spacing:.04em;text-align:left;min-width:120px;}
+
+  .lead{margin:0 0 40px;}
+  .lead p:first-child{font-size:1.12rem;color:#efe9de;}
+
+  .chapter{text-align:center;margin:58px 0 30px;}
+  .chapter .wing{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:14px;}
+  .chapter .wing::before,.chapter .wing::after{content:"";height:1px;width:46px;
+    background:linear-gradient(90deg,transparent,var(--gold-dim));}
+  .chapter .wing::after{background:linear-gradient(90deg,var(--gold-dim),transparent);}
+  .chapter .diamond{color:var(--gold);font-size:9px;line-height:1;}
+  .chapter .cap{font-family:var(--display-serif);font-weight:700;font-size:20px;letter-spacing:.2em;
+    text-indent:.2em;color:var(--gold);margin:0;display:inline-block;padding:0 4px;}
+
+  .subhead{font-family:var(--display-serif);font-weight:600;font-size:17.5px;color:#f1ead9;
+    letter-spacing:.03em;margin:44px 0 22px;padding-bottom:12px;border-bottom:1px solid var(--hair);
+    display:flex;align-items:center;gap:11px;line-height:1.55;}
+  .subhead .mk{color:var(--gold);font-size:10px;flex:none;transform:translateY(1px);}
+
+  .sheet p{margin:0 0 1.35em;font-size:1.055rem;color:var(--cream);letter-spacing:.01em;}
+  .card{color:var(--gold);font-weight:500;}
+  .tb{display:none;}
+
+  .final-body{background:linear-gradient(180deg,rgba(194,168,105,.05),rgba(194,168,105,.01));
+    border:1px solid var(--hair-soft);border-radius:3px;padding:26px 22px 10px;margin-top:8px;}
+
+  .note{margin-top:56px;padding:24px 22px 22px;background:var(--panel);
+    border:1px solid var(--hair-soft);border-radius:3px;}
+  .note h3{font-family:var(--display-serif);font-size:12px;letter-spacing:.3em;text-indent:.3em;
+    color:var(--gold-dim);font-weight:600;margin:0 0 16px;text-align:center;}
+  .note ul{margin:0;padding:0;list-style:none;}
+  .note li{font-size:12.5px;line-height:1.85;color:var(--muted);padding-left:16px;position:relative;margin-bottom:9px;}
+  .note li::before{content:"—";position:absolute;left:0;color:var(--gold-dim);}
+
+  .seal{text-align:center;margin:52px 0 0;}
+  .seal .ring{width:58px;height:58px;border-radius:50%;border:1px solid var(--gold-dim);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
+    font-family:var(--display-serif);font-size:22px;color:var(--gold);box-shadow:0 0 0 4px rgba(194,168,105,.06);}
+  .seal .name{font-family:var(--display-serif);letter-spacing:.3em;text-indent:.3em;color:var(--cream);font-size:14px;margin:0 0 4px;}
+  .seal .url{color:var(--faint);font-size:11px;letter-spacing:.08em;}
+
+  .save{text-decoration:none;position:fixed;right:16px;bottom:16px;z-index:20;font-family:var(--body-serif);
+    background:rgba(20,20,27,.92);color:var(--gold);border:1px solid var(--gold-dim);border-radius:40px;
+    padding:11px 20px;font-size:14px;letter-spacing:.14em;text-indent:.14em;cursor:pointer;
+    backdrop-filter:blur(6px);box-shadow:0 6px 22px rgba(0,0,0,.45);transition:background .2s,color .2s;}
+  .save:hover{background:var(--gold);color:#141019;}
+  .save:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+  @media (max-width:480px){.sheet{max-width:375px;padding:0 20px 84px;}.sheet p{font-size:0.93rem;}.lead p:first-child{font-size:0.99rem;}.cover h1{font-size:38px;}.tb{display:block;}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+  .pagebg{display:none;}
+  @media print{
+    @page{margin:20mm 16mm;size:A4;}
+    html,body{background:var(--ground);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .pagebg{display:block;position:fixed;top:0;left:0;width:100%;height:100%;
+      background:var(--ground);z-index:-1;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .save{display:none!important;}
+    .tb{display:none;}
+    .sheet{max-width:none;padding:0;}
+    .sheet p{font-size:19.5pt;line-height:1.8;letter-spacing:.01em;margin:0 0 1em;}
+    .lead{page-break-before:always;}
+    .lead p:first-child{font-size:21pt;}
+    .cover{margin:0;padding:58mm 8mm;min-height:257mm;page-break-after:always;}
+    .cover h1{font-size:54px;}
+    .chapter{margin:0 0 8mm;page-break-before:always;}
+    .chapter .cap{font-size:30px;}
+    .subhead{font-size:22pt;page-break-before:always;break-after:avoid;margin:0 0 7mm;}
+    .note{page-break-before:always;}
+    .final-body,.note{break-inside:avoid;}
+    .seal{padding-top:12mm;}
+  }
+</style>
+</head>
+<body>
+<div class="pagebg" aria-hidden="true"></div>
+<!-- 「PDFで保存」ボタンは外した（2026-10-05 本人指示）。PDFはメールに添付して渡し、控えはGoogleドライブ「黒の占い師 鑑定書/本鑑定」に置く -->
+<div class="sheet">
+<header class="cover">
+  <div class="cover-frame"></div>
+  <p class="eyebrow">黒 の 占 い 師</p>
+  <h1>鑑定書</h1>
+  <p class="sub">本 鑑 定</p>
+  <div class="cover-rule"></div>
+  <div class="meta">
+    <div class="row"><span class="k">ご相談者</span><span class="v">平本江里　様</span></div>
+    <div class="row"><span class="k">鑑定日</span><span class="v">2026年10月5日</span></div>
+  </div>
+</header>
+<div class="lead"><p>ご相談を拝見しました。今回いただいたのは、「これからの人生が心配」「これからどーしたらいいかわからない」という、今後の人生全体についてのご相談です。その中には、元夫と続けている仕事とプライベートの距離、掛け持ち先の仕事、兄弟同然の方への恋心、そして健康面への不安が重なっています。三年前に離婚という大きな一歩を踏み出したあと、次に何を変えれば人生が進むのかが見えなくなっている状態です。</p><p>先に結論をお伝えします。</p><p>今、人生そのものをもう一度大きく壊す必要はありません。必要なのは、離婚後も一つの塊のまま残っている「仕事・元夫・恋愛・生活」を切り分けることです。</p><p>元夫とは、仕事が成立するなら仕事だけ残す。プライベートは距離を広げる。掛け持ち先は恋愛の答え待ちの場所にせず、仕事として価値があるかで残す。恋愛は相手の気持ちを読み続けるのではなく、一度だけ現実を動かして反応を見る。</p><p>43歳から52歳の十年は、何でも増やす時期ではありません。残すものと終えるものを選び直し、自分の生活を自分の形へ戻す十年です。</p></div><h3 class="subhead"><span class="mk">◆</span><span>これからの人生をどう進めるか</span></h3><p>「これからの人生が心配」と書かれていました。</p><p>今の平本さんに必要なのは、新しい人生の正解を一つ見つけることではありません。今まで続いてきたものの中から、「これからも自分の人生に置くもの」を選び直すことです。</p><p>平本さんは、動き続けながら答えを作る人ではありません。自分の中で納得してから動く人です。自分の頭で確かめて、自分で結論を出さなければ動けない。人から「こうした方がいい」と言われた程度では、本気では選びません。</p><p>だから今、「何をすればいいのか分からない」こと自体が問題なのではありません。</p><p>問題は、全部を同時に考えていることです。</p><p>仕事をどうするか。</p><p>元夫とどうするか。</p><p>恋愛をどうするか。</p><p>掛け持ちをどうするか。</p><p>これからの生活をどうするか。</p><p>これを「今後の人生」という一つの巨大な問いにすると、平本さんは決められません。</p><p>そして、もう考える時間が足りないのではありません。考え続けても答えが増えない段階に、すでに入っています。三年前に離婚という現実の変化は起きています。それでも人生全体の答えを待ち続ければ、次の生活は始まりません。</p><p>これからの十年は、確実に残るものを作り、生活の土台を整える時期です。同時に、続いてきたものを終わらせて、次のために場所を空ける時期でもあります。</p><p>この二つは矛盾していません。</p><p>全部を捨てるのではありません。</p><p>残す価値があるものを残すために、惰性だけで残っているものを終わらせる時期です。</p><p>今決める必要がないのは、「この先十年をどう生きるか」です。</p><p>今決めるのは三つだけです。</p><p>仕事として残したい関係。</p><p>私生活では距離を変えたい関係。</p><p>自分から一度動かさなければ答えが出ない関係。</p><p>人生全体を一度に決めようとするのをやめれば、次にやることはかなり少なくなります。</p><h3 class="subhead"><span class="mk">◆</span><span>恋愛――相手の気持ちを読むより、<span class="tb"></span>返ってくる行動を見る</span></h3><p>「恋心はあるけどどう思われてるかわからないし、なんともない」と書かれています。</p><p>ここは曖昧にしません。</p><p>相手が平本さんをどう思っているかを、私がここで決めつけることはしません。</p><p>ただし、「なんともない」状態を長く眺めていても答えは出ません。今は待つ時ではありません。</p><p>恋愛の結論を迫る必要はありませんが、平本さんの側から一つ現実を動かし、その後は相手の行動を見る方を選びます。</p><p>平本さんは、思ったことが自然に口から出るタイプではありません。</p><p>これは「伝える力がない」という意味ではありません。気持ちが勝手に言葉になって出ていく人ではない、ということです。</p><p>だから「気持ちを素直に言えばいい」という助言は、平本さんには役に立ちません。</p><p>平本さんの場合は、出し方を先に作る必要があります。</p><p>たとえば、</p><p>「好きです。どう思っていますか」</p><p>まで行く必要はありません。</p><p>まず二人で過ごす提案を一度出す。</p><p>相手が自分から日程を作るのか。</p><p>その後も相手の側から接点が続くのか。</p><p>見るのはここです。</p><p>平本さん自身が「どう思われてるかわからない」と書いている以上、今足りないのは、相手の気持ちを言い当てる言葉ではありません。判断できるだけの現実の材料です。</p><p>平本さんは、考えを整理して言葉にする力そのものは持っています。</p><p>ただ、準備せずに感情だけを出そうとすると止まります。</p><p>つまり、「話せない人」ではありません。</p><p>言う内容を先に決めればいい。</p><p>一度動かして、返りを見る。</p><p>返りが乏しければ、それ以上は自分の解釈で関係を膨らませない。</p><p>恋愛ではこの形が最も合っています。</p><h3 class="subhead"><span class="mk">◆</span><span>健康面について</span></h3><p>「歳も歳だし気になる症状は多々でてきてる」と書かれています。</p><p>先にお伝えしておきます。症状の原因や病気の有無、これから体がどうなるかを、私が占いで決めることはしません。そこは医療の専門家が見る領域です。</p><p>そのうえで、私に視えていることがあります。</p><p>それは、体そのものより、平本さんの「体の扱い方」です。</p><p>平本さんは、自分のことを一番後回しにする人です。</p><p>人に頼るのが苦手で、助けが来ても受け取らずに、一人で抱えて片づけようとする。しかも、内側で感じていることを外に出さない。周りからは「平気そうな人」に見えています。</p><p>この性質は、体に対しても同じように働きます。</p><p>気になることがあっても、「そのうち落ち着くだろう」と様子を見る。</p><p>忙しい時期が過ぎたら行こう、と先に延ばす。</p><p>人に言うほどのことではない、と黙っておく。</p><p>「多々でてきてる」という書き方にも、それが出ています。一つ一つは大したことがないと思って、数が増えるまで抱えてきたはずです。</p><p>ここで、二つの選び方があります。</p><p>気になるものを、これまで通り一人で抱えて様子を見る。</p><p>気になるものを、一度全部、外に出して確かめる。</p><p>私は後者を選びます。</p><p>平本さんは、言われて動く人ではありません。自分で決めたことしか続かない人です。だから、やり方も自分で決めてください。目安を三つだけお伝えします。</p><p>一つ目。気になることを、紙かスマホに全部書き出す。</p><p>いつから。どんな時に。どのくらい続いているか。</p><p>頭の中に置いたままにすると、平本さんはいつまでも「大したことない」で片づけます。書き出した時点で、初めて自分のこととして扱えます。</p><p>二つ目。書き出したものを持って、一度まとめて医療機関で確かめる。</p><p>一つずつ行こうとすると、平本さんは後回しにします。まとめて一回で済ませる形の方が、確実に動けます。日付は、人に宣言するか、予定に先に入れてください。自分との約束は延びます。</p><p>三つ目。体のことを話せる人を、一人だけ決めておく。</p><p>平本さんは、弱っているところを人に見せるのが苦手です。全員に話す必要はありません。一人だけでいい。「最近ここが気になっている」と言える相手がいるだけで、一人で抱える量は大きく減ります。</p><p>もう一つ、大切なことがあります。</p><p>今の平本さんは、仕事、元夫との関係、掛け持ち、恋心と、いくつもの気がかりを同時に抱えています。しかも、それを表に出さずに処理しています。</p><p>離婚という大きな一歩から三年。その間ずっと、張ったままでいたはずです。</p><p>この先の十年は、平本さんの生活の土台を作る十年です。その土台の一番下にあるのは、仕事でも人間関係でもなく、平本さん自身の体です。体を後回しにしたまま、ほかのことを整えようとしても、順番が逆です。</p><p>この鑑定で他の章に書いた「関係を切り分けること」は、体にとっても同じ意味を持ちます。抱えているものを分けて減らすことは、そのまま平本さんの負担を減らすことになります。</p><p>それから、休む日を先に決めてください。</p><p>平本さんは、予定が空いたら休もう、と考える人です。そして予定は空きません。休みは、余った時間ではなく、先に確保する時間として扱ってください。2030年は外に出て動くことが増える年なので、その頃には特に、休む日を先に決めておく習慣ができている方がいい。</p><p>体のことを占いで見ないのは、平本さんの不安を軽く扱っているからではありません。</p><p>確かめられるものは、現実で確かめた方が、平本さんは早く安心できる人だからです。不安なまま占いに答えを求めるより、一度確かめて「これは大丈夫」「これは対応する」と分けてしまう方が、平本さんの性分に合っています。</p><p>分からないまま抱えることが、平本さんにとって一番重い。</p><p>だから、確かめる。分ける。一人で抱えない。</p><p>健康については、この三つです。</p><h3 class="subhead"><span class="mk">◆</span><span>三人で立ち上げた自営業をどうするか</span></h3><p>友人と元夫と三人で自営業を立ち上げ、離婚後も「仕事では仕方なく良好」と書かれています。</p><p>私は、元夫と離婚したことだけを理由に、この仕事まで手放す方は選びません。</p><p>仕事として成立しているなら、仕事は仕事として残す方です。</p><p>感情を消せという意味ではありません。</p><p>感情がある関係ほど、仕事の仕組みを曖昧にしないことが大切です。</p><p>平本さんは、現実やお金、人とのやり取りを扱う力が普段からよく働いている人です。そして、人と横並びで動くより、自分の持ち場を持った方が力を出します。</p><p>一方で、責任を背負う力は持っているのに、表には出しません。</p><p>つまり、任されればやる。しかし「私がここを持つ」と先に線を引くことは遅れやすい。</p><p>三人で続けるなら、必要なのは仲良くすることではありません。</p><p>誰が何を決めるのか。</p><p>誰の担当なのか。</p><p>仕事上の連絡と私的な連絡を、どこで分けるのか。</p><p>この三つを曖昧にしないことです。</p><p>これからの十年は、むやみに大きく張るより、確実に残るものを作る方が合っています。</p><p>今、仕事が回っているのであれば、人生を変えたいからという理由だけで壊す必要はありません。</p><p>変えるべきなのは仕事そのものより、「元夫との関係が、仕事と私生活で混ざったままになっている状態」です。</p><p>事業は残せる。</p><p>私生活まで同じ距離に残す必要はありません。</p><p>ここを分けて考えてください。</p><h3 class="subhead"><span class="mk">◆</span><span>元夫とのプライベート――このままにはしない</span></h3><p>「プライベートは離れたい時もあればこのままでも悩むとこ」と書かれています。</p><p>ここは二択です。</p><p>私は、「このまま」を選びません。</p><p>仕事上の関係は維持しても、プライベートでは今より距離を広げる方を選びます。</p><p>関係を壊せと言っているのではありません。</p><p>「仕方がないから、この距離のまま」という考えから抜けてください、と言っています。平本さんを縛っているのは、元夫ではなく、その考えの方です。</p><p>離婚はすでに三年前に成立しています。</p><p>それなのに仕事でも私生活でも同じような距離が続けば、離婚後の生活を作り直したつもりでも、日常の形は以前と大きく変わりません。</p><p>そして今は、続いているものを惰性で延ばすより、終わったものを終わった形に整理する時期です。</p><p>ここで大切なのは、元夫を人生から消すことではありません。</p><p>仕事相手として必要なら残す。</p><p>私生活まで惰性で共有しない。</p><p>この二つは両立します。</p><p>判断の基準もはっきりしています。</p><p>仕事上必要だから会うのか。</p><p>仕事と関係なくても、自分からその時間を選びたいのか。</p><p>後者に自分の答えが出ないなら、今の距離を保つ理由にはなりません。</p><p>離婚したのに、離婚前と似た生活だけを残す。</p><p>その形には戻らない方を選びます。</p><h3 class="subhead"><span class="mk">◆</span><span>掛け持ち先の仕事は続けるべきか</span></h3><p>兄弟同然の方が営んでいるところを手伝っているとのことでした。</p><p>私は、今すぐ掛け持ち先をやめる方は選びません。</p><p>ただし条件があります。</p><p>その人への恋心を抜いても、その仕事を続ける意味があるか。</p><p>ここで判断してください。</p><p>今の掛け持ち先は、「恋愛が進む場所」としてではなく、「経験や技術が積み上がる場所」として見るべき場所です。</p><p>平本さんの43歳から52歳は、派手な勝負より、残るものを増やす十年です。</p><p>そのため掛け持ちも、</p><p>人間関係があるから続ける、</p><p>好きな人がいるから続ける、</p><p>では弱い。</p><p>自分の経験が増える。</p><p>任される範囲が増える。</p><p>本業にも使えるものが残る。</p><p>このどれかがあるなら、続ける意味があります。</p><p>逆に、その人がいなければ続けない仕事なら、仕事と恋愛を分けて判断できていません。</p><p>恋愛がどうなるかを待つために、仕事を残さないことです。</p><p>仕事として残す価値があるなら残す。</p><p>恋愛の答えは、恋愛として確かめる。</p><p>混ぜない方が、どちらも見えます。</p><h3 class="subhead"><span class="mk">◆</span><span>平本さんが見落としていること――一人でやるか、<span class="tb"></span>人とやるかではない</span></h3><p>今回、平本さんが見落としやすいのは、「人と一緒にいること自体」が問題なのではない、という点です。</p><p>自営業は三人。</p><p>掛け持ち先にも人間関係がある。</p><p>恋愛もその仕事の中にあります。</p><p>そのため、全部から離れなければ自分の人生にならないように見えやすい。</p><p>違います。</p><p>平本さんには、自分の持ち場がなければ力を落とす面があります。</p><p>一方で、人と人の間にいることで力を出す面もあります。</p><p>この二つは、一見すると逆を向いています。</p><p>しかし答えははっきりしています。</p><p>平本さんは「一人でしか力を出せない人」ではありません。</p><p>人と組むなら、自分の役割と領域がはっきりしていなければ力を落とす人です。</p><p>三人で仕事をすることが悪いのではありません。</p><p>元夫と仕事をすることも、それだけでは問題ではありません。</p><p>誰との関係なのかによって、自分の立場が曖昧になることが問題です。</p><p>人を減らす前に、関係の用途を分ける。</p><p>仕事相手。</p><p>元夫。</p><p>恋愛の相手。</p><p>兄弟同然の存在。</p><p>同じ人が複数の役割を持っているほど、自分の中で境界を作らなければなりません。</p><p>今回の整理は「人から離れること」ではありません。</p><p>人との関係の中で、自分の場所を作り直すことです。</p><h3 class="subhead"><span class="mk">◆</span><span>今、平本さんを助けるもの――手放すことを損だと思わない</span></h3><p>平本さんを助けるのは、もっと何かを手に入れることではありません。</p><p>抱えているものの一部を、「なくしてはいけないもの」から外すことです。</p><p>元夫との今の私的な距離。</p><p>相手の気持ちが分からない恋愛の保留状態。</p><p>仕事と私生活を一緒に考えること。</p><p>全部の答えが出るまで何も変えないこと。</p><p>この中から一つ緩めるだけでも、判断はかなり変わります。</p><p>これからの十年は、安定を守ることが大切な時期です。</p><p>それでも今の平本さんに必要なのは、握っているものを少し緩めることです。</p><p>これは「安定を捨てろ」という意味ではありません。</p><p>要らないものまで守ることと、土台を守ることは違います。</p><p>残すべきものを残すために、持たなくていいものを減らす。</p><p>こちらです。</p><h3 class="subhead"><span class="mk">◆</span><span>今、平本さんを止めているもの――「続いているから正しい」という考え</span></h3><p>ここは少し意外に聞こえるはずです。</p><p>平本さんのこれからの十年は、土台を作る時期です。それなのに、今の平本さんを止めているのは「安定」です。</p><p>私はこの食い違いを、なかったことにはしません。</p><p>正確に言うと、問題なのは安定そのものではありません。</p><p>「長く続いているもの＝残すべきもの」と考えてしまうことです。</p><p>元夫との仕事。</p><p>元夫との私生活。</p><p>掛け持ち先。</p><p>そこにいる人への恋心。</p><p>これらは、それぞれ別々に判断しなければなりません。</p><p>一つが必要だから、全部が必要になるわけではありません。</p><p>元夫との仕事が必要でも、私生活の距離まで同じである必要はない。</p><p>掛け持ちの仕事に価値があっても、恋愛がうまくいくとは限らない。</p><p>平本さんがこれから作るべき安定は、「今あるものを全部守った結果の安定」ではありません。</p><p>自分で選び直したものだけが残っている安定です。</p><div class="chapter"><div class="wing"><span class="diamond">◆</span></div><h2 class="cap">今回の核心</h2></div><p>今回の核心は、「この先どんな人生になるのか」ではありません。</p><p>三年前に離婚という大きな変化を選んだのに、その後に残った関係を、まだ役割ごとに分け直していないことです。</p><p>だから人生全体が止まって見えます。</p><p>仕事は仕事。</p><p>離婚した元夫との私生活は私生活。</p><p>掛け持ちは掛け持ち。</p><p>恋愛は恋愛。</p><p>ここを分ければ、全部を一度に決める必要はありません。</p><p>「離婚やらの、たいした1歩を3年前にした」と書かれていました。</p><p>その一歩は小さくありません。</p><p>ただ、離婚そのものが新しい人生を完成させるわけではありません。</p><p>離婚後に何を残し、何を変えるかを決めたところから、次の生活が始まります。</p><h3 class="subhead"><span class="mk">◆</span><span>目を背けていること</span></h3><p>「これからどーしたらいいかわからない」と書かれています。</p><p>ですが、何も分からないわけではありません。</p><p>「離れたい時もあれば」と自分で書いている。</p><p>「どう思われてるかわからない」とも書いている。</p><p>「なんともない」とも書いている。</p><p>違和感がある場所は、すでに分かっています。</p><p>分からないのは、何が問題なのかではありません。</p><p>どこまで変えればいいのか、です。</p><p>ここで、一度に全部を変える必要はありません。</p><p>しかし「まだ分からないから」という理由で全部を今の形に残せば、今のままです。</p><p>特に元夫との関係は、仕事まで捨てるか、全部このままか、の二択ではありません。</p><p>仕事は残し、私生活の距離だけを変えるという三つ目の形があります。</p><p>恋愛も同じです。</p><p>告白するか、何もしないか、ではありません。</p><p>一度だけ二人の関係を動かし、その返りを見てから判断できます。</p><p>平本さんに次に必要なのは、大きな決断ではありません。</p><p>曖昧なものを、一つずつ現実へ戻すことです。</p><h3 class="subhead"><span class="mk">◆</span><span>2026年から2030年まで、<span class="tb"></span>何を優先するか</span></h3><p>2026年、43歳。</p><p>助けや縁が来やすい年です。同時に、一つの区切りを終わらせる年でもあります。</p><p>今年は、新しいことを次々に始める年ではありません。</p><p>来た縁は受け取る。</p><p>同時に、古い関係の持ち方を整理する。</p><p>この二つです。</p><p>特に今年は、元夫との仕事と私生活を分けること、恋愛で一度現実の反応を見ることに使ってください。</p><p>2027年、44歳。</p><p>学ぶ年であり、新しいことを始める年です。</p><p>この年は、今ある仕事をただ続けるだけでは弱い。</p><p>自営業でも掛け持ちでも、「これから自分の武器として残すもの」を一つ学び直す年です。</p><p>人間関係の結論より、自分の力を増やす方を優先してください。</p><p>2028年、45歳。</p><p>力を一点に集める年です。</p><p>自営業、掛け持ち、新しく身につけた技能など、いくつかあるものの中から「自分の軸」を決める段階に入ります。</p><p>全部を同じ強さで続けるのではなく、自分が一番責任を持つ場所を選ぶ。</p><p>ここで平本さんの「自分の持ち場で力を出す」強さが生きます。</p><p>2029年、46歳。</p><p>表向きの変化は小さく、内側を整える年です。ただ、人前に出ることや、自分を表に出す機会は増えます。</p><p>大きく状況を動かすより、内側を整えながら、必要なことだけを外へ出す年にしてください。</p><p>人に見せることは増やしていい。</p><p>ただし、それに合わせて人生全体まで作り替える必要はありません。</p><p>2030年、47歳。</p><p>外に出したものを、形にして固める年です。</p><p>それまで積んできた仕事や技能、自分の役割を、外から見える形にし、続けられる仕組みに変えてください。</p><p>43歳から52歳まで全部を、今決める必要はありません。</p><p>43歳の今は整理。</p><p>44歳は始める。</p><p>45歳は絞る。</p><p>46歳は整える。</p><p>47歳は形にする。</p><p>この順番で十分です。</p><div class="chapter"><div class="wing"><span class="diamond">◆</span></div><h2 class="cap">絶対にしてはいけないこと</h2></div><p>一つ目は、元夫との仕事と私生活を、同じ判断にすることです。</p><p>仕事が成立しているから、私生活も今の距離を続けなければならないわけではありません。逆に、私生活で距離を変えたいからといって、仕事まで壊す必要もありません。</p><p>代わりに、「仕事で必要な関係」と「自分が私生活で選びたい関係」を、別々に判断してください。</p><p>二つ目は、恋愛を「相手の気持ちが分かるまで動かない状態」に置くことです。</p><p>平本さん自身が「どう思われてるかわからない」「なんともない」と書いています。その状態のまま考えるだけでは、新しい材料は増えません。</p><p>代わりに、一度だけ現実を動かして返りを見る。その後は、相手の行動を判断の材料にしてください。</p><p>三つ目は、人生を変えるには、離婚のような大きな決断がもう一度必要だと思うことです。</p><p>今必要なのは、大きな一手ではありません。</p><p>仕事の境界を一つ決める。</p><p>元夫との私的な距離を一つ変える。</p><p>恋愛で一つ現実を動かす。</p><p>掛け持ちを、仕事として続ける理由を確認する。</p><p>これで十分に人生は動きます。</p><p>大きな答えが見つかるまで今を保存しておくことだけは、選ばない方がいいです。</p><div class="chapter"><div class="wing"><span class="diamond">◆</span></div><h2 class="cap">最終鑑定</h2></div><div class="final-body"><p>この相談への私の答えは、「もう終わっているものを、終わったものとして扱う」です。</p><p>これから悪いことが起きる、という話ではありません。</p><p>三年前に、一つの人生の形はすでに終わっています。</p><p>ところが、仕事でも私生活でも元夫との接点が残っているため、「離婚後の人生」が、まだ完全には平本さん自身の形になっていません。</p><p>だから次にやることは、人生をもう一度壊すことではありません。</p><p>終わった関係を、今の役割に合わせて並べ直すことです。</p><p>最優先は、元夫との関係を、仕事と私生活に分けること。</p><p>仕事として成立するなら残す。</p><p>私生活は「このまま」にせず、今より距離を広げる。</p><p>次に、掛け持ち先は、恋愛を抜いても続ける価値があるかを確認する。</p><p>仕事として価値があるなら残す。</p><p>恋愛の答え待ちの場所になっているなら、その部分だけを分ける。</p><p>恋愛については、相手の気持ちを想像し続けない。</p><p>一度だけ現実を動かす。</p><p>返ってくる行動を見る。</p><p>それから判断する。</p><p>健康面は、占いで結論を作らない。</p><p>気になることを書き出し、まとめて一度確かめる。</p><p>体のことを話せる人を一人決め、休む日を先に決める。</p><p>今決めなくていいのは、「この先の人生をどう完成させるか」です。</p><p>2026年は整理する。</p><p>2027年は新しく始める。</p><p>2028年は自分の軸を絞る。</p><p>2029年は整える。</p><p>2030年は形にする。</p><p>順番があります。</p><p>平本さんは、三年前に大きな一歩を踏み出しています。</p><p>次に必要なのは、それ以上に大きな一歩ではありません。</p><p>離婚後も残ったものを、自分で一つずつ選び直すことです。</p><p>全部を今まで通り残したまま、人生だけを新しくすることはできません。</p><p>ただし、何もかも捨てる必要もありません。</p><p>何を仕事として残すのか。</p><p>誰と私生活を共有するのか。</p><p>どの恋愛を現実で確かめるのか。</p><p>どの仕事を自分の力として育てるのか。</p><p>選ぶ場所は、そこです。</p><p>最後に決めるのは、平本さんご本人です。</p><p>今の形を続けることも選択です。</p><p>変えることも選択です。</p><p>ただ、「どうしたらいいか分からないから今のまま」という形だけは、もう選択とは呼ばない方がいい。</p><p>ここから先は、自分で残すものを選んでください。</p></div><section class="note"><h3>本 鑑 定 に つ い て</h3><ul><li>鑑定結果は未来を保証するものではなく、判断の参考としてお受け取りください</li><li>最終的に選ぶのはご本人です。私は選択肢と、視えたものをお伝えするだけです</li><li>病気の診断、健康、生死、試験の合否、法律・医療上の判断はお受けできません</li><li>投資、ギャンブル等、財産上の判断に関する助言は行いません</li><li>特定の人物への働きかけ（別れさせる・縁を切る等）は一切行いません</li><li>ご相談内容を第三者に開示することはありません</li></ul></section>
+<div class="seal">
+  <div class="ring">占</div>
+  <p class="name">黒 の 占 い 師</p>
+  <p class="url">otokuma-jp.com</p>
+</div>
+</div>
+</body>
+</html>
