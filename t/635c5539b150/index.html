@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta name="robots" content="noindex, nofollow, noarchive"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>人生の取扱説明書</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
+<style>
+/* PDF（印刷）用：黒地のまま・章ごとに改ページ・箱を途中で切らない（2026-10-05。PDFはメール添付＋ドライブ保存用） */
+@media print{
+@page{size:A4;margin:0}
+html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#0b0a09}
+main{padding:0 14mm}
+.cover{margin:12mm 0 0}
+nav.toc,h2[id^="c"]{margin-top:0;padding-top:14mm}
+.offer{margin-top:0}
+.offer{padding-top:14mm}
+.nameplate{padding-top:14mm}
+section.narr{padding-top:14mm}
+.cover{break-after:page}
+nav.toc{break-after:page}
+h2[id^="c"]:not(#c0){break-before:page}
+.divider{display:none}
+h2,h3{break-after:avoid}
+.caution,.strength,table.spec,table.trouble,tr,.offer,.warranty,.lead{break-inside:avoid}
+.offer{break-before:page}
+}
+:root{--bg:#0b0a09;--panel:#14120e;--panel2:#1a1712;--ink:#ece4d2;--muted:#9b927f;--gold:#c9a45c;--gold2:#e6c98a;--line:#3a3326;--warn:#d9714e;--fire:#d9714e;--earth:#9fae6a;--air:#d8c779;--water:#6d9fc4;--h:#6d9fc4;--t:#d9714e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Shippori Mincho",serif;line-height:2}
+main{max-width:820px;margin:0 auto;padding:32px 16px 96px}
+a{color:var(--gold2)}
+/* 表紙 */
+.cover{position:relative;border:1px solid var(--gold);padding:10px;margin-bottom:48px}
+.cover-in{border:1px solid var(--gold);padding:48px 24px 40px;text-align:center;background:radial-gradient(ellipse at top,#1d1912 0%,#0b0a09 70%)}
+.cover .en{color:var(--gold);letter-spacing:.5em;font-size:.72rem}
+.cover h1{font-size:2.3rem;font-weight:800;letter-spacing:.12em;margin:.2em 0 .1em}
+.cover .sub{color:var(--muted);font-size:.85rem;letter-spacing:.2em}
+.cover .wheel{max-width:300px;margin:24px auto 8px;opacity:.75}
+.cover .prod-label{color:var(--gold);font-size:.78rem;letter-spacing:.3em;margin-top:8px}
+.cover .prod{font-size:1.55rem;font-weight:800;color:var(--gold2);letter-spacing:.08em;margin:.1em 0 .4em}
+.cover dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;max-width:360px;margin:20px auto 0;text-align:left;font-size:.88rem;border-top:1px solid var(--line);padding-top:16px}
+.cover dt{color:var(--muted)}
+.seal{position:absolute;right:26px;top:26px;width:68px;height:68px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.72rem;line-height:1.3;text-align:center;transform:rotate(-12deg);font-weight:600}
+.seal span{border:1px solid var(--gold);border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center}
+/* 製品の特長（二つ名とキーワード） */
+.nameplate{text-align:center;margin:0 0 40px}
+.keywords{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0 0}
+.keywords li{border:1px solid var(--gold);color:var(--gold2);padding:2px 14px;font-size:.88rem;letter-spacing:.1em}
+/* 目次 */
+.toc{background:var(--panel);border:1px solid var(--line);padding:24px 24px 16px;margin:0 0 56px}
+.toc h2{border:0;margin:0 0 8px;font-size:1.05rem;color:var(--gold);letter-spacing:.3em;text-align:center}
+.toc ol{list-style:none;padding:0;margin:0}
+.toc li{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dotted var(--line)}
+.toc li:last-child{border-bottom:0}
+.toc .no{color:var(--gold);font-size:.82rem;min-width:3.6em}
+.toc a{color:var(--ink);text-decoration:none}
+/* 章 */
+.narr h2{font-size:1.35rem;margin:72px 0 20px;padding:0 0 12px;border-bottom:1px solid var(--gold);letter-spacing:.06em}
+.narr h2 .chap{display:block;color:var(--gold);font-size:.78rem;letter-spacing:.35em;margin-bottom:2px}
+.narr h3{font-size:1.08rem;margin:1.8em 0 .4em;color:var(--gold2)}
+.narr p{margin:.9em 0}
+.narr .lead{font-size:1.15rem;border-left:3px solid var(--gold);padding:4px 0 4px 1em;background:linear-gradient(90deg,#1a1712,transparent)}
+.narr ul{padding-left:1.2em}
+.narr b{color:#fff3d6}
+.divider{text-align:center;color:var(--gold);margin:56px 0 0;letter-spacing:1em;font-size:.7rem}
+.card{background:var(--panel);border:1px solid var(--line);padding:16px 20px;margin:1em 0}
+.small{font-size:.82rem;color:var(--muted)}
+/* 仕様表 */
+table.spec{width:100%;border-collapse:collapse;margin:1em 0;font-size:.95rem}
+table.spec th,table.spec td{border:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
+table.spec th{width:34%;background:var(--panel2);color:var(--gold2);font-weight:600}
+/* 使用上の注意 */
+.caution{border:1px solid var(--warn);background:#1a1310;padding:16px 20px 8px;margin:1.4em 0}
+.caution .label{display:inline-flex;align-items:center;gap:8px;color:var(--warn);font-weight:700;letter-spacing:.15em;font-size:.85rem}
+.caution .label:before{content:"!";display:inline-flex;align-items:center;justify-content:center;width:20px;height:18px;clip-path:polygon(50% 0,100% 100%,0 100%);background:var(--warn);color:#1a1310;font-size:.72rem;font-weight:800;padding-top:3px}
+.caution h3{color:var(--ink);margin:.3em 0}
+.caution .fix{border-top:1px dashed var(--line);padding-top:8px}
+.caution .fix b{color:var(--gold2)}
+/* 困ったときは */
+table.trouble{width:100%;border-collapse:collapse;font-size:.92rem;margin:1em 0}
+table.trouble th{background:var(--gold);color:#14120e;padding:8px 10px;text-align:left;font-weight:700}
+table.trouble td{border-bottom:1px solid var(--line);padding:10px;vertical-align:top}
+table.trouble td:first-child{color:var(--gold2);width:30%}
+/* 強み */
+.strengths{display:grid;gap:12px;margin:1em 0}
+.strength{display:grid;grid-template-columns:64px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);padding:14px 16px}
+.strength .rank{color:var(--gold);font-size:2rem;font-weight:800;text-align:center;line-height:1.2}
+.strength h3{margin:0 0 .2em}
+/* 本鑑定のご案内 */
+.offer{border:1px solid var(--gold);background:radial-gradient(ellipse at top,#1d1912 0%,#0b0a09 75%);padding:28px 22px;margin:72px 0 0;text-align:center}
+.offer .t{color:var(--gold);letter-spacing:.3em;font-size:1rem;margin-bottom:10px}
+.offer ul{list-style:none;padding:0;margin:14px auto;max-width:360px;text-align:left;font-size:.92rem}
+.offer li{padding:6px 0 6px 1.2em;border-bottom:1px dotted var(--line);position:relative}
+.offer li:before{content:"◆";position:absolute;left:0;color:var(--gold);font-size:.6rem;top:.9em}
+.offer .price{color:var(--gold2);font-weight:700;letter-spacing:.1em}
+.offer .btn{display:inline-block;margin-top:8px;padding:12px 36px;border:1px solid var(--gold);color:var(--gold2);text-decoration:none;letter-spacing:.15em}
+.offer .btn:hover{background:var(--gold);color:#14120e}
+/* 保証書 */
+.warranty{border:1px dashed var(--gold);padding:24px;margin:72px 0 0;text-align:center;position:relative}
+.warranty .t{color:var(--gold);letter-spacing:.4em;font-size:.9rem}
+.warranty p{margin:.6em 0}
+footer{margin-top:40px;font-size:.78rem;color:var(--muted);text-align:center}
+@media(max-width:560px){.cover h1{font-size:1.75rem}.cover-in{padding:40px 14px 28px}.seal{width:54px;height:54px;right:16px;top:16px;font-size:.6rem}.seal span{width:44px;height:44px}table.spec th{width:40%}.strength{grid-template-columns:44px 1fr}}
+.wheel{width:100%;max-width:620px;display:block;margin:0 auto}
+.wheel .ring{fill:none;stroke:var(--gold);stroke-width:1.2}
+.wheel .thin{stroke-width:.6;opacity:.6}
+.wheel .tick{stroke:var(--gold);stroke-width:1}
+.wheel .tick.thin{stroke-width:.5;opacity:.6}
+.wheel .cusp{stroke:var(--line);stroke-width:1}
+.wheel .axis{stroke:var(--gold);stroke-width:1.8}
+.wheel text{text-anchor:middle;dominant-baseline:central;font-family:"Noto Sans Symbols 2","Segoe UI Symbol",sans-serif}
+.wheel .sign{font-size:22px}
+.wheel .fire{fill:var(--fire)}.wheel .earth{fill:var(--earth)}.wheel .air{fill:var(--air)}.wheel .water{fill:var(--water)}
+.wheel .planet{font-size:22px;fill:var(--ink)}
+.wheel .lum{fill:var(--gold);font-size:25px}
+.wheel .pdeg{font-size:11px;fill:var(--muted);font-family:serif}
+.wheel .hnum{font-size:11px;fill:var(--muted);font-family:serif}
+.wheel .anglab{font-size:13px;fill:var(--gold);font-family:serif;font-weight:700}
+.wheel .ptick{stroke:var(--ink);stroke-width:1.4}
+.wheel .asp-h{stroke:var(--h);stroke-width:1.1}
+.wheel .asp-t{stroke:var(--t);stroke-width:1.1}
+.wheel.deco .pdeg,.wheel.deco .hnum,.wheel.deco .anglab{display:none}
+.wheel.deco{max-width:420px;opacity:.9;margin:8px auto 24px}</style></head><body><main>
+<section class="cover"><div class="seal"><span>鑑定済</span></div><div class="cover-in">
+<div class="en">INSTRUCTION MANUAL</div>
+<h1>人生の取扱説明書</h1>
+<div class="sub">あなたを、いちばん上手に扱うために</div>
+<svg viewBox="-30 -30 700 700" class="wheel deco" role="img" aria-label="ホロスコープの円盤"><circle cx="320" cy="320" r="300" class="ring"/><circle cx="320" cy="320" r="258" class="ring"/><circle cx="320" cy="320" r="120" class="ring thin"/><line x1="62.0" y1="320.0" x2="20.0" y2="320.0" class="tick"/><line x1="62.0" y1="320.0" x2="53.0" y2="320.0" class="tick thin"/><line x1="63.0" y1="342.5" x2="57.0" y2="343.0" class="tick thin"/><line x1="65.9" y1="364.8" x2="57.1" y2="366.4" class="tick thin"/><line x1="70.8" y1="386.8" x2="65.0" y2="388.3" class="tick thin"/><line x1="77.6" y1="408.2" x2="69.1" y2="411.3" class="tick thin"/><line x1="86.2" y1="429.0" x2="80.7" y2="431.6" class="tick thin"/><text x="50.5" y="392.2" class="sign fire">♈︎</text><line x1="96.6" y1="449.0" x2="60.2" y2="470.0" class="tick"/><line x1="96.6" y1="449.0" x2="88.8" y2="453.5" class="tick thin"/><line x1="108.7" y1="468.0" x2="103.7" y2="471.4" class="tick thin"/><line x1="122.4" y1="485.8" x2="115.5" y2="491.6" class="tick thin"/><line x1="137.6" y1="502.4" x2="133.3" y2="506.7" class="tick thin"/><line x1="154.2" y1="517.6" x2="148.4" y2="524.5" class="tick thin"/><line x1="172.0" y1="531.3" x2="168.6" y2="536.3" class="tick thin"/><text x="122.7" y="517.3" class="sign earth">♉︎</text><line x1="191.0" y1="543.4" x2="170.0" y2="579.8" class="tick"/><line x1="191.0" y1="543.4" x2="186.5" y2="551.2" class="tick thin"/><line x1="211.0" y1="553.8" x2="208.4" y2="559.3" class="tick thin"/><line x1="231.8" y1="562.4" x2="228.7" y2="570.9" class="tick thin"/><line x1="253.2" y1="569.2" x2="251.7" y2="575.0" class="tick thin"/><line x1="275.2" y1="574.1" x2="273.6" y2="582.9" class="tick thin"/><line x1="297.5" y1="577.0" x2="297.0" y2="583.0" class="tick thin"/><text x="247.8" y="589.5" class="sign air">♊︎</text><line x1="320.0" y1="578.0" x2="320.0" y2="620.0" class="tick"/><line x1="320.0" y1="578.0" x2="320.0" y2="587.0" class="tick thin"/><line x1="342.5" y1="577.0" x2="343.0" y2="583.0" class="tick thin"/><line x1="364.8" y1="574.1" x2="366.4" y2="582.9" class="tick thin"/><line x1="386.8" y1="569.2" x2="388.3" y2="575.0" class="tick thin"/><line x1="408.2" y1="562.4" x2="411.3" y2="570.9" class="tick thin"/><line x1="429.0" y1="553.8" x2="431.6" y2="559.3" class="tick thin"/><text x="392.2" y="589.5" class="sign water">♋︎</text><line x1="449.0" y1="543.4" x2="470.0" y2="579.8" class="tick"/><line x1="449.0" y1="543.4" x2="453.5" y2="551.2" class="tick thin"/><line x1="468.0" y1="531.3" x2="471.4" y2="536.3" class="tick thin"/><line x1="485.8" y1="517.6" x2="491.6" y2="524.5" class="tick thin"/><line x1="502.4" y1="502.4" x2="506.7" y2="506.7" class="tick thin"/><line x1="517.6" y1="485.8" x2="524.5" y2="491.6" class="tick thin"/><line x1="531.3" y1="468.0" x2="536.3" y2="471.4" class="tick thin"/><text x="517.3" y="517.3" class="sign fire">♌︎</text><line x1="543.4" y1="449.0" x2="579.8" y2="470.0" class="tick"/><line x1="543.4" y1="449.0" x2="551.2" y2="453.5" class="tick thin"/><line x1="553.8" y1="429.0" x2="559.3" y2="431.6" class="tick thin"/><line x1="562.4" y1="408.2" x2="570.9" y2="411.3" class="tick thin"/><line x1="569.2" y1="386.8" x2="575.0" y2="388.3" class="tick thin"/><line x1="574.1" y1="364.8" x2="582.9" y2="366.4" class="tick thin"/><line x1="577.0" y1="342.5" x2="583.0" y2="343.0" class="tick thin"/><text x="589.5" y="392.2" class="sign earth">♍︎</text><line x1="578.0" y1="320.0" x2="620.0" y2="320.0" class="tick"/><line x1="578.0" y1="320.0" x2="587.0" y2="320.0" class="tick thin"/><line x1="577.0" y1="297.5" x2="583.0" y2="297.0" class="tick thin"/><line x1="574.1" y1="275.2" x2="582.9" y2="273.6" class="tick thin"/><line x1="569.2" y1="253.2" x2="575.0" y2="251.7" class="tick thin"/><line x1="562.4" y1="231.8" x2="570.9" y2="228.7" class="tick thin"/><line x1="553.8" y1="211.0" x2="559.3" y2="208.4" class="tick thin"/><text x="589.5" y="247.8" class="sign air">♎︎</text><line x1="543.4" y1="191.0" x2="579.8" y2="170.0" class="tick"/><line x1="543.4" y1="191.0" x2="551.2" y2="186.5" class="tick thin"/><line x1="531.3" y1="172.0" x2="536.3" y2="168.6" class="tick thin"/><line x1="517.6" y1="154.2" x2="524.5" y2="148.4" class="tick thin"/><line x1="502.4" y1="137.6" x2="506.7" y2="133.3" class="tick thin"/><line x1="485.8" y1="122.4" x2="491.6" y2="115.5" class="tick thin"/><line x1="468.0" y1="108.7" x2="471.4" y2="103.7" class="tick thin"/><text x="517.3" y="122.7" class="sign water">♏︎</text><line x1="449.0" y1="96.6" x2="470.0" y2="60.2" class="tick"/><line x1="449.0" y1="96.6" x2="453.5" y2="88.8" class="tick thin"/><line x1="429.0" y1="86.2" x2="431.6" y2="80.7" class="tick thin"/><line x1="408.2" y1="77.6" x2="411.3" y2="69.1" class="tick thin"/><line x1="386.8" y1="70.8" x2="388.3" y2="65.0" class="tick thin"/><line x1="364.8" y1="65.9" x2="366.4" y2="57.1" class="tick thin"/><line x1="342.5" y1="63.0" x2="343.0" y2="57.0" class="tick thin"/><text x="392.2" y="50.5" class="sign fire">♐︎</text><line x1="320.0" y1="62.0" x2="320.0" y2="20.0" class="tick"/><line x1="320.0" y1="62.0" x2="320.0" y2="53.0" class="tick thin"/><line x1="297.5" y1="63.0" x2="297.0" y2="57.0" class="tick thin"/><line x1="275.2" y1="65.9" x2="273.6" y2="57.1" class="tick thin"/><line x1="253.2" y1="70.8" x2="251.7" y2="65.0" class="tick thin"/><line x1="231.8" y1="77.6" x2="228.7" y2="69.1" class="tick thin"/><line x1="211.0" y1="86.2" x2="208.4" y2="80.7" class="tick thin"/><text x="247.8" y="50.5" class="sign earth">♑︎</text><line x1="191.0" y1="96.6" x2="170.0" y2="60.2" class="tick"/><line x1="191.0" y1="96.6" x2="186.5" y2="88.8" class="tick thin"/><line x1="172.0" y1="108.7" x2="168.6" y2="103.7" class="tick thin"/><line x1="154.2" y1="122.4" x2="148.4" y2="115.5" class="tick thin"/><line x1="137.6" y1="137.6" x2="133.3" y2="133.3" class="tick thin"/><line x1="122.4" y1="154.2" x2="115.5" y2="148.4" class="tick thin"/><line x1="108.7" y1="172.0" x2="103.7" y2="168.6" class="tick thin"/><text x="122.7" y="122.7" class="sign air">♒︎</text><line x1="96.6" y1="191.0" x2="60.2" y2="170.0" class="tick"/><line x1="96.6" y1="191.0" x2="88.8" y2="186.5" class="tick thin"/><line x1="86.2" y1="211.0" x2="80.7" y2="208.4" class="tick thin"/><line x1="77.6" y1="231.8" x2="69.1" y2="228.7" class="tick thin"/><line x1="70.8" y1="253.2" x2="65.0" y2="251.7" class="tick thin"/><line x1="65.9" y1="275.2" x2="57.1" y2="273.6" class="tick thin"/><line x1="63.0" y1="297.5" x2="57.0" y2="297.0" class="tick thin"/><text x="50.5" y="247.8" class="sign water">♓︎</text><line x1="121.7" y1="472.2" x2="128.0" y2="467.4" class="ptick"/><text x="143.9" y="455.2" class="planet">♂︎</text><text x="166.1" y="438.1" class="pdeg">7</text><line x1="339.9" y1="569.2" x2="339.2" y2="561.2" class="ptick"/><text x="337.6" y="541.3" class="planet">♀︎</text><text x="335.4" y="513.4" class="pdeg">4</text><line x1="406.0" y1="554.7" x2="403.3" y2="547.2" class="ptick"/><text x="387.2" y="531.6" class="planet">⚷︎</text><text x="378.7" y="504.9" class="pdeg">20</text><line x1="423.4" y1="547.6" x2="420.1" y2="540.3" class="ptick"/><text x="414.3" y="521.0" class="planet">♃︎</text><text x="402.4" y="495.6" class="pdeg">24</text><line x1="448.0" y1="534.7" x2="443.9" y2="527.9" class="ptick"/><text x="439.7" y="507.0" class="planet lum">☉︎</text><text x="424.6" y="483.4" class="pdeg">0</text><line x1="515.7" y1="475.6" x2="509.4" y2="470.6" class="ptick"/><text x="488.2" y="464.9" class="planet">☿︎</text><text x="466.9" y="446.7" class="pdeg">21</text><line x1="523.4" y1="465.3" x2="516.9" y2="460.7" class="ptick"/><text x="505.6" y="441.8" class="planet lum">☽︎</text><text x="482.2" y="426.4" class="pdeg">24</text><line x1="496.9" y1="143.3" x2="491.2" y2="149.0" class="ptick"/><text x="477.1" y="163.1" class="planet">♇︎</text><text x="457.3" y="182.9" class="pdeg">14ℛ</text><line x1="291.0" y1="71.7" x2="292.0" y2="79.6" class="ptick"/><text x="297.1" y="99.2" class="planet">♅︎</text><text x="300.0" y="127.0" class="pdeg">6ℛ</text><line x1="265.0" y1="76.1" x2="266.8" y2="83.9" class="ptick"/><text x="268.4" y="104.1" class="planet">♆︎</text><text x="275.0" y="131.3" class="pdeg">12ℛ</text><line x1="229.0" y1="87.1" x2="231.9" y2="94.6" class="ptick"/><text x="239.2" y="113.2" class="planet">♄︎</text><text x="249.4" y="139.3" class="pdeg">21ℛ</text><line x1="168.6" y1="121.0" x2="173.5" y2="127.4" class="ptick"/><text x="185.6" y="143.3" class="planet">☊︎</text><text x="202.5" y="165.6" class="pdeg">7</text><line x1="224.8" y1="393.1" x2="306.1" y2="200.8" class="asp-h" style="opacity:0.89"/><line x1="329.5" y1="439.6" x2="306.1" y2="200.8" class="asp-t" style="opacity:0.74"/><line x1="293.6" y1="202.9" x2="404.9" y2="235.2" class="asp-h" style="opacity:0.72"/><line x1="329.5" y1="439.6" x2="224.8" y2="393.1" class="asp-h" style="opacity:0.63"/><line x1="369.7" y1="429.2" x2="276.3" y2="208.2" class="asp-t" style="opacity:0.61"/><line x1="224.8" y1="393.1" x2="293.6" y2="202.9" class="asp-h" style="opacity:0.35"/><line x1="381.4" y1="423.1" x2="224.8" y2="393.1" class="asp-t" style="opacity:0.35"/></svg>
+<div class="prod-label">製品名</div><div class="prod">明るさの奥に掟を持つ主役</div>
+<dl><dt>お名前</dt><dd>ちなつ 様</dd>
+<dt>生年月日</dt><dd>1990年7月24日</dd>
+<dt>発行日</dt><dd>2026年10月10日</dd></dl>
+</div></section>
+<div class="nameplate"><div class="prod-label small">あなたを一言でいうと</div><ul class="keywords"><li>自分を貫く力</li><li>周りを照らす明るさ</li><li>粘り強さ</li></ul></div>
+<nav class="toc"><h2>目 次</h2><ol><li><span class="no">はじめに</span><a href="#c0">一言でいうと</a></li><li><span class="no">第1章</span><a href="#c1">あなたの基本のつくり</a></li><li><span class="no">第2章</span><a href="#c2">あなたを動かすもの・止めるもの</a></li><li><span class="no">第3章</span><a href="#c3">あなたの一番の芯</a></li><li><span class="no">第4章</span><a href="#c4">崩れやすいところと、立て直し方</a></li><li><span class="no">第5章</span><a href="#c5">才能の活かし方</a></li><li><span class="no">第6章</span><a href="#c6">人との関わり方・恋愛</a></li><li><span class="no">第7章</span><a href="#c7">取扱説明書（まとめ）</a></li></ol></nav>
+<section class="narr"><h2 id="c0"><span class="chap">はじめに</span>一言でいうと</h2>
+<p class="lead">思ったことも感じたことも、そのまま顔と言葉に出る、裏表の少ない明るい人。<br>
+その明るさの奥に、自分にだけ厳しいルールを持っていて、決めたことは簡単には曲げない人です。</p>
+
+<div class="divider">◆ ◆ ◆</div><h2 id="c1"><span class="chap">第1章</span>あなたの基本のつくり</h2>
+<p>あなたの軸は、<b>自分らしく堂々と立って、周りを明るくすること</b>です。
+人の輪の中にいると自然と目立ち、場の空気をあたためる役回りになりやすい。頼られると張り切り、「任せて」と言える人です。</p>
+<p>あなたは、心が求めるものと、人に見せる顔と、口から出る言葉が、ほとんど同じ方向を向いています。
+うれしい時はうれしい顔になり、納得できない時はそれが言葉に出る。<b>本音と建前を使い分けるのが苦手で、そのぶん人から信用されやすい</b>人です。
+裏を返すと、気持ちを隠したつもりでも、周りにはだいたい伝わっています。</p>
+<p>ただ、明るく見えるのは半分だけです。あなたの奥には、<b>人に見せない真面目さ</b>があります。
+「ちゃんとしなければ」「中途半端は嫌だ」という基準を自分に課していて、人前で笑っている日でも、一人になるとやるべきことを黙々と片づけている。陽気さと堅さを両方持っている人です。</p>
+<div class="divider">◆ ◆ ◆</div><h2 id="c2"><span class="chap">第2章</span>あなたを動かすもの・止めるもの</h2>
+<table class="spec">
+<tr><th>動き出す速さ</th><td>「これだ」と思えば速い。ただ、一度始めた道を途中で変えるのはとても遅い</td></tr>
+<tr><th>エネルギーの充電方法</th><td>自分のやったことを、誰かにちゃんと喜んでもらえること。好きなものに囲まれて過ごすこと</td></tr>
+<tr><th>得意な環境</th><td>自分の持ち場がはっきりしていて、責任を任せてもらえる場所</td></tr>
+<tr><th>苦手な環境</th><td>予定がころころ変わる／その場の空気に合わせて方針が変わる場所</td></tr>
+<tr><th>最大の力が出る条件</th><td>自分で決めた目標を、自分のやり方で最後までやらせてもらえるとき</td></tr>
+</table>
+<ul>
+<li><b>動かすもの</b>：「自分がやる」という熱い気持ち。そして一度決めたら最後まで続ける粘り。勢いと持続力の両方を持っている人です。</li>
+<li><b>苦手なこと①：途中で予定を変えること</b>。決めた手順や約束が急に変わると、頭では分かっていても気持ちがついてきません。「なんで今さら」と固まってしまうことがあります。</li>
+<li><b>苦手なこと②：一歩引いて、自分を他人の目で見ること</b>。気持ちがまっすぐなぶん、「周りからはどう見えているか」を冷静に考えるのは後回しになりがちです。</li>
+<li><b>頭の使い方</b>：言いたいことははっきりしているのに、口に出す前に「これで正しいか」「失礼じゃないか」と、自分の中の厳しい基準と照らし合わせています。言い終わってから「言い方がまずかったかも」と考え込むのはそのせいです。</li>
+<li><b>頑張り方</b>：エンジンがかかるまでに時間がかかり、かかったあとは重く、止まりません。急かされると逆に足が止まるタイプです。その一方で、行き詰まった時に<b>思い切ってやり方をがらっと変えると、急にうまく回り出す</b>力も持っています。</li>
+</ul>
+<div class="divider">◆ ◆ ◆</div><h2 id="c3"><span class="chap">第3章</span>あなたの一番の芯</h2>
+<p>あなたの一番の芯は、<b>人に頼らず、自分の力で道を切り開いていく強さ</b>です。
+迷っている場で最初に決められる。誰かに反対されても、自分が正しいと思えば引かない。これはあなたの本物の力です。</p>
+<p>あなたは、<b>よく鍛えられた刃物のような人</b>です。切れ味がよく、はっきりしていて、ごまかしがききません。
+そしてもう一つ、<b>人の甘さやおかしな点をすぐに見抜いて、ずばっと言葉にできる</b>ところがあります。言われた側がはっとするような指摘ができる人です。</p>
+<p>あなたの中には「表と裏」があります。</p>
+<ul>
+<li><b>責任感はとても強いのに、人から与えられた肩書きやルールのためには燃えません。</b>あなたが本気で守るのは、自分で決めたルールです。会社の決まりより、自分の中の「これはやるべき」に従って動いています。</li>
+<li><b>人から学び、吸収する力は強いのに、それを外に見せません。</b>本を読む、人の話を聞く、一人で考える。そうやって静かに蓄えたものが、あなたの判断の土台になっています。</li>
+</ul>
+<div class="divider">◆ ◆ ◆</div><h2 id="c4"><span class="chap">第4章</span>崩れやすいところと、立て直し方</h2>
+<div class="caution"><span class="label">注意</span><h3>正しいと思うほど、引けなくなる</h3>
+<p>一度「こうだ」と決めると、周りが別の案を出しても受け入れにくくなります。言い方もはっきりしているので、相手は責められたように感じることがあります。あなたに悪気がないぶん、すれ違いに気づくのが遅れます。</p>
+<p class="fix"><b>立て直し方</b>：言い返す前に、「それもあるね」と一度だけ受け取ってください。意見を変える必要はありません。受け取ったあとで自分の考えを言うだけで、話がまったく違う方向に進みます。</p></div>
+<div class="caution"><span class="label">注意</span><h3>広げたい気持ちと、守りたい気持ちが引っ張り合う</h3>
+<p>「もっと大きくやりたい」「人のために何かしたい」と気持ちが広がる一方で、「失敗できない」「ちゃんとしないと」と自分にブレーキをかけます。両方が強いので、動けないまま疲れることがあります。</p>
+<p class="fix"><b>立て直し方</b>：大きな計画を、すぐできる小さな一歩に切ってください。小さく始めれば、ブレーキ役の真面目さが「確実に進める力」に変わります。</p></div>
+<div class="caution"><span class="label">注意</span><h3>近づきたいのに、急に一人になりたくなる</h3>
+<p>大切な人とは家族のように近くいたいのに、ある日ふいに「放っておいてほしい」と距離を取りたくなることがあります。自分でもその揺れに戸惑います。</p>
+<p class="fix"><b>立て直し方</b>：一人になりたい時は、黙って離れるのではなく「少し一人の時間がほしいだけ」と一言添えてください。それだけで相手の不安がなくなり、戻りやすくなります。</p></div>
+<div class="divider">◆ ◆ ◆</div><h2 id="c5"><span class="chap">第5章</span>才能の活かし方</h2>
+<p>あなたの力が一番生きるのは、<b>人前に立って引っ張りながら、長く続けて形にしていく仕事</b>です。
+チームのまとめ役、人に教える立場、自分の名前で任される仕事。目立つ場所に立つことと、地道に積み上げることの両方が求められる場所で、あなたは光ります。</p>
+<p>そして、<b>人の面倒を見ることにも向いています</b>。困っている人を放っておけず、身内のように世話を焼く。あなたの気前のよさは、人を安心させる力になります。</p>
+<div class="strengths">
+<div class="strength"><div class="rank">1</div><div><h3>自分を貫く力</h3><p class="small">活きる場面：迷っている場で、方向を決めて引っ張るとき<br>裏目に出る場面：周りの声を聞かずに、意地で押し通すとき</p></div></div>
+<div class="strength"><div class="rank">2</div><div><h3>周りを照らす明るさ</h3><p class="small">活きる場面：場が沈んでいる時に、空気を変えるとき<br>裏目に出る場面：しんどいのに無理して明るく振る舞い続けるとき</p></div></div>
+<div class="strength"><div class="rank">3</div><div><h3>粘り強さ</h3><p class="small">活きる場面：時間のかかる目標を、最後までやり切るとき<br>裏目に出る場面：やめた方がいいことまで、引くに引けずに続けるとき</p></div></div>
+</div>
+<p><b>お金との付き合い方</b>：堅実に積み上げる力はありますが、大切な人や好きなもののためには気前よく使います。使う分と残す分を先に分けておけば、楽しみながら貯まっていきます。</p>
+<div class="divider">◆ ◆ ◆</div><h2 id="c6"><span class="chap">第6章</span>人との関わり方・恋愛</h2>
+<p>あなたは、<b>仲間を大事にし、身内と決めた人をとことん守る人</b>です。一方で、張り合う気持ちも強く、同じ立場の人には負けたくないと思うところがあります。</p>
+<p>恋愛では、<b>相手を家族のように包み込んで、世話を焼きたくなるタイプ</b>です。好きな人には手料理を作る、体調を気にかける、困っていたらすぐ動く。愛情を行動で示します。</p>
+<p>ただ、相手に尽くすぶん、自分も同じだけ大切にされたい気持ちがあります。それを言わずにいると、「こんなにしているのに」と不満がたまります。
+そして前に書いたように、近くにいたい気持ちと、一人になりたい気持ちが交互に来ます。</p>
+<p>相性がいいのは、<b>あなたの熱さを面白がりつつ、少し引いたところから冷静に話を聞いてくれる人</b>。あなたが一人で突き進みそうな時に、「ちょっと待って、こういう見方もあるよ」と言ってくれる相手がそばにいると、あなたはもっと楽に生きられます。</p>
+<div class="divider">◆ ◆ ◆</div><h2 id="c7"><span class="chap">第7章</span>取扱説明書（まとめ）</h2>
+<div class="card"><ul>
+<li><b>機嫌がいい時</b>：自分の持ち場を任されて、やったことを誰かに喜んでもらえた時</li>
+<li><b>やる気の源</b>：「自分がやる」と決めた目標。大切な人の役に立てていると感じること</li>
+<li><b>やってはいけないこと</b>：正しさで相手を言い負かす／大きな計画を小さく切らずに抱える／尽くしてほしいことを言わずにためる</li>
+<li><b>落ちた時の戻し方</b>：「それもあるね」と一度受け取る。今日できる一歩だけ決める。一人の時間がほしいと一言伝えて休む</li>
+<li><b>周りの人へのお願い</b>：急な予定変更は、理由と一緒に早めに伝えてください。頑張りを言葉で認めてもらえると、何倍も力を出します</li>
+</ul></div>
+<h3>困ったときは</h3>
+<table class="trouble">
+<tr><th>こんな状態のとき</th><th>考えられる原因</th><th>こうすると戻る</th></tr>
+<tr><td>人とぶつかってばかりいる</td><td>正しさにこだわって引けなくなっている</td><td>言い返す前に「それもあるね」と一度受け取る</td></tr>
+<tr><td>やりたいのに動けない</td><td>広げたい気持ちとブレーキがぶつかっている</td><td>計画を、今日できる一歩まで小さく切る</td></tr>
+<tr><td>急に予定が変わってイライラする</td><td>決めた道を変えるのが苦手</td><td>変わったあとの新しい手順を、紙に書き直す</td></tr>
+<tr><td>報われない気がする</td><td>してほしいことを言わずにためている</td><td>してほしいことを一つだけ言葉にする</td></tr>
+</table>
+</section>
+<section class="offer"><div class="t">さらに詳しく知りたい方へ</div>
+<p>この取扱説明書でお伝えしたのは、あなたが「どういう人か」までです。<br>
+あなたが今、何に悩んでいるかは、まだ伺っていません。</p>
+<p>本鑑定では、ご相談の内容を伺ったうえで、あなたの悩みそのものに私が直接お答えします。</p>
+<ul><li>あなたの悩みへの個別占術</li><li>状況が動く時期と、その時期をどう使うか</li>
+<li>あなたが目を背けていること</li><li>今すべきこと／絶対にしてはいけないこと</li></ul>
+<p class="price">本鑑定　5,980円</p>
+<a class="btn" href="https://otokuma-jp.com/honkantei/?from=torisetsu_report">本鑑定を申し込む</a></section>
+<section class="warranty"><div class="t">保 証 書</div>
+<p>本書は ちなつ 様 のためだけに作成した取扱説明書です。</p>
+<p class="small">発行日 2026年10月10日　／　発行 黒の占い師</p></section>
+<footer>生まれた日の空と暦をもとに、伝統的な占いの計算で読み解いています。<br>
+未来を決めつけるものではありません。自分を知るための「ものさし」としてお使いください。</footer>
+</main></body></html>
