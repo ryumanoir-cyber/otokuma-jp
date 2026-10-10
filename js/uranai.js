@@ -57,7 +57,7 @@
     });
   }
 
-  var LOADING = ["命式を立てています", "命式を立てています．", "命式を立てています．．", "命式を立てています．．．"];
+  var LOADING = ["視ています", "視ています．", "視ています．．", "視ています．．．"];
 
   /* 入力属性をシートへ送るだけ（従来どおり）。失敗しても鑑定は止めない */
   function logFree() {
@@ -92,7 +92,8 @@
           + "&month="  + encodeURIComponent(el("month").value)
           + "&day="    + encodeURIComponent(el("day").value)
           + "&hour="   + encodeURIComponent(state.hour == null ? "" : state.hour)
-          + "&gender=" + encodeURIComponent(state.gender);
+          + "&gender=" + encodeURIComponent(state.gender)
+          + "&v=2"; /* 文面を変えたら上げる（ブラウザに残った古い結果を使わせない） */
     return fetch(WORKER_URL + q, { method: "GET" }).then(function (r) {
       if (!r.ok) throw new Error("http " + r.status);
       return r.json();
