@@ -16,7 +16,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=1">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=1">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1">
-<link rel="stylesheet" href="/css/style.css?v=34">
+<link rel="stylesheet" href="/css/style.css?v=35">
 </head>
 <body>
 
@@ -104,15 +104,26 @@
         <h3>ここから先は、本鑑定でお伝えしています</h3>
         <p>
           今お伝えしたのは、あなたが「どういう人か」までです。<br>
-          あなたが今、何に悩んでいるかは、まだ聞いていません。<br>
+          あなたが今、何に悩んでいるかは、まだ聞いていません。
+        </p>
+        <div class="topic-pick" id="topicPick">
+          <p class="topic-q">今いちばん気になっていることは、どれですか。</p>
+          <div class="topic-btns">
+            <button type="button" data-topic="love">恋愛</button>
+            <button type="button" data-topic="work">仕事</button>
+            <button type="button" data-topic="people">人間関係</button>
+            <button type="button" data-topic="self">自分のこと</button>
+          </div>
+          <p class="topic-a" id="topicAnswer" hidden></p>
+        </div>
+        <p>
           本鑑定では悩みを伺った上で、あなたの生まれ持ったものを一つずつ読んで、私が直接答えています。
         </p>
         <ul class="menu">
-          <li>あなたの悩みへの個別占術</li>
-          <li>状況が動く時期と、その時期をどう使うか</li>
+          <li>あなたの悩みに、直接お答えします</li>
+          <li>動くといい時期と、その時期をどう使うか</li>
           <li>あなたが目を背けていること</li>
           <li>今すべきこと／やってはいけないこと</li>
-          <li>この先に視えている流れ</li>
         </ul>
         <p class="price">本鑑定　5,980円</p>
         <a href="/honkantei/?from=free_result" class="btn-primary" id="ctaLink">本鑑定を申し込む</a>
@@ -164,5 +175,6 @@
 
 <script src="/js/cross.js?v=2"></script>
 <script src="/js/uranai.js?v=43"></script>
+<script src="/js/topic.js?v=1"></script>
 </body>
 </html>

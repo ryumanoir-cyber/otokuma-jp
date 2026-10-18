@@ -177,6 +177,17 @@ select{
 }
 .cta h3{font-size:17px;font-weight:500;margin:0 0 18px;line-height:1.7}
 .cta p{color:var(--mute);font-size:14.5px;margin:0 0 20px}
+.topic-pick{margin:0 0 24px}
+.topic-q{color:var(--fg) !important;font-size:15px;margin:0 0 12px !important}
+.topic-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 14px}
+.topic-btns button{background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:2px;padding:9px 16px;font-size:14px;font-family:inherit;cursor:pointer}
+.topic-btns button.on{border-color:var(--accent-dim);color:var(--accent-dim)}
+.topic-a{white-space:pre-line;text-align:left;color:var(--fg) !important;font-size:14.5px;line-height:1.9;margin:0 auto 4px !important;max-width:30em}
+.sample{margin:28px 0 28px;padding:24px 22px;border:1px solid var(--line);border-radius:2px;background:var(--bg2);text-align:left}
+.sample-label{font-size:12px;letter-spacing:.12em;color:var(--accent-dim);margin:0 0 10px}
+.sample-q{font-size:14px;color:var(--mute);margin:0 0 14px}
+.sample p.body{font-size:14.5px;line-height:2;margin:0 0 12px}
+.sample-foot{margin:14px 0 0}
 .menu{
   list-style:none;padding:0;margin:0 0 26px;
   text-align:left;
