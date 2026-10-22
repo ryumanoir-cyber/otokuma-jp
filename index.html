@@ -16,7 +16,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=1">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=1">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1">
-<link rel="stylesheet" href="/css/style.css?v=35">
+<link rel="stylesheet" href="/css/style.css?v=36">
 </head>
 <body>
 
@@ -98,6 +98,13 @@
     <!-- 結果 -->
     <div class="step hidden" id="result">
       <div class="meishiki" id="meishiki"></div>
+
+      <div class="cta cta-early">
+        <p class="cta-early-lead">ここに出ているのは、あなたが「どういう人か」までです。<br>今の悩みにどう動けばいいかは、本鑑定でご相談を伺ってお答えします。</p>
+        <p class="price">本鑑定　5,980円</p>
+        <a href="/honkantei/?from=free_result_top" class="btn-primary" id="ctaEarly">本鑑定の内容を見る</a>
+      </div>
+
       <div class="reading" id="reading"></div>
 
       <div class="cta">
@@ -106,16 +113,6 @@
           今お伝えしたのは、あなたが「どういう人か」までです。<br>
           あなたが今、何に悩んでいるかは、まだ聞いていません。
         </p>
-        <div class="topic-pick" id="topicPick">
-          <p class="topic-q">今いちばん気になっていることは、どれですか。</p>
-          <div class="topic-btns">
-            <button type="button" data-topic="love">恋愛</button>
-            <button type="button" data-topic="work">仕事</button>
-            <button type="button" data-topic="people">人間関係</button>
-            <button type="button" data-topic="self">自分のこと</button>
-          </div>
-          <p class="topic-a" id="topicAnswer" hidden></p>
-        </div>
         <p>
           本鑑定では悩みを伺った上で、あなたの生まれ持ったものを一つずつ読んで、私が直接答えています。
         </p>
@@ -175,6 +172,6 @@
 
 <script src="/js/cross.js?v=2"></script>
 <script src="/js/uranai.js?v=43"></script>
-<script src="/js/topic.js?v=1"></script>
+<script src="/js/cta.js?v=1"></script>
 </body>
 </html>

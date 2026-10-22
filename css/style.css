@@ -177,6 +177,9 @@ select{
 }
 .cta h3{font-size:17px;font-weight:500;margin:0 0 18px;line-height:1.7}
 .cta p{color:var(--mute);font-size:14.5px;margin:0 0 20px}
+.cta-early{margin:28px 0 8px;padding:26px 22px;}
+.cta-early-lead{font-size:15px;line-height:1.95;margin:0 0 14px;}
+.cta-early .price{margin:6px 0 16px;}
 .topic-pick{margin:0 0 24px}
 .topic-q{color:var(--fg) !important;font-size:15px;margin:0 0 12px !important}
 .topic-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 14px}
