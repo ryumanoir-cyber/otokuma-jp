@@ -21,3 +21,38 @@
     io.observe(a);
   });
 })();
+
+// 2026-11-14：下の案内の1文を、その人の型に合わせる（本人OK）。
+// 結果の上に出る「あなたの本質は◯◯です」の語から型を読み、「まだお伝えできていないこと」を1つ置く。
+// 文は、その型の「気をつけること」（本文）に書いた落とし穴を、今の状況に当てはめたもの。新しい占いの内容は足していない。
+// 型が読み取れないときは、元の文のまま。文案と確認：Project/threads-kurono-uranai/docs/free_reading_ending_draft_2026-11-14.md
+(function () {
+  var Q = {
+    "大樹": "今あなたが意地で続けているものを、どこで引き返すか。",
+    "草花": "今あなたが合わせているものの中で、何を譲らずにおくか。",
+    "太陽": "今あなたが抱えているもののうち、どれを先に終わらせるか。",
+    "灯火": "今あなたが手放せずにいるものを、どう終わらせるか。",
+    "山":   "今あなたが先延ばしにしているもののうち、どれから動くか。",
+    "田畑": "今あなたが引き受けているもののうち、どれを断るか。",
+    "刀":   "今あなたが切ろうとしているものを、切っていいかどうか。",
+    "宝石": "今あなたが出せずにいるものを、どの形で出すか。",
+    "大河": "今あなたが手を離しかけているものを、どう終わらせて次へ行くか。",
+    "雨":   "今あなたが言えずに溜めていることを、誰に、どう言うか。"
+  };
+  var box = document.getElementById("meishiki");
+  var lead = document.getElementById("ctaLead");
+  var body = document.getElementById("ctaBody");
+  if (!box || !lead || !body || !("MutationObserver" in window)) return;
+  var lead0 = lead.innerHTML, body0 = body.innerHTML;
+
+  function apply() {
+    var s = box.querySelector(".meishiki-note strong");
+    var q = s ? Q[(s.textContent || "").trim()] : "";
+    if (!q) { lead.innerHTML = lead0; body.innerHTML = body0; return; }
+    lead.innerHTML = "今お伝えしたのは、あなたが「どういう人か」までです。<br>" + q + "<br>そこまでは、まだお伝えできていません。";
+    body.innerHTML = "それは、あなたが今何を抱えているかを伺わないと、視えないからです。<br>" +
+      "本鑑定では悩みを伺った上で、あなたの生まれ持ったものを一つずつ読んで、私が直接答えています。";
+  }
+  new MutationObserver(apply).observe(box, { childList: true, subtree: true });
+  apply();
+})();
