@@ -540,3 +540,8 @@ details.adv[open] summary::before{content:"−　"}
 .buy-top-more:hover{color:var(--fg)}
 html{scroll-behavior:smooth}
 #about{scroll-margin-top:70px}
+
+/* スマホだけ入れる改行／PC だけ入れる改行（2026-11-14）。見出しや短い文が、言葉の途中で折れないように */
+.sp-br{display:none}
+.pc-br{display:inline}
+@media(max-width:600px){.sp-br{display:inline}.pc-br{display:none}}

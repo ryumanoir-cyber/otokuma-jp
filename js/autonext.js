@@ -11,7 +11,7 @@
   var SEC = 10;
   var NEXT = {
     ura: { href: "/ura/?from=free_auto", label: "裏の顔診断", desc: "3分で、人に隠している本性を視ます。" },
-    torisetsu: { href: "/torisetsu/?from=free_auto", label: "あなた自身の取扱説明書", desc: "生まれた日から、あなたの扱い方を一冊にまとめます。" }
+    torisetsu: { href: "/torisetsu/?from=free_auto", label: "あなた自身の取扱説明書", desc: "あなたの扱い方を、一冊にまとめます。" }
   };
 
   var result = document.getElementById("result");
