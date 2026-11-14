@@ -9,7 +9,7 @@
 
   var ITEMS = {
     free: { href: "/", label: "無料鑑定", desc: "生年月日から、あなたがどういう人かを、その場で視ます。", btn: "無料鑑定を受ける" },
-    ura: { href: "/ura/", label: "裏の顔診断", desc: "5分で、人に隠している本性を視ます。", btn: "裏の顔を診断する" },
+    ura: { href: "/ura/", label: "裏の顔診断", desc: "3分で、人に隠している本性を視ます。", btn: "裏の顔を診断する" },
     torisetsu: { href: "/torisetsu/", label: "あなた自身の取扱説明書", desc: "一生使える、あなた自身の取扱説明書を作ってます。一人ひとりに合わせて、無料で作ります。", btn: "取扱説明書を受け取る" }
   };
   var ORDER = ["free", "ura", "torisetsu"];

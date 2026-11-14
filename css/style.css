@@ -507,3 +507,36 @@ details.adv[open] summary::before{content:"−　"}
 
 /* タロットの「主に扱う領域」。キーワード本体と区別して弱く見せる */
 .chart-tbl.cards .cfield { color: var(--muted); font-size: .82rem; }
+
+/* 本鑑定ページ：上の申込み（2026-11-14・本人OK）。下の購入ボタンまで約2画面あるので、最初の画面にも置く */
+.buy-top{
+  margin:38px auto 0;max-width:420px;padding:30px 26px 24px;
+  border:1px solid var(--accent-dim);border-radius:2px;
+  background:linear-gradient(180deg,rgba(185,160,106,.07),rgba(185,160,106,0) 70%),var(--bg2);
+  position:relative;
+}
+.buy-top::before,.buy-top::after{
+  content:"";position:absolute;left:50%;transform:translateX(-50%);
+  width:56px;height:1px;background:var(--accent);
+}
+.buy-top::before{top:-1px}
+.buy-top::after{bottom:-1px}
+.buy-top-label{color:var(--accent);font-size:12px;letter-spacing:.32em;margin:0 0 10px}
+.buy-top-price{font-size:15px;letter-spacing:.08em;margin:0 0 18px;color:var(--fg)}
+.buy-top-price span{font-size:34px;letter-spacing:.04em;margin-right:4px}
+.btn-fill{
+  display:block;margin:0;padding:17px 20px;text-align:center;
+  background:var(--accent);color:#0b0b0f;border-color:var(--accent);
+  font-size:16px;letter-spacing:.16em;
+}
+.btn-fill:hover{background:#cdb47c;border-color:#cdb47c;color:#0b0b0f}
+.btn-fill.disabled{background:transparent;color:var(--accent)}
+.buy-top-note{color:var(--mute);font-size:12px;line-height:1.9;margin:14px 0 0}
+.buy-top-more{
+  display:inline-block;margin-top:14px;color:var(--mute);font-size:13px;
+  letter-spacing:.08em;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;
+}
+.buy-top-more::after{content:" ↓"}
+.buy-top-more:hover{color:var(--fg)}
+html{scroll-behavior:smooth}
+#about{scroll-margin-top:70px}

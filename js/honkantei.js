@@ -28,12 +28,31 @@
   document.addEventListener("DOMContentLoaded", function () {
     send("honkantei_view_" + SRC);
 
+    /* 上の申込みボタン（2026-11-14）。押した場所を分けて数える：honkantei_buy_top */
+    var t = document.getElementById("buyLinkTop");
+    if (t) {
+      if (BUY_URL) {
+        t.href = BUY_URL;
+        t.addEventListener("click", function () {
+          send("honkantei_buy_click");
+          send("honkantei_buy_top");
+          send("honkantei_buy_" + SRC);
+        });
+      } else {
+        t.href = "#"; t.classList.add("disabled"); t.textContent = "準備中です"; t.removeAttribute("target");
+        t.addEventListener("click", function (e) { e.preventDefault(); });
+      }
+    }
+    var more = document.querySelector(".buy-top-more");
+    if (more) more.addEventListener("click", function () { send("honkantei_read_first"); });
+
     var b = document.getElementById("buyLink");
     if (!b) return;
     if (BUY_URL) {
       b.href = BUY_URL;
       b.addEventListener("click", function () {
         send("honkantei_buy_click");
+        send("honkantei_buy_bottom");
         send("honkantei_buy_" + SRC);
       });
       /* 購入ボタンまで読んだか */
