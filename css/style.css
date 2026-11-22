@@ -566,3 +566,8 @@ html{scroll-behavior:smooth}
 .btn-primary.kn-buy{display:block;background:var(--accent);color:#0b0b0f;border-color:var(--accent);font-size:18px;font-weight:600;padding:20px 16px;letter-spacing:.14em;box-shadow:0 0 0 4px rgba(185,160,106,.18)}
 .btn-primary.kn-buy:hover{background:#cbb37c;color:#0b0b0f}
 .cta.kn-final .note{margin-top:18px}
+#result .kn-sum{list-style:none;margin:6px 0 22px;padding:0;text-align:left}
+#result .kn-sum li{position:relative;padding:7px 0 7px 18px;font-size:15px;line-height:1.8;border-bottom:1px solid rgba(255,255,255,.06)}
+#result .kn-sum li:last-child{border-bottom:none}
+#result .kn-sum li::before{content:"";position:absolute;left:2px;top:17px;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+#result .kn-sum li.warn::before{background:transparent;border:1px solid var(--accent)}
