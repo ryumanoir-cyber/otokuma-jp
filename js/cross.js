@@ -12,7 +12,7 @@
     ura: { href: "/ura/", label: "裏の顔診断", desc: "3分で、人に隠している本性を視ます。", btn: "裏の顔を診断する" },
     torisetsu: { href: "/torisetsu/", label: "あなた自身の取扱説明書", desc: "一生使える、あなた自身の取扱説明書を作ってます。一人ひとりに合わせて、無料で作ります。", btn: "取扱説明書を受け取る" }
   };
-  var ORDER = ["free", "ura", "torisetsu"];
+  var ORDER = ["free", "torisetsu"]; // 裏の顔診断は 2026-11-23 本人判断で案内しない（ページは残す）
 
   var CSS = [
     ".kn-cross{max-width:560px;margin:40px auto 8px;padding:0 4px;font-family:'Hiragino Mincho ProN','Yu Mincho',YuMincho,'Noto Serif JP',serif;color:#e8e6e3;text-align:left}",

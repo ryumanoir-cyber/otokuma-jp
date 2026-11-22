@@ -6,7 +6,7 @@
 
   var ITEMS = [
     { href: "/", label: "無料鑑定", desc: "生年月日から、あなたがどういう人かを視る", key: "free" },
-    { href: "/ura/", label: "裏の顔診断", desc: "3分で、人に隠している本性を視る", key: "ura" },
+    // 裏の顔診断（/ura/）は 2026-11-23 本人判断でメニュー・フッターから外した（ページは残す・案内はしない）
     { href: "/torisetsu/", label: "あなた自身の取扱説明書", short: "あなたの取扱説明書", desc: "あなたの本質を一冊にしてお届け（無料）", key: "torisetsu" },
     { href: "/honkantei/", label: "本鑑定", desc: "あなたの悩みに直接お答えする（有料）", key: "paid", accent: true }
   ];
