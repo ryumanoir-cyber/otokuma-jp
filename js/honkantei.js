@@ -8,9 +8,9 @@
 
   /* どこから来たか（2026-11-13）。GA4 の標準レポートでは ?from= が見えないので、イベント名に入れて送る。
      honkantei_view_<経路>／honkantei_buy_seen_<経路>／honkantei_buy_<経路>。
-     経路：free_result（無料鑑定の結果の下）・free_result_top（結果のすぐ下）・ura_result・torisetsu_report など。
+     経路：free_result（無料鑑定の結果の下）・free_result_top（結果のすぐ下・11/23になくした）・free_result_mid（1章の下）・ura_result・torisetsu_report など。
      ?from= が無いときは、サイト内から来たら site、それ以外は direct。 */
-  var KNOWN = ["free_result", "free_result_top", "ura_result", "torisetsu_report", "torisetsu_mail", "torisetsu_followup",
+  var KNOWN = ["free_result", "free_result_top", "free_result_mid", "ura_result", "torisetsu_report", "torisetsu_mail", "torisetsu_followup",
                "free", "ura", "torisetsu",
                "threads", "threads_pin", "ig", "x", "x_pin", "yt", "tiktok"];
   function source() {

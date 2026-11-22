@@ -4,9 +4,12 @@
 // 2026-11-13：案内が「見られていない」のか「見られたが押されない」のかを分けるため、
 //   画面に入った時（free_cta_top_seen / free_cta_bottom_seen）も1回ずつ送る。
 (function () {
-  [["ctaEarly", "free_cta_top"], ["ctaLink", "free_cta_bottom"]].forEach(function (p) {
+  // 2026-11-23：上の案内（ctaEarly）はなくした（本人「いきなり来ると困る」）。代わりに1章（本質）の下に小さな案内（ctaMid → free_cta_mid）。
+  //   ctaMid は結果が出てから差し込まれるので、#reading の中身が変わるたびに探してつなぐ。
+  function hook(p) {
     var a = document.getElementById(p[0]);
-    if (!a) return;
+    if (!a || a.getAttribute("data-hooked")) return;
+    a.setAttribute("data-hooked", "1");
     a.addEventListener("click", function () {
       if (window.track) window.track(p[1], {});
     });
@@ -19,7 +22,11 @@
       });
     }, { threshold: 0.5 });
     io.observe(a);
-  });
+  }
+  var LIST = [["ctaMid", "free_cta_mid"], ["ctaLink", "free_cta_bottom"]];
+  LIST.forEach(hook);
+  var rd = document.getElementById("reading");
+  if (rd && "MutationObserver" in window) new MutationObserver(function () { LIST.forEach(hook); }).observe(rd, { childList: true });
 })();
 
 // 2026-11-14：下の案内の1文を、その人の型に合わせる（本人OK）。

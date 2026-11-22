@@ -545,3 +545,24 @@ html{scroll-behavior:smooth}
 .sp-br{display:none}
 .pc-br{display:inline}
 @media(max-width:600px){.sp-br{display:inline}.pc-br{display:none}}
+
+/* 無料鑑定の結果（2026-11-23 本人OK）：見出しの強調・章の折りたたみ「開く」・本質の下の小さな案内・下の申込ボタンの強調 */
+#result .meishiki .meishiki-label{font-size:20px;letter-spacing:.14em;text-indent:.14em;margin:0 0 14px}
+.kn-lead{color:var(--fg);font-size:17px;margin:40px 0 6px;padding-left:12px;border-left:3px solid var(--accent);line-height:1.6;text-align:left}
+.kn-lead small{display:block;color:var(--accent);font-size:13.5px;margin-top:4px}
+.reading details.ch{border-top:1px solid var(--line);padding:4px 0}
+.reading details.ch:last-of-type{border-bottom:1px solid var(--line)}
+.reading details.ch summary{list-style:none;cursor:pointer;padding:16px 96px 16px 0;position:relative}
+.reading details.ch summary::-webkit-details-marker{display:none}
+.reading details.ch summary::after{content:"開く ▼";position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:13px;letter-spacing:.06em;color:#0b0b0f;background:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:4px 12px;line-height:1.6;font-family:sans-serif;white-space:nowrap}
+.reading details.ch[open] summary::after{content:"閉じる ▲";background:transparent;color:var(--accent);border-color:var(--accent-dim)}
+.reading details.ch summary .no{color:var(--accent);font-size:13px;margin-right:10px}
+.reading details.ch summary .tt{font-size:16px;letter-spacing:.06em}
+.reading .ch-body{padding:6px 0 14px}
+.kn-mid{margin:6px 0 10px;padding:16px;border:1px solid var(--accent-dim);border-radius:4px;text-align:center}
+.reading .kn-mid p{font-size:14.5px;margin:0 0 12px;color:var(--mute)}
+.kn-mid .btn-primary{padding:13px 18px;font-size:14px}
+.cta.kn-final h3{font-size:21px;color:var(--accent);line-height:1.6;margin:0 0 20px;padding:12px 0;border-top:1px solid var(--accent-dim);border-bottom:1px solid var(--accent-dim)}
+.btn-primary.kn-buy{display:block;background:var(--accent);color:#0b0b0f;border-color:var(--accent);font-size:18px;font-weight:600;padding:20px 16px;letter-spacing:.14em;box-shadow:0 0 0 4px rgba(185,160,106,.18)}
+.btn-primary.kn-buy:hover{background:#cbb37c;color:#0b0b0f}
+.cta.kn-final .note{margin-top:18px}

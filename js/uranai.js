@@ -101,9 +101,30 @@
       if (!res || !res.ok) throw new Error((res && res.error) || "reading failed");
       var nm = esc(state.name || el("name").value.trim());
       el("meishiki").innerHTML = res.meishikiHtml;
-      el("reading").innerHTML  = res.readingHtml.replace(/\{\{NAME\}\}/g, nm);
+      el("reading").innerHTML  = foldReading(res.readingHtml.replace(/\{\{NAME\}\}/g, nm));
     });
   }
+
+  /* FOLD-START
+     2026-11-23（本人OK）：章を「開く」で開く折りたたみにする。サーバーの返事（<h3>番号　題</h3>＋本文）を
+     章ごとに <details> に包み直すだけで、文は変えない。1章（本質）の下にだけ小さな本鑑定の案内を置く。 */
+  var MID_CTA = '<div class="kn-mid"><p>ここまで読んで思い当たることがあるなら、今の悩みも同じ所から来ています。</p>' +
+    '<a href="/honkantei/?from=free_result_mid" class="btn-primary" id="ctaMid">本鑑定で、悩みに答えてもらう</a></div>';
+  function foldReading(html) {
+    var parts = String(html).split("<h3>");
+    if (parts.length < 2) return html;
+    var out = parts[0];
+    for (var i = 1; i < parts.length; i++) {
+      var j = parts[i].indexOf("</h3>");
+      if (j < 0) { out += "<h3>" + parts[i]; continue; }
+      var title = parts[i].slice(0, j), body = parts[i].slice(j + 5);
+      var m = title.match(/^(\d+)[\s　]+([\s\S]*)$/);
+      out += '<details class="ch"><summary><span class="no">' + (m ? m[1] : "") + '</span><span class="tt">' +
+        (m ? m[2] : title) + '</span></summary><div class="ch-body">' + body + (i === 1 ? MID_CTA : "") + "</div></details>";
+    }
+    return out;
+  }
+  /* FOLD-END */
 
   /* 失敗時は少し待って最大3回まで試す（GAS・回線の一時的な不調対策） */
   function fetchReading() {
