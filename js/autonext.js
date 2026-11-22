@@ -4,7 +4,7 @@
    - 数え終わると自動で次の鑑定へ移る。「今すぐ進む」ですぐ移る。「ここに残る」でやめる
    - 上へ読み戻した・本鑑定のボタンを押した・やり直した ときは自動でやめる（読んでいる人を連れ去らない）
    - 1回の結果につき出すのは1回だけ
-   次の鑑定：裏の顔診断。裏の顔診断から来た人には、取扱説明書。
+   次の鑑定：取扱説明書（2026-11-23〜全員。それまでは裏の顔診断・裏の顔診断から来た人だけ取扱説明書）。
    計測：free_auto_show / free_auto_go（数え終わって移動）/ free_auto_now（今すぐ）/ free_auto_cancel（理由つき） */
 (function () {
   "use strict";
@@ -48,7 +48,8 @@
     var src = "";
     try { src = (window.kuroVisitor ? window.kuroVisitor().src : "") || ""; } catch (e) {}
     var f = (location.search.match(/[?&]from=([\w-]+)/) || [])[1] || "";
-    return (/^ura/.test(f) || /^ura/.test(src)) ? NEXT.torisetsu : NEXT.ura;
+    // 2026-11-23 本人指示：次の鑑定は全員、取扱説明書（本鑑定につながった実績があるため。裏の顔診断へは自動で送らない）
+    return NEXT.torisetsu;
   }
   function track(name, p) { if (window.track) window.track(name, p || {}); }
 
